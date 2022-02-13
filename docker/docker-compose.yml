@@ -11,6 +11,8 @@ services:
       - 'nginx-config:/etc/nginx/conf.d'
       - 'nginx-certs:/etc/nginx/certs'
       - 'nginx-webroot:/usr/share/nginx/html'
+#      - "nginx-docker-sock:/tmp/docker.sock:ro"
+      - './nginx/docker.sock:/tmp/docker.sock:ro'
 
   letsencrypt:
     image: 'jrcs/letsencrypt-nginx-proxy-companion'
@@ -21,20 +23,24 @@ services:
       - 'nginx-config:/etc/nginx/conf.d'
       - 'nginx-certs:/etc/nginx/certs'
       - 'nginx-webroot:/usr/share/nginx/html'
+#      - "nginx-docker-sock:/tmp/docker.sock:ro"
+#      - '/var/run/docker.sock:/var/run/docker.sock:ro'
 
   app1:
     image: nginx
     container_name: app1
     environment:
-      VIRTUAL_HOST: shop.lit.my
+      VIRTUAL_HOST: lit.my
       LETSENCRYPT_HOST: shop.lit.my
       LETSENCRYPT_EMAIL: 'admin@example.com'
 
   app2:
     image: nginx
     container_name: app2
+    volumes:
+    - "./nginx/yii.conf:/etc/nginx/sites-available/yii.conf"
     environment:
-      VIRTUAL_HOST: lit.my
+      VIRTUAL_HOST: api.lit.my
       LETSENCRYPT_HOST: lit.my
       LETSENCRYPT_EMAIL: 'admin@example.com'
 
@@ -72,3 +78,4 @@ volumes:
   nginx-config:
   nginx-certs:
   nginx-webroot:
+#  nginx-docker-sock:
