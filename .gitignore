@@ -4,3 +4,7 @@ protected/runtime/*
 !protected/runtime/.gitignore
 protected/data/*.db
 themes/classic/views/
+.idea/vcs.xml
+.idea/modules.xml
+.idea/misc.xml
+.idea/litvinov-magazine.iml

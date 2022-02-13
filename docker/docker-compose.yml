@@ -1,0 +1,74 @@
+version: '3'
+services:
+  proxy:
+    image: 'jwilder/nginx-proxy'
+    container_name: 'proxy'
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - 'nginx-vhosts:/etc/nginx/vhost.d'
+      - 'nginx-config:/etc/nginx/conf.d'
+      - 'nginx-certs:/etc/nginx/certs'
+      - 'nginx-webroot:/usr/share/nginx/html'
+
+  letsencrypt:
+    image: 'jrcs/letsencrypt-nginx-proxy-companion'
+    container_name: 'letsencrypt'
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock:ro'
+      - 'nginx-vhosts:/etc/nginx/vhost.d'
+      - 'nginx-config:/etc/nginx/conf.d'
+      - 'nginx-certs:/etc/nginx/certs'
+      - 'nginx-webroot:/usr/share/nginx/html'
+
+  app1:
+    image: nginx
+    container_name: app1
+    environment:
+      VIRTUAL_HOST: shop.lit.my
+      LETSENCRYPT_HOST: shop.lit.my
+      LETSENCRYPT_EMAIL: 'admin@example.com'
+
+  app2:
+    image: nginx
+    container_name: app2
+    environment:
+      VIRTUAL_HOST: lit.my
+      LETSENCRYPT_HOST: lit.my
+      LETSENCRYPT_EMAIL: 'admin@example.com'
+
+  php-fpm:
+    container_name: php-fpm
+    build:
+      context: ./php/
+      args:
+        PHP_EXEC_TIME: "50"
+        PHP_MEM_LIMIT: "60M"
+        PHP_ERR_REPORT: "E_ALL & ~E_NOTICE & ~E_WARNING"
+        UPLOAD_MAX_FILESIZE: "10M"
+    depends_on:
+       - mysql
+    volumes:
+      - ../:/var/www/html/
+#    command: bash -c  "sleep 10 && composer install --ignore-platform-reqs && composer update --ignore-platform-reqs && php init --env=Development --overwrite=y && php yii migrate --interactive=0 && php yii_test migrate --interactive=0"
+
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+#    environment:
+#      - MYSQL_ROOT_PASSWORD: "rootpasswd123"
+#      - MYSQL_DATABASE: "adview"
+#      - MYSQL_USER: "user"
+#      - MYSQL_PASSWORD: "userPassword"
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./mysql:/docker-entrypoint-initdb.d
+    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+
+volumes:
+  nginx-vhosts:
+  nginx-config:
+  nginx-certs:
+  nginx-webroot:
