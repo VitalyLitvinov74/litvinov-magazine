@@ -13,6 +13,8 @@ services:
       - './nginx/certs:/etc/nginx/certs'
 
   nginx1:
+#    build:
+#      context: ./nginx
     image: nginx
     container_name: nginx-static
     env_file:

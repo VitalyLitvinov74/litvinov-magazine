@@ -11,4 +11,5 @@ themes/classic/views/
 .idea/yii2settings.xml
 docker/.env
 backend/web/assets/*
+frontend/node_modules
 .idea/*
