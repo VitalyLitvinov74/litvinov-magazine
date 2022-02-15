@@ -12,7 +12,8 @@ services:
       - '/var/run/docker.sock:/tmp/docker.sock:ro'
       - './nginx/certs:/etc/nginx/certs'
 
-  nginx1:
+## прокси для статики
+  nginx:
 #    build:
 #      context: ./nginx
     image: nginx
@@ -25,7 +26,7 @@ services:
       VIRTUAL_HOST: "${FRONTEND}"
 
 ## прокси для php
-  nginx2:
+  nginx-php:
     image: nginx
     container_name: nginx-php
     env_file:
@@ -58,11 +59,19 @@ services:
       - ./mysql:/docker-entrypoint-initdb.d
     command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
 
-## выполнение деплойного скрипта
+## тут происходит подгрузка зависимостей для бека
   php-cli:
     container_name: php-cli
     build:
       context: ./php/
     volumes_from:
       - php
-    command: bash -c  "${DEPLOY_SCRIPT}"
+    command: bash -c  "${BACKEND_DEPLOY_SCRIPT}"
+
+  ## тут происходит подгрузка зависимостей для фронта
+  node-cli:
+    image: node:12.18.1
+    container_name: node-cli
+    command: bash -c "${FRONTEND_DEPLOY_SCRIPT}"
+    volumes:
+      - '../frontend:/app'
