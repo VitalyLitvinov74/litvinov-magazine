@@ -5,26 +5,38 @@ services:
     image: 'jwilder/nginx-proxy'
     container_name: 'proxy'
     ports:
-      - '80:80'
+      - '81:80'
     volumes:
       - './nginx/vhosts:/etc/nginx/vhost.d'
       - './nginx/config:/etc/nginx/conf.d'
       - '/var/run/docker.sock:/tmp/docker.sock:ro'
       - './nginx/certs:/etc/nginx/certs'
 
-  app1:
+  nginx1:
     image: nginx
-    container_name: js
+    container_name: nginx-static
     volumes:
       - '../frontend:/usr/share/nginx/html'
     environment:
       VIRTUAL_HOST: lit.my
 
-  app2:
+#    networks:
+#      - proxy
+
+  nginx2:
+    image: nginx
+    container_name: nginx-php
+    volumes:
+      - './nginx/config.yii2:/etc/nginx/conf.d'
+    environment:
+      VIRTUAL_HOST: api.lit.my
+    links:
+      - php
+    volumes_from:
+      - php
+
+  php:
     image: php:7.3-fpm
     container_name: php
     volumes:
-      - '../backend:/var/www/html/'
-    environment:
-      VIRTUAL_HOST: api.lit.my
-      VIRTUAL_ROOT: '/web'
+      - '../backend:/var/www/'
