@@ -10,5 +10,5 @@ themes/classic/views/
 .idea/litvinov-magazine.iml
 .idea/yii2settings.xml
 docker/.env
-web/assets/*
+backend/web/assets/*
 .idea/*
