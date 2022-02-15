@@ -1,11 +1,11 @@
-version: '2'
+version: '3.2'
 
 services:
   proxy:
     image: 'jwilder/nginx-proxy'
     container_name: 'proxy'
     ports:
-      - '81:80'
+      - '${PORT}:80'
     volumes:
       - './nginx/vhosts:/etc/nginx/vhost.d'
       - './nginx/config:/etc/nginx/conf.d'
@@ -15,28 +15,52 @@ services:
   nginx1:
     image: nginx
     container_name: nginx-static
+    env_file:
+      - .env
     volumes:
       - '../frontend:/usr/share/nginx/html'
     environment:
-      VIRTUAL_HOST: lit.my
+      VIRTUAL_HOST: "${FRONTEND}"
 
-#    networks:
-#      - proxy
-
+## прокси для php
   nginx2:
     image: nginx
     container_name: nginx-php
+    env_file:
+      - .env
     volumes:
       - './nginx/config.yii2:/etc/nginx/conf.d'
     environment:
-      VIRTUAL_HOST: api.lit.my
+      VIRTUAL_HOST: "${BACKEND}"
     links:
       - php
     volumes_from:
       - php
 
+## тут происходит обработка пхп
   php:
-    image: php:7.3-fpm
     container_name: php
+    build:
+      context: ./php/
     volumes:
-      - '../backend:/var/www/'
+      - '../backend:/var/www/html'
+
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    env_file:
+      - .env
+    ports:
+      - "${MYSQL_PORT}:3306"
+    volumes:
+      - ./mysql:/docker-entrypoint-initdb.d
+    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+
+## выполнение деплойного скрипта
+  php-cli:
+    container_name: php-cli
+    build:
+      context: ./php/
+    volumes_from:
+      - php
+    command: bash -c  "${DEPLOY_SCRIPT}"

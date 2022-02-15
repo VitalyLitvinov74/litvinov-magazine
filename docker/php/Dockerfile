@@ -28,15 +28,22 @@ RUN docker-php-ext-install \
         opcache \
         pdo_mysql \
         sockets
+
+RUN pecl install xdebug \
+    && docker-php-ext-enable xdebug
+
 RUN curl -sS https://getcomposer.org/installer | \
             php -- --install-dir /usr/local/bin --filename composer --version ${COMPOSER_VER}
 
-ARG PHP_EXEC_TIME
-ARG PHP_MEM_LIMIT
-ARG PHP_ERR_REPORT
-ARG UPLOAD_MAX_FILESIZE
+USER 1000
+#
+#ARG PHP_EXEC_TIME
+#ARG PHP_MEM_LIMIT
+#ARG PHP_ERR_REPORT
+#ARG UPLOAD_MAX_FILESIZE
 
-RUN echo "memory_limit=${PHP_MEM_LIMIT}" > $PHP_INI_DIR/conf.d/memory-limit.ini
-RUN echo "max_execution_time = ${PHP_EXEC_TIME}" > $PHP_INI_DIR/conf.d/php_max_execution_time.ini
-RUN echo "error_reporting = ${PHP_ERR_REPORT}" > $PHP_INI_DIR/conf.d/php_error_reporting.ini
-RUN echo "upload_max_filesize=${UPLOAD_MAX_FILESIZE}" > $PHP_INI_DIR/conf.d/upload_max_filesize.ini
+
+#RUN echo "memory_limit=${PHP_MEM_LIMIT}" > $PHP_INI_DIR/conf.d/memory-limit.ini
+#RUN echo "max_execution_time = ${PHP_EXEC_TIME}" > $PHP_INI_DIR/conf.d/php_max_execution_time.ini
+#RUN echo "error_reporting = ${PHP_ERR_REPORT}" > $PHP_INI_DIR/conf.d/php_error_reporting.ini
+#RUN echo "upload_max_filesize=${UPLOAD_MAX_FILESIZE}" > $PHP_INI_DIR/conf.d/upload_max_filesize.ini
