@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "gulp": "^4.0.2",
     "gulp-cli": "^2.3.0",
     "gulp-concat": "^2.6.1",
     "gulp-uglify": "^3.0.2",
@@ -11,6 +12,9 @@
     "uglify-js": "^3.15.1",
     "vue": "^2.6.14",
     "vue-router": "^3.5.3"
+  },
+  "config": {
+    "unsafe-perm": true
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
