@@ -3,7 +3,7 @@ version: '3.2'
 services:
   proxy:
     image: 'jwilder/nginx-proxy'
-    container_name: 'proxy'
+    container_name: 'reverse-proxy'
     ports:
       - '${PORT}:80'
     volumes:
@@ -13,9 +13,9 @@ services:
       - './nginx/certs:/etc/nginx/certs'
 
 ## прокси для статики
-  nginx:
+  proxy-static:
     image: nginx
-    container_name: nginx-static
+    container_name: proxy-to-static
     env_file:
       - .env
     volumes:
@@ -31,9 +31,9 @@ services:
        - '../frontend:/var/www/html'
 
 ## прокси для php
-  nginx-php:
+  proxy-php:
     image: nginx
-    container_name: nginx-php
+    container_name: proxy-to-php
     env_file:
       - .env
     volumes:
