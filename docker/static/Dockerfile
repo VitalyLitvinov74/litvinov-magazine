@@ -3,3 +3,4 @@ WORKDIR /var/www/html
 RUN apt-get update && apt-get install -y
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash
 RUN apt-get -y install nodejs
+RUN npm install -g @vue/cli @vue/cli-service-global
