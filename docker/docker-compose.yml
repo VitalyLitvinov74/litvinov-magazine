@@ -14,8 +14,6 @@ services:
 
 ## прокси для статики
   nginx:
-#    build:
-#      context: ./nginx
     image: nginx
     container_name: nginx-static
     env_file:
@@ -24,6 +22,13 @@ services:
       - '../frontend:/usr/share/nginx/html'
     environment:
       VIRTUAL_HOST: "${FRONTEND}"
+
+  static:
+    build:
+      context: ./static
+    container_name: static
+    volumes:
+       - '../frontend:/var/www/html'
 
 ## прокси для php
   nginx-php:
@@ -59,19 +64,19 @@ services:
       - ./mysql:/docker-entrypoint-initdb.d
     command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
 
-## тут происходит подгрузка зависимостей для бека
+## тут происходит подгрузка зависимостей для бека и фронта
   php-cli:
     container_name: php-cli
     build:
       context: ./php/
-    volumes_from:
-      - php
+    volumes:
+      - "../backend:/var/www/html"
     command: bash -c  "${BACKEND_DEPLOY_SCRIPT}"
 
-  ## тут происходит подгрузка зависимостей для фронта
-  node-cli:
-    image: node:12.18.1
-    container_name: node-cli
-    command: bash -c "${FRONTEND_DEPLOY_SCRIPT}"
+  js-cli:
+    container_name: js-cli
+    build:
+      context: ./static
     volumes:
-      - '../frontend:/app'
+      - "../frontend:/var/www/html"
+    command: bash -c  "${FRONTEND_DEPLOY_SCRIPT}"
