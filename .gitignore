@@ -13,4 +13,4 @@ docker/.env
 backend/web/assets/*
 frontend/node_modules
 .idea/*
-docker/nginx/config/default.conf
+docker/proxy/config/default.conf

@@ -9,7 +9,7 @@ new Vue({
   router,
   store,
   render: h => h(App),
-  mounted() {
-    console.log('hello from vue');
+  mounted(){
+    console.log('hello from vue js!!!')
   }
 }).$mount('#app')

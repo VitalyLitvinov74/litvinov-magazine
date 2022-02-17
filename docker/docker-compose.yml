@@ -7,37 +7,40 @@ services:
     ports:
       - '${PORT}:80'
     volumes:
-      - './nginx/vhosts:/etc/nginx/vhost.d'
-      - './nginx/config:/etc/nginx/conf.d'
+      - './proxy/vhosts:/etc/nginx/vhost.d'
+      - './proxy/config:/etc/nginx/conf.d'
       - '/var/run/docker.sock:/tmp/docker.sock:ro'
-      - './nginx/certs:/etc/nginx/certs'
+      - './proxy/certs:/etc/nginx/certs'
 
-## прокси для статики
-  proxy-static:
+  ## статика
+  static-proxy:
     image: nginx
-    container_name: proxy-to-static
-    env_file:
-      - .env
+    container_name: static-proxy
     volumes:
-      - '../frontend:/usr/share/nginx/html'
+      - './static/proxy/conf:/etc/nginx/conf.d'
     environment:
       VIRTUAL_HOST: "${FRONTEND}"
+    links:
+      - node-cli
+    volumes_from:
+      - node-cli
 
-  static:
+  node-cli:
+    container_name: node-cli
     build:
       context: ./static
-    container_name: static
     volumes:
-       - '../frontend:/var/www/html'
+      - '../frontend:/usr/share/nginx/html'
+    ports:
+      - "4000:4000"
+    command: bash -c  "${FRONTEND_DEPLOY_SCRIPT}"
 
-## прокси для php
-  proxy-php:
+  # прокси для пхп
+  php-proxy:
     image: nginx
-    container_name: proxy-to-php
-    env_file:
-      - .env
+    container_name: php-proxy
     volumes:
-      - './nginx/config.yii2:/etc/nginx/conf.d'
+      - './php/proxy/conf:/etc/nginx/conf.d'
     environment:
       VIRTUAL_HOST: "${BACKEND}"
     links:
@@ -45,11 +48,10 @@ services:
     volumes_from:
       - php
 
-## тут происходит обработка пхп
   php:
     container_name: php
     build:
-      context: ./php/
+       context: ./php/
     volumes:
       - '../backend:/var/www/html'
 
@@ -64,7 +66,7 @@ services:
       - ./mysql:/docker-entrypoint-initdb.d
     command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
 
-## тут происходит подгрузка зависимостей для бека и фронта
+### тут происходит подгрузка зависимостей для бека и фронта
   php-cli:
     container_name: php-cli
     build:
@@ -72,11 +74,3 @@ services:
     volumes:
       - "../backend:/var/www/html"
     command: bash -c  "${BACKEND_DEPLOY_SCRIPT}"
-
-  js-cli:
-    container_name: js-cli
-    build:
-      context: ./static
-    volumes:
-      - "../frontend:/var/www/html"
-    command: bash -c  "${FRONTEND_DEPLOY_SCRIPT}"
