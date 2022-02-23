@@ -1,7 +1,7 @@
 version: '3.2'
 
 services:
-  proxy:
+  reverse-proxy:
     image: 'jwilder/nginx-proxy'
     container_name: 'reverse-proxy'
     ports:
@@ -13,11 +13,11 @@ services:
       - './proxy/certs:/etc/nginx/certs'
 
   ## статика
-  static-proxy:
+  nuxt-proxy:
     image: nginx
-    container_name: static-proxy
+    container_name: "nuxt-proxy"
     volumes:
-      - './static/proxy/conf:/etc/nginx/conf.d'
+      - './nuxt/proxy/conf:/etc/nginx/conf.d'
     environment:
       VIRTUAL_HOST: "${FRONTEND}"
     links:
@@ -25,12 +25,16 @@ services:
     volumes_from:
       - node-cli
 
-  node-cli:
-    container_name: node-cli
-    build:
-      context: ./static
+  nuxt-js:
+    container_name: "nuxt-js"
+    image: node:latest
+    working_dir: "/app"
+    environment:
+      NODE_OPTIONS: --openssl-legacy-provider
+      HOST: 0.0.0.0
+      PORT: 4000
     volumes:
-      - '../frontend:/usr/share/nginx/html'
+      - '../frontend:/app'
     ports:
       - "4000:4000"
     command: bash -c  "${FRONTEND_DEPLOY_SCRIPT}"
@@ -38,7 +42,7 @@ services:
   # прокси для пхп
   php-proxy:
     image: nginx
-    container_name: php-proxy
+    container_name: "php-proxy"
     volumes:
       - './php/proxy/conf:/etc/nginx/conf.d'
     environment:
@@ -49,7 +53,7 @@ services:
       - php
 
   php:
-    container_name: php
+    container_name: "php"
     build:
        context: ./php/
     volumes:
@@ -57,7 +61,7 @@ services:
 
   mysql:
     image: mysql:5.7
-    container_name: mysql
+    container_name: "mysql"
     env_file:
       - .env
     ports:
@@ -68,7 +72,7 @@ services:
 
 ### тут происходит подгрузка зависимостей для бека и фронта
   php-cli:
-    container_name: php-cli
+    container_name: "php-cli"
     build:
       context: ./php/
     volumes:
