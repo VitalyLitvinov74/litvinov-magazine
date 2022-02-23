@@ -21,9 +21,9 @@ services:
     environment:
       VIRTUAL_HOST: "${FRONTEND}"
     links:
-      - node-cli
+      - nuxt-js
     volumes_from:
-      - node-cli
+      - nuxt-js
 
   nuxt-js:
     container_name: "nuxt-js"
