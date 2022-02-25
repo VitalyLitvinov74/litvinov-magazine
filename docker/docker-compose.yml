@@ -79,3 +79,33 @@ services:
     volumes:
       - "../backend:/var/www/html"
     command: bash -c  "${BACKEND_DEPLOY_SCRIPT}"
+
+  ## статика панели пользователя
+  nuxt-user-panel-proxy:
+    image: nginx
+    container_name: "nuxt-user-panel-proxy"
+    volumes:
+      - './nuxt/proxy/panel:/etc/nginx/conf.d'
+    environment:
+      VIRTUAL_HOST: "${USER_PANEL}"
+    links:
+      - nuxt-js-user-panel
+    volumes_from:
+      - nuxt-js-user-panel
+
+  nuxt-js-user-panel:
+    container_name: "nuxt-js-user-panel"
+    image: node:latest
+    working_dir: "/app"
+    environment:
+      NODE_OPTIONS: --openssl-legacy-provider
+      HOST: 0.0.0.0
+      PORT: 4001
+      CHOKIDAR_USEPOLLING: 1
+    volumes:
+      - '../frontend.user.panel:/app'
+    ports:
+      - "4001:4001"
+    command: bash -c  "${FRONTEND_DEPLOY_SCRIPT}"
+
+  ## Статика админ панели (в будущем)
