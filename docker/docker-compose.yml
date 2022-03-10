@@ -79,6 +79,8 @@ services:
     volumes:
       - "../backend:/var/www/html"
     command: bash -c  "${BACKEND_DEPLOY_SCRIPT}"
+    depends_on:
+      - mysql
 
   ## статика панели пользователя
   nuxt-user-panel-proxy:
@@ -107,5 +109,6 @@ services:
     ports:
       - "4001:4001"
     command: bash -c  "${FRONTEND_DEPLOY_SCRIPT}"
+
 
   ## Статика админ панели (в будущем)
