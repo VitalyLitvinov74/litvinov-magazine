@@ -1,13 +1,13 @@
 <template>
   <div>
-    <h1>hello</h1>
-
-    <Tutorial />
+    <p>
+      hello this is index page..
+    </p>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'IndexPage'
+  layout: 'nuxt'
 }
 </script>
