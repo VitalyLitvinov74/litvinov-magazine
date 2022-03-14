@@ -10,16 +10,12 @@
     components: {
       mioca
     },
-    data: function(){
-      return {
-        template: this.userSelectedTemplate()
-      }
+    created() {
+      this.template = this.$store.getters['layout/name'];
     },
-    methods: {
-      userSelectedTemplate: function () {
-        //здесь получать от бека выбранный пользователем шаблон.
-        // this.$store.commit('layout', 'mioca');
-        return "mioca";
+    data: function () {
+      return {
+        template: null
       }
     }
   }

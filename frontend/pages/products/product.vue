@@ -12,15 +12,19 @@
     components: {
       MiocaProduct,
     },
-    data: function () {
-      return {
-        product: this.productPage()
+    created() {
+      switch (this.$store.getters['layout/name']) {
+        default:
+        case "mioca":
+          this.product = MiocaProduct;
+          break;
+          //сюда и дальше добавлять новые страницы шаблонов.
       }
     },
-    methods: {
-      productPage: function () {
-        return MiocaProduct;
-      }
+    data: function () {
+      return {
+        product: null
+      };
     }
   }
 </script>
