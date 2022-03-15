@@ -22,17 +22,7 @@ class Product implements IProduct
         return [];
     }
 
-    public function changeDescription(IForm $changeDescriptionForm): IProduct
-    {
-        return $this;
-    }
-
-    public function changeAPrice(IField $newPrice, ICurrency $currency): IProduct
-    {
-        return $this;
-    }
-
-    public function changeCount(IField $currentCount): IProduct
+    public function changeContent(IForm $changeDescriptionForm): IProduct
     {
         return $this;
     }
