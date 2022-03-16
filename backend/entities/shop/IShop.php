@@ -1,7 +1,7 @@
 <?php
 
 
-namespace app\models\shop;
+namespace app\entities\shop;
 
 
 interface IShop

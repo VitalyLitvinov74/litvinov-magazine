@@ -1,7 +1,7 @@
 <?php
 
 
-namespace app\models\shop\products;
+namespace app\entities\shop\models;
 
 
 use vloop\entities\contracts\IField;
