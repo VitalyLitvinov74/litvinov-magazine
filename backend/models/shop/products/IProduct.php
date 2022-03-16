@@ -3,9 +3,6 @@
 
 namespace app\models\shop\products;
 
-
-use app\models\currencies\ICurrency;
-use vloop\entities\contracts\IField;
 use vloop\entities\contracts\IForm;
 use vloop\PrintYourSelf\PrintYourSelf;
 
@@ -18,4 +15,17 @@ interface IProduct extends PrintYourSelf
      * @return IProduct - вернет копию себя но с изменным описанием, а сам прекратит существовать
      */
     public function changeContent(IForm $changeDescriptionForm): IProduct;
+
+    /**
+     * Возвращает комплектации товаров
+     * комлпектация в свою очередь зависит от установленных аттрибутов
+     * @return
+     */
+    public function goodsPicking():array;
+
+    /**
+     * Возвращает характеристику товара
+     * @return array
+     */
+    public function characteristics(): array ;
 }

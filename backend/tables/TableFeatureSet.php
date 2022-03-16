@@ -12,10 +12,10 @@ use yii\db\ActiveRecord;
  * @property int $price      [int(11)]  Стоимость продукта с текущим аттрибутом
  * @property int $count      [int(11)]  кол-во товара которое осталось на складе, с текущим атрибутом
  */
-class TableAttributesCollections extends ActiveRecord
+class TableFeatureSet extends ActiveRecord
 {
     public static function tableName()
     {
-        return 'attributes_collection';
+        return 'product_feature_set';
     }
 }

@@ -4,7 +4,6 @@
 namespace app\models\shop\products;
 
 
-use app\models\currencies\ICurrency;
 use vloop\entities\contracts\IField;
 use vloop\entities\contracts\IForm;
 
@@ -25,5 +24,21 @@ class Product implements IProduct
     public function changeContent(IForm $changeDescriptionForm): IProduct
     {
         return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function goodsPicking(): array
+    {
+        // TODO: Implement goodsPicking() method.
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function characteristics(): array
+    {
+        // TODO: Implement characteristics() method.
     }
 }
