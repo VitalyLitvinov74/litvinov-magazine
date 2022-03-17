@@ -6,9 +6,7 @@ namespace app\models\shop\products\decorators;
 
 use app\models\shop\products\WeProducts;
 
-class WithInfo implements WeProducts
+class AtomicProducts implements WeProducts
 {
-    public function __construct(WeProducts $origin)
-    {
-    }
+
 }

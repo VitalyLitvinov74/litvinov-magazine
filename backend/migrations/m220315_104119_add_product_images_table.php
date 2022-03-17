@@ -33,7 +33,7 @@ class m220315_104119_add_product_images_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('products_images');
+        $this->dropTable('product_images');
     }
 
     /*

@@ -20,6 +20,7 @@ class m220315_104108_add_product_table extends Migration
             'descriptions' => $this->text()->comment('Описание товара')->notNull(),
             'default_price'=> $this->integer()->comment("Цена умноженная на 100, чтобы не было копеек"),
             'vendor_code'=>$this->string()->comment("Артикул товара"),
+            'count'=> $this->integer()->comment('Кол-во товара на складе'),
             'updated' => $this->timestamp()
                 ->comment('Дата обновления')
                 ->defaultValue(new Expression("NOW()"))
@@ -42,6 +43,7 @@ class m220315_104108_add_product_table extends Migration
     public function safeDown()
     {
         $this->dropTable('products');
+        $this->dropTable('product_info');
     }
 
     /*

@@ -12,4 +12,21 @@ class ProductController extends Controller
     {
         return '';
     }
+    
+    public function actionList(){
+        
+    }
+    
+    public function actionDelete(){
+        
+    }
+    
+    public function actionChangeDescription(){
+        
+    }
+
+    public function actionChangeImages()
+    {
+        
+    }
 }

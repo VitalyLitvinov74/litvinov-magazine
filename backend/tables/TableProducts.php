@@ -15,6 +15,7 @@ use yii\db\ActiveRecord;
  * @property string $short_desc       [varchar(255)]  Краткое описание товара
  * @property string $descriptions     Описание товара
  * @property int    $default_price    [int(11)]  Цена умноженная на 100, чтобы не было копеек
+ * @property int    $count            [int(11)]  Кол-во товара на складе
  */
 class TableProducts extends ActiveRecord
 {
