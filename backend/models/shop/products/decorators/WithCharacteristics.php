@@ -1,25 +1,29 @@
 <?php
 
 
-namespace app\entities\shop\models\decorators;
+namespace app\models\shop\products\decorators;
 
-use app\entities\shop\models\IProductModels;
-use app\entities\shop\models\ProductModel;
+
+use app\models\shop\products\WeProducts;
+use app\models\shop\products\Product;
 use vloop\entities\contracts\IForm;
 
-class WithImages implements IProductModels
+class WithCharacteristics implements WeProducts
 {
-    public function __construct(IProductModels $origin)
+    private $origin;
+
+    public function __construct(WeProducts $origin)
     {
+        $this->origin = $origin;
     }
 
     public function add(IForm $productModelForm)
     {
-        // TODO: Implement add() method.
+
     }
 
     /**
-     * @return ProductModel[]
+     * @return Product[]
      */
     public function list(): array
     {

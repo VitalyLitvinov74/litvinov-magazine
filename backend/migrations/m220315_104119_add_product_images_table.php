@@ -17,7 +17,6 @@ class m220315_104119_add_product_images_table extends Migration
             'product_id'=>$this->double()->comment('id продукта из таблицы products')->notNull(),
             'url'=>$this->string()
                 ->comment('относительный урл, изображения, без доменного имени')
-                ->defaultValue('/img/default_image.png')
                 ->notNull(),
             'created'=>$this->timestamp()
                 ->comment('Дата создания')

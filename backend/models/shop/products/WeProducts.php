@@ -1,18 +1,18 @@
 <?php
 
 
-namespace app\entities\shop\models;
+namespace app\models\shop\products;
 
 
 use vloop\entities\contracts\IForm;
 use vloop\PrintYourSelf\PrintYourSelf;
 
-interface IProductModels extends PrintYourSelf
+interface WeProducts extends PrintYourSelf
 {
     public function add(IForm $productModelForm);
 
     /**
-     * @return ProductModel[]
+     * @return Product[]
      */
     public function list(): array ;
 }

@@ -1,12 +1,12 @@
 <?php
 
 
-namespace app\entities\shop\models;
+namespace app\models\shop\products;
 
 
 use vloop\entities\yii2\criteria\IImprovedQuery;
 
-class ProductModels implements IProductModels
+class Products implements WeProducts
 {
     public function __construct(IImprovedQuery $query)
     {
