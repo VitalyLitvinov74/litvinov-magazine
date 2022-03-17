@@ -4,12 +4,19 @@
 namespace app\controllers\v1;
 
 
+use app\models\shop\products\decorators\ImproveProducts;
+use app\models\shop\products\Products;
 use yii\rest\Controller;
 
 class ProductController extends Controller
 {
     public function actionCreate()
     {
+        $products = new ImproveProducts(
+            new Products()
+        );
+        $products->add();
+        
         return '';
     }
     
