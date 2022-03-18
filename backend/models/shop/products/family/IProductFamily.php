@@ -1,0 +1,16 @@
+<?php
+
+
+namespace app\models\shop\products\family;
+
+use vloop\entities\contracts\IForm;
+use vloop\PrintYourSelf\PrintYourSelf;
+
+interface IProductFamily extends PrintYourSelf
+{
+    public function create(): IProductFamily;
+
+    public function changeContent(IForm $form):IProductFamily;
+
+    public function remove(): void;
+}
