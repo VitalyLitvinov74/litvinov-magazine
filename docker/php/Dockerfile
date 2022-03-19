@@ -1,7 +1,7 @@
 FROM php:7.3-fpm
 ARG COMPOSER_VER
-ENV COMPOSER_VER ${COMPOSER_VER:-2.1.9}
-
+ENV COMPOSER_VER ${COMPOSER_VER:-2.2.9}
+#USER 1000
 
 WORKDIR /var/www/html
 
@@ -13,7 +13,9 @@ RUN apt-get update && apt-get install -y \
         libxml2-dev \
         curl
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash
-RUN apt-get -y install nodejs
+RUN apt-get -y install nodejs \
+    git \
+    unzip
 #RUN npm --version
 RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
 RUN docker-php-ext-install \
@@ -34,8 +36,6 @@ RUN pecl install xdebug \
 
 RUN curl -sS https://getcomposer.org/installer | \
             php -- --install-dir /usr/local/bin --filename composer --version ${COMPOSER_VER}
-
-USER 1000
 #
 #ARG PHP_EXEC_TIME
 #ARG PHP_MEM_LIMIT
