@@ -51,20 +51,24 @@ class Products extends AbstracProducts
      * @throws NotValidatedFields
      * @throws NotSavedData
      */
-    public function addProduct(IForm $productForm): IProduct
+    public function addProducts(IForm $productForm): WeProducts
     {
         $fields = $productForm->validatedFields();
-        $record = new TableProducts([
-            'count' => $fields['count'],
-            'price' => $fields['price'] * 100,
-            'vendor_code' => $fields['vendorCode']
-        ]);
-        if($record->save()){
-            $product = $this->product(new Field('id', $record->id));
-            $this->addedProducts[] = $product;
-            return $product;
+        $products = $fields['products'];
+        foreach ($products as $product){
+            $record = new TableProducts([
+                'count' => $fields['count'],
+                'price' => $fields['price'] * 100,
+                'vendor_code' => $fields['vendorCode']
+            ]);
+            if($record->save()){
+                $product = $this->product(new Field('id', $record->id));
+                $this->addedProducts[] = $product;
+                return $product;
+            }
+            throw new NotSavedData($record->getErrors(), 422);
         }
-        throw new NotSavedData($record->getErrors(), 422);
+        return clone $this;
     }
 
     /**

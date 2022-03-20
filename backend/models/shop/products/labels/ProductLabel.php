@@ -1,15 +1,32 @@
 <?php
 
 
-namespace app\models\shop\products\descriptions;
+namespace app\models\shop\products\labels;
 
+
+use vloop\entities\contracts\IField;
 
 class ProductLabel implements IProductLabel
 {
+    private $id;
+
+    public function __construct(IField $id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * в основном используется при сравнении объектов.
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->id->value();
+    }
 
     public function changeDescription()
     {
-        // TODO: Implement changeDescription() method.
+
     }
 
     public function changeTitle()

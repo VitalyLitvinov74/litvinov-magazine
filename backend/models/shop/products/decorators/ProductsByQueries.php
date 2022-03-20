@@ -65,9 +65,9 @@ class ProductsByQueries extends AbstracProducts
      * @param IForm $productForm
      * @return IProduct
      */
-    public function addProduct(IForm $productForm): IProduct
+    public function addProducts(IForm $productForm): IProduct
     {
-        return $this->origin->addProduct($productForm);
+        return $this->origin->addProducts($productForm);
     }
 
     /**

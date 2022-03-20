@@ -15,7 +15,11 @@ interface WeProducts extends PrintYourSelf
      */
     public function list(): array;
 
-    public function addProduct(IForm $productForm): IProduct;
+    /**
+     * @param IForm $productForm
+     * @return WeProducts - вернет новый объект с добавленными продуктами/товарами.
+     */
+    public function addProducts(IForm $productForm): WeProducts;
 
     /**
      * @param IField $id

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace app\models\shop\products\descriptions;
+namespace app\models\shop\products\labels;
 
 
 use vloop\PrintYourSelf\PrintYourSelf;
@@ -13,4 +13,6 @@ interface IProductLabel extends PrintYourSelf
     public function changeTitle();
 
     public function changeShortDescription();
+
+    public function remove(): void ;
 }
