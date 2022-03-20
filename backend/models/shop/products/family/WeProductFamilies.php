@@ -4,18 +4,21 @@
 namespace app\models\shop\products\family;
 
 
-use vloop\entities\contracts\IField;
-use vloop\entities\contracts\IForm;
+use app\models\shop\products\descriptions\IProductLabel;
+use app\models\shop\products\IProduct;
 use vloop\PrintYourSelf\PrintYourSelf;
 
 interface WeProductFamilies extends PrintYourSelf
 {
-    public function add(IForm $form): IProductFamily;
-
-    public function productFamily(IField $field): IProductFamily;
+    /**
+     * @param IProductLabel $productLabel
+     * @param IProduct[]         $products
+     * @return IProductFamily
+     */
+    public function add(IProductLabel $productLabel, array $products): IProductFamily;
 
     /**
-     * @return ProductFamily[]
+     * @return IProductFamily
      */
-    public function list(): array;
+    public function showAll(): IProductFamily;
 }

@@ -4,26 +4,26 @@
 namespace app\models\shop\products;
 
 
+use app\models\shop\products\decorators\AbstracProducts;
 use app\tables\TableProducts;
+use vloop\entities\contracts\IField;
 use vloop\entities\contracts\IForm;
 use vloop\entities\exceptions\NotSavedData;
 use vloop\entities\exceptions\NotValidatedFields;
-use vloop\entities\yii2\criteria\IImprovedQuery;
-use vloop\entities\yii2\criteria\InTable;
+use vloop\entities\fields\Field;
 
-class Products implements WeProducts
+class Products extends AbstracProducts
 {
+    private $products;
+    private $addedProducts = [];
 
-    private $query;
-
-    public function __construct(IImprovedQuery $query = null)
+    /**
+     * Products constructor.
+     * @param IProduct[] $products
+     */
+    public function __construct(array $products = [])
     {
-        if (is_null($query)) {
-            $this->__construct(
-                new InTable(TableProducts::class)
-            );
-        }
-        $this->query = $query;
+        $this->products = $products;
     }
 
     /**
@@ -32,15 +32,17 @@ class Products implements WeProducts
      */
     public function printYourSelf(): array
     {
-        return [];
+       return parent::printYourSelf();
     }
 
     /**
-     * @return IProduct[] //TODO: может быть возвращать семейство продуктов?
+     * @return IProduct[]
      */
     public function list(): array
     {
-        // TODO: Implement list() method.
+        return array_unique(
+            array_merge($this->products, $this->addedProducts)
+        );
     }
 
     /**
@@ -58,8 +60,20 @@ class Products implements WeProducts
             'vendor_code' => $fields['vendorCode']
         ]);
         if($record->save()){
-            return new Product();
+            $product = $this->product(new Field('id', $record->id));
+            $this->addedProducts[] = $product;
+            return $product;
         }
         throw new NotSavedData($record->getErrors(), 422);
+    }
+
+    /**
+     * @param IField $id
+     * @return IProduct - вернет обычный товар, из бд.
+     * если в бд его нет, то вернет ошибку, пр ииспользовании этого товара
+     */
+    public function product(IField $id): IProduct
+    {
+       return new Product($id);
     }
 }
