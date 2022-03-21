@@ -10,6 +10,9 @@ use yii\db\ActiveRecord;
  * Class TableFamilies
  * @package app\tables
  * @property int $id [int(11)] - Кроме первичного ключа больше ничего нет.
+ * @property string $title [varchar(255)]  Наименование товара
+ * @property string $short_desc Краткое описание товара
+ * @property string $desc полное описание товара
  */
 class TableFamilies extends ActiveRecord
 {
