@@ -1,7 +1,7 @@
 <?php
 
 
-namespace app\models\shop\products\family;
+namespace app\models\shop\products\families;
 
 
 use app\models\shop\products\IProduct;

@@ -1,20 +1,23 @@
 <?php
 
 
-namespace app\models\shop\products\family\decorators;
+namespace app\models\shop\products\families;
 
 
-use app\models\shop\products\family\IProductFamily;
-use app\models\shop\products\family\WeProductFamilies;
 use vloop\entities\contracts\IField;
 
-class WeInDB implements WeProductFamilies
+class ProductsFamilies implements WeProductFamilies
 {
-    private $origin;
+    private $families;
+    private $added = [];
 
-    public function __construct(WeProductFamilies $origin)
+    /**
+     * ProductsFamilies constructor.
+     * @param IProductFamily[] $families
+     */
+    public function __construct(array $families = [])
     {
-        $this->origin = $origin;
+        $this->families = $families;
     }
 
     /**
@@ -23,7 +26,7 @@ class WeInDB implements WeProductFamilies
      */
     public function printYourSelf(): array
     {
-        return $this->origin->printYourSelf();
+        return [];
     }
 
     /**
@@ -32,8 +35,7 @@ class WeInDB implements WeProductFamilies
      */
     public function add(IProductFamily $family): WeProductFamilies
     {
-        $this->origin->add($family);
-        return clone $this;
+
     }
 
     /**
@@ -46,10 +48,10 @@ class WeInDB implements WeProductFamilies
 
     /**
      * @param IField $fieldId
-     * @return IProductFamily - вернет семейство продуктов по ид, из бд.
+     * @return IProductFamily - вернет семейство продуктов по ид, из текущей коллекции
      */
     public function productFamily(IField $fieldId): IProductFamily
     {
-        return $this->origin->productFamily($fieldId);
+
     }
 }

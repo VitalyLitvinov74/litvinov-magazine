@@ -1,7 +1,7 @@
 <?php
-namespace app\models\shop\products\family\decorators;
+namespace app\models\shop\products\families\decorators;
 
-use app\models\shop\products\family\IProductFamily;
+use app\models\shop\products\families\IProductFamily;
 use app\models\shop\products\WeProducts;
 
 class WithProducts implements IProductFamily
