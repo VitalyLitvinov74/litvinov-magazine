@@ -6,10 +6,10 @@ namespace app\tables;
 
 use yii\db\ActiveRecord;
 
-class TableFamilyImages extends ActiveRecord
+class TableFamiliesProducts extends ActiveRecord
 {
     public static function tableName()
     {
-        return 'family_images';
+        return "families_products";
     }
 }
