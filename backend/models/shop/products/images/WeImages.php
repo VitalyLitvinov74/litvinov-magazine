@@ -13,7 +13,11 @@ interface WeImages extends PrintYourSelf
 
     public function image(IField $id): IImage;
 
-    public function addImages(IForm $imagesForm);
+    /**
+     * @param IImage[] $images
+     * @return WeImages
+     */
+    public function mergeImages(array $images): WeImages;
 
     /**
      * @return IImage[]
