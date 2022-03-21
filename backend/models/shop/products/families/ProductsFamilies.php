@@ -26,7 +26,11 @@ class ProductsFamilies implements WeProductFamilies
      */
     public function printYourSelf(): array
     {
-        return [];
+        $self = [];
+        foreach ($this->showAll() as $family) {
+            $self[] = $family->printYourSelf();
+        }
+        return $self;
     }
 
     /**
@@ -35,7 +39,8 @@ class ProductsFamilies implements WeProductFamilies
      */
     public function add(IProductFamily $family): WeProductFamilies
     {
-
+        $this->added[] = $family;
+        return $this;
     }
 
     /**
@@ -43,7 +48,10 @@ class ProductsFamilies implements WeProductFamilies
      */
     public function showAll(): array
     {
-        // TODO: Implement showAll() method.
+        return array_merge(
+            $this->families,
+            $this->added
+        );
     }
 
     /**
@@ -52,6 +60,6 @@ class ProductsFamilies implements WeProductFamilies
      */
     public function productFamily(IField $fieldId): IProductFamily
     {
-
+        return new FamilySQLSpeaking($fieldId);
     }
 }

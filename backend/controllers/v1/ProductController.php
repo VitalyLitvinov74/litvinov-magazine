@@ -4,33 +4,11 @@
 namespace app\controllers\v1;
 
 
-use app\models\forms\LabelForm;
-use app\models\forms\ProductFamilyForm;
-use app\models\forms\ProductsForm;
-use app\models\shop\products\decorators\ImproveProducts;
-use app\models\shop\products\decorators\ProductsByForm;
-use app\models\shop\products\decorators\ProductsInDB;
-use app\models\shop\products\decorators\WeByForm;
-use app\models\shop\products\families\decorators\FamiliesWithLabels;
-use app\models\shop\products\families\decorators\FamiliesWithProducts;
-use app\models\shop\products\families\decorators\FamilyWithImages;
-use app\models\shop\products\families\decorators\WeInDB;
-use app\models\shop\products\families\decorators\WithProducts;
-use app\models\shop\products\families\EmptyFamily;
-use app\models\shop\products\families\ProductFamilies;
-use app\models\shop\products\families\ProductFamily;
-use app\models\shop\products\families\ProductsFamilies;
-use app\models\shop\products\images\decorators\ImagesInDB;
-use app\models\shop\products\images\Images;
-use app\models\shop\products\images\ImagesFromForm;
-use app\models\shop\products\labels\ProductLabels;
-use app\models\shop\products\Product;
-use app\models\shop\products\Products;
+use app\models\forms\FamilyForm;
+use app\models\shop\products\families\FamiliesSQLSpeaking;
+use app\models\shop\products\families\ProductFamilyFrom;
 use Exception;
-use Symfony\Component\DomCrawler\Form;
-use vloop\entities\contracts\IField;
 use vloop\entities\exceptions\AbstractException;
-use vloop\entities\fields\Field;
 use Yii;
 use yii\rest\Controller;
 
@@ -51,24 +29,10 @@ class ProductController extends Controller
     public function actionCreate()
     {
         $family =
-            new FamilyWithImages(
-                new WithProducts(
-                    new EmptyFamily(),
-                    new ProductsInDB(
-                        new ProductsByForm(
-                            new ProductsForm()
-                        )
-                    )
-                ),
-                new ImagesInDB(
-                    new ImagesFromForm(
-                        new LabelForm()
-                    )
-                )
+            new ProductFamilyFrom(
+                new FamilyForm()
             );
-        $families = new WeInDB(
-            new ProductsFamilies()
-        );
+        $families = new FamiliesSQLSpeaking();
         $families->add($family);
         return $family->printYourSelf(); //здесь должны быть данные со всем id шками
     }
