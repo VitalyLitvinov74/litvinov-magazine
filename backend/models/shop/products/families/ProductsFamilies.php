@@ -4,9 +4,11 @@
 namespace app\models\shop\products\families;
 
 
+use app\models\shop\products\families\decorators\WeAbstractFamilies;
+use phpDocumentor\Reflection\Types\Parent_;
 use vloop\entities\contracts\IField;
 
-class ProductsFamilies implements WeProductFamilies
+class ProductsFamilies extends WeAbstractFamilies implements WeProductFamilies
 {
     private $families;
     private $added = [];
@@ -60,6 +62,6 @@ class ProductsFamilies implements WeProductFamilies
      */
     public function productFamily(IField $fieldId): IProductFamily
     {
-        return new FamilySQLSpeaking($fieldId);
+        return parent::productFamily($fieldId);
     }
 }

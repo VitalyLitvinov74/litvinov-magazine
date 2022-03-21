@@ -7,14 +7,15 @@ namespace app\models\shop\products\families;
 use app\models\shop\products\families\decorators\WeAbstractFamilies;
 use app\models\shop\products\families\IProductFamily;
 use app\models\shop\products\families\WeProductFamilies;
+use app\models\shop\products\IProduct;
 use app\tables\TableFamilies;
 use vloop\entities\contracts\IField;
 use vloop\entities\exceptions\NotSavedData;
 use vloop\entities\fields\Field;
-use vloop\entities\yii2\criteria\IImprovedQuery;
-use vloop\entities\yii2\criteria\InTable;
+use vloop\entities\yii2\queries\IImprovedQuery;
+use vloop\entities\yii2\queries\InTable;
 
-class FamiliesSQLSpeaking extends WeAbstractFamilies
+class FamiliesSQLSpeaking extends WeAbstractFamilies implements WeProductFamilies
 {
     private $query;
 
@@ -75,8 +76,6 @@ class FamiliesSQLSpeaking extends WeAbstractFamilies
      */
     public function productFamily(IField $fieldId): IProductFamily
     {
-        return new FamilySQLSpeaking(
-            $fieldId
-        );
+        return parent::productFamily($fieldId);
     }
 }

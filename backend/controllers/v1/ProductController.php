@@ -4,11 +4,15 @@
 namespace app\controllers\v1;
 
 
+use app\models\fields\FieldLastId;
 use app\models\forms\FamilyForm;
 use app\models\shop\products\families\FamiliesSQLSpeaking;
 use app\models\shop\products\families\ProductFamilyFrom;
+use app\tables\TableFamilies;
 use Exception;
 use vloop\entities\exceptions\AbstractException;
+use vloop\entities\fields\Field;
+use vloop\entities\yii2\queries\InTable;
 use Yii;
 use yii\rest\Controller;
 
@@ -33,8 +37,15 @@ class ProductController extends Controller
                 new FamilyForm()
             );
         $families = new FamiliesSQLSpeaking();
-        $families->add($family);
-        return $family->printYourSelf(); //здесь должны быть данные со всем id шками
+        return $families
+            ->add($family)
+            ->productFamily(
+                new FieldLastId(
+                    new InTable(TableFamilies::class),
+                    'продукта'
+                )
+            )
+            ->printYourSelf();
     }
 
     public function actionList()
