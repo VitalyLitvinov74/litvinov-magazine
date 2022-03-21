@@ -1,24 +1,21 @@
 <?php
 
 
-namespace app\models\shop\products\images;
+namespace app\models\shop\products\family;
 
 
-use app\tables\TableImages;
-use vloop\entities\contracts\IField;
-
-class Image implements IImage
+class EmptyFamily implements IProductFamily
 {
-    private $id;
-
-    public function __construct(IFIeld $id)
+    public function __construct()
     {
-        $this->id = $id;
     }
 
+    /**
+     * Удалит семейство продуктов из системы.
+     */
     public function remove(): void
     {
-        TableImages::deleteAll(['id'=>$this->id]);
+
     }
 
     /**

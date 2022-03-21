@@ -1,15 +1,18 @@
 <?php
 
 
-namespace app\models\shop\products;
+namespace app\models\shop\products\decorators;
 
 
+use app\models\shop\products\IProduct;
+use app\models\shop\products\WeProducts;
 use vloop\entities\contracts\IField;
-use vloop\entities\contracts\IForm;
 
-class Products implements WeProducts
+class ProductsInDB implements WeProducts
 {
-
+    public function __construct(WeProducts $origin)
+    {
+    }
 
     /**
      * @return array - printing self as array, for frontend.
@@ -29,12 +32,12 @@ class Products implements WeProducts
     }
 
     /**
-     * @param IForm $productForm
+     * @param IProduct[] $products
      * @return WeProducts - вернет новый объект с добавленными продуктами/товарами.
      */
-    public function addProducts(IForm $productForm): WeProducts
+    public function mergeProducts(array $products): WeProducts
     {
-        // TODO: Implement addProducts() method.
+        //Здесь Сейвит продукты
     }
 
     /**

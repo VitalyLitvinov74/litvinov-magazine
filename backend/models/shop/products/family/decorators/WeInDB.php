@@ -6,20 +6,15 @@ namespace app\models\shop\products\family\decorators;
 
 use app\models\shop\products\family\IProductFamily;
 use app\models\shop\products\family\WeProductFamilies;
-use app\models\shop\products\images\WeImages;
-use app\models\shop\products\labels\IProductLabel;
-use app\models\shop\products\WeProducts;
 use vloop\entities\contracts\IField;
 
-class FamiliesWithImages implements WeProductFamilies
+class WeInDB implements WeProductFamilies
 {
     private $origin;
-    private $images;
 
-    public function __construct(WeProductFamilies $origin, WeImages $images)
+    public function __construct(WeProductFamilies $origin)
     {
         $this->origin = $origin;
-        $this->images = $images;
     }
 
     /**
@@ -28,15 +23,17 @@ class FamiliesWithImages implements WeProductFamilies
      */
     public function printYourSelf(): array
     {
-        return  $this->origin->printYourSelf();
+        return $this->origin->printYourSelf();
     }
 
     /**
-     * @return IProductFamily //TODO: подтрерждается предположение что эта сущность должна существовать отдельно.
+     * @param IProductFamily $family
+     * @return WeProductFamilies
      */
-    public function add(): IProductFamily
+    public function add(IProductFamily $family): WeProductFamilies
     {
-        $this->origin->add();
+        $this->origin->add($family);
+        return clone $this;
     }
 
     /**
@@ -44,7 +41,7 @@ class FamiliesWithImages implements WeProductFamilies
      */
     public function showAll(): array
     {
-        return $this->origin->showAll();
+        // TODO: Implement showAll() method.
     }
 
     /**
@@ -53,8 +50,6 @@ class FamiliesWithImages implements WeProductFamilies
      */
     public function productFamily(IField $fieldId): IProductFamily
     {
-        return new FamilyWithImages(
-            $this->origin->productFamily($fieldId)
-        );
+        return $this->origin->productFamily($fieldId);
     }
 }

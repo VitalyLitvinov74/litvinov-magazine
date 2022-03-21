@@ -13,9 +13,10 @@ use vloop\PrintYourSelf\PrintYourSelf;
 interface WeProductFamilies extends PrintYourSelf
 {
     /**
-     * @return IProductFamily
+     * @param IProductFamily $family
+     * @return WeProductFamilies
      */
-    public function add(): IProductFamily;
+    public function add(IProductFamily $family): WeProductFamilies;
 
     /**
      * @return IProductFamily[]

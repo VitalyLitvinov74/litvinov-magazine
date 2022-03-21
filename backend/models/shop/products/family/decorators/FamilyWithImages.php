@@ -5,14 +5,17 @@ namespace app\models\shop\products\family\decorators;
 
 
 use app\models\shop\products\family\IProductFamily;
+use app\models\shop\products\images\WeImages;
 
 class FamilyWithImages implements IProductFamily
 {
-    private $origin;
+    private $images;
+    private $family;
 
-    public function __construct(IProductFamily $origin)
+    public function __construct(IProductFamily $family, WeImages $images)
     {
-        $this->origin = $origin;
+        $this->family = $family;
+        $this->images = $images;
     }
 
     /**
@@ -20,7 +23,10 @@ class FamilyWithImages implements IProductFamily
      */
     public function remove(): void
     {
-        // TODO: Implement remove() method.
+        $this->family->remove();
+        foreach ($this->images->list() as $image) {
+            $image->remove();
+        }
     }
 
     /**
@@ -29,6 +35,9 @@ class FamilyWithImages implements IProductFamily
      */
     public function printYourSelf(): array
     {
-        // TODO: Implement printYourSelf() method.
+        return array_merge(
+            $this->family->printYourSelf(),
+            ['images' => $this->images->printYourSelf()]
+        );
     }
 }

@@ -7,8 +7,16 @@ namespace app\models\shop\products\images;
 use vloop\entities\contracts\IField;
 use vloop\entities\contracts\IForm;
 
-class Images implements WeImages
+class ImagesFromForm implements WeImages
 {
+
+    /**
+     * ImagesFromForm constructor.
+     * @param IForm $imagesForm
+     */
+    public function __construct(IForm $imagesForm)
+    {
+    }
 
     /**
      * @return array - printing self as array, for frontend.
@@ -24,7 +32,11 @@ class Images implements WeImages
         // TODO: Implement image() method.
     }
 
-    public function mergeImages(IForm $imagesForm)
+    /**
+     * @param IImage[] $images
+     * @return WeImages
+     */
+    public function mergeImages(array $images): WeImages
     {
         // TODO: Implement addImages() method.
     }
