@@ -1,36 +1,24 @@
 <?php
 
 
-namespace app\models\shop\products\family;
+namespace app\models\shop\products\family\decorators;
 
 
-use app\models\shop\products\IProduct;
+use app\models\shop\products\family\IProductFamily;
+use app\models\shop\products\family\WeProductFamilies;
 use app\models\shop\products\labels\IProductLabel;
 use app\models\shop\products\WeProducts;
-use app\tables\TableProductsFamilies;
 use vloop\entities\contracts\IField;
 
-class ProductFamilies implements WeProductFamilies
+class FamiliesWithProducts implements WeProductFamilies
 {
-    private $added = [];
-    private $families;
+    private $origin;
+    private $products;
 
-    /**
-     * ProductFamilies constructor.
-     * @param IProductFamily[] $productFamilies
-     */
-    public function __construct(array $productFamilies = [])
+    public function __construct(WeProductFamilies $origin, WeProducts $products)
     {
-        $this->families = $productFamilies;
-    }
-
-    /**
-     * @param IProductFamily[] $productFamilies
-     * @return ProductFamilies
-     */
-    public static function init(array $productFamilies = [])
-    {
-        return new self($productFamilies);
+        $this->origin = $origin;
+        $this->products = $products;
     }
 
     /**
@@ -39,7 +27,7 @@ class ProductFamilies implements WeProductFamilies
      */
     public function printYourSelf(): array
     {
-
+        // TODO: Implement printYourSelf() method.
     }
 
     /**
@@ -47,9 +35,9 @@ class ProductFamilies implements WeProductFamilies
      * @param WeProducts    $products
      * @return IProductFamily
      */
-    public function add(): IProductFamily
+    public function add(IProductLabel $productLabel, WeProducts $products): IProductFamily
     {
-        
+        // TODO: Implement add() method.
     }
 
     /**
@@ -57,7 +45,7 @@ class ProductFamilies implements WeProductFamilies
      */
     public function showAll(): array
     {
-        return array_merge($this->families, $this->added);
+        // TODO: Implement showAll() method.
     }
 
     /**
@@ -66,6 +54,6 @@ class ProductFamilies implements WeProductFamilies
      */
     public function productFamily(IField $fieldId): IProductFamily
     {
-
+        // TODO: Implement productFamily() method.
     }
 }

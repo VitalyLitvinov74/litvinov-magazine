@@ -48,7 +48,7 @@ class ProductLabels implements WeProductLabels
      * @throws NotValidatedFields
      * @throws NotSavedData
      */
-    public function add(IForm $productLabelForm): IProductLabel
+    public function addLabel(IForm $productLabelForm): IProductLabel
     {
         $fields = $productLabelForm->validatedFields();
         $record = new TableProductLabels([

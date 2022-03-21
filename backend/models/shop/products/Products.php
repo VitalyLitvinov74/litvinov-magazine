@@ -57,9 +57,9 @@ class Products extends AbstracProducts
         $products = $fields['products'];
         foreach ($products as $product){
             $record = new TableProducts([
-                'count' => $fields['count'],
-                'price' => $fields['price'] * 100,
-                'vendor_code' => $fields['vendorCode']
+                'count' => $product['count'],
+                'price' => $product['price'] * 100,
+                'vendor_code' => $product['vendorCode']
             ]);
             if($record->save()){
                 $product = $this->product(new Field('id', $record->id));

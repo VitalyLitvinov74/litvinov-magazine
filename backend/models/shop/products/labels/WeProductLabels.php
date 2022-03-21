@@ -10,7 +10,7 @@ use vloop\PrintYourSelf\PrintYourSelf;
 
 interface WeProductLabels extends PrintYourSelf
 {
-    public function add(IForm $productLabelForm): IProductLabel;
+    public function addLabel(IForm $productLabelForm): IProductLabel;
 
     /**
      * @return IProductLabel[] - вернет описания продуктов
