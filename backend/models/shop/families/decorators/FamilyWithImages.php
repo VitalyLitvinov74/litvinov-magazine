@@ -16,7 +16,7 @@ use vloop\entities\exceptions\NotSavedData;
 use vloop\entities\fields\Field;
 use yii\web\UploadedFile;
 
-class WithImages implements IFamily, WeImages
+class FamilyWithImages implements IFamily, WeImages
 {
     private $origin;
 

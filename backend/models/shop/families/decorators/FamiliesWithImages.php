@@ -38,7 +38,7 @@ class FamiliesWithImages implements WeFamilies
      */
     public function addFamily(IForm $form): WeFamilies
     {
-        $family = new WithImages(
+        $family = new FamilyWithImages(
             $this->origin
                 ->addFamily($form)
                 ->lastAdded()

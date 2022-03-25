@@ -12,14 +12,15 @@ use app\models\shop\families\decorators\CachedFamily;
 use app\models\shop\families\decorators\FamiliesWithImages;
 use app\models\shop\families\decorators\test\CachedFamilies;
 use app\models\shop\families\decorators\test\InOneRequest;
-use app\models\shop\families\decorators\WithImages;
+use app\models\shop\families\decorators\FamilyWithImages;
 use app\models\shop\families\decorators\WithOneRequestForFamilies;
 use app\models\shop\families\decorators\WithOneRequestForFamily;
 use app\models\shop\families\FamiliesSQL;
 use app\models\shop\families\FamilyByForm;
 use app\models\shop\families\FamilySQL;
 use app\models\shop\images\decorators\CachedImage;
-use app\models\shop\images\decorators\CachedImages;
+use app\models\shop\images\decorators\WithCachedImages;
+use app\models\shop\images\Image;
 use app\models\shop\images\ImagesByForm;
 use app\tables\TableFamilies;
 use app\tables\TableFamiliesImages;
@@ -65,15 +66,15 @@ class ProductController extends Controller
 
     public function addImage()
     {
-        $query = new InTable(TableFamilies::class); // допусти тут много джоинов и пр. радостей.
-        $family = new WithImages(
-            new FamilySQL(
-                new FieldOfForm(
-                    new IdForm(),
-                    'id'
+        $family =
+            new FamilyWithImages(
+                new FamilySQL(
+                    new FieldOfForm(
+                        new IdForm(),
+                        'id'
+                    )
                 )
-            )
-        );
+            );
         $family
             ->addImages(
                 new ImagesForm(
@@ -81,48 +82,11 @@ class ProductController extends Controller
                 )
             )
             ->printYourSelf();
-
-        $request = new WithOneRequestForFamily(
-            function ($record) use ($family) {
-                return
-                    new CachedImages(
-                        $family,
-                        $record->images
-                    );
-            }
-        );
-
     }
 
     public function actionShowAll()
     {
-        $families = new WithOneRequestForFamilies(
-            new InTable(TableFamilies::class),
-            function ($record) { //указываю как создавать один объект.
-                return
-                    new CachedImages(
-                        new WithImages(
-                            new CachedFamily(
-                                new FamilySQL($record->id),
-                                $record
-                            )
-                        ),
-                        $record->images
-                    );
-            }
-        );
-        $families->printYourSelf();
-    }
 
-    public function test2()
-    {
-        new InOneRequest(
-            new CachedFamilies(
-                new FamiliesWithImages(
-                    new FamiliesSQL()
-                )
-            )
-        );
     }
 
     public function actionById(int $id)
