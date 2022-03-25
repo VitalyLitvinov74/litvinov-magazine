@@ -1,14 +1,18 @@
 <?php
 
 
-namespace app\models\shop\products\images;
+namespace app\models\shop\images\decorators;
 
 
-use vloop\entities\contracts\IField;
+use app\models\shop\images\contracts\IImage;
+use app\models\shop\images\contracts\WeImages;
 use vloop\entities\contracts\IForm;
 
-class Images implements WeImages
+class CachedImages implements WeImages
 {
+    public function __construct(WeImages $images, array $records)
+    {
+    }
 
     /**
      * @return array - printing self as array, for frontend.
@@ -19,12 +23,7 @@ class Images implements WeImages
         // TODO: Implement printYourSelf() method.
     }
 
-    public function image(IField $id): IImage
-    {
-        // TODO: Implement image() method.
-    }
-
-    public function mergeImages(IForm $imagesForm)
+    public function addImages(IForm $imagesForm): WeImages
     {
         // TODO: Implement addImages() method.
     }
@@ -32,8 +31,8 @@ class Images implements WeImages
     /**
      * @return IImage[]
      */
-    public function list(): array
+    public function imagesList(): array
     {
-        // TODO: Implement list() method.
+        // TODO: Implement imagesList() method.
     }
 }

@@ -20,4 +20,11 @@ class TableFamilies extends ActiveRecord
     {
         return 'families';
     }
+
+    public function rules()
+    {
+        return [
+            ['id', 'exist', 'message' => "Не удалось найти семейство товаров с ид = " . $this->id]
+        ];
+    }
 }

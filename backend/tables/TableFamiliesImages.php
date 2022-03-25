@@ -9,13 +9,13 @@ use yii\db\ActiveRecord;
 /**
  * Class TableFamiliesImages
  * @package app\tables
- * @property int $products_family_id [int(11)]  это label_id из таблицы product_labels
- * @property int $image_id           [int(11)]  id из таблицы images
+ * @property int $id                 [int(11)]
+ * @property string $path            [varchar(255)]  Относительный путь до изображения
  */
 class TableFamiliesImages extends ActiveRecord
 {
     public static function tableName()
     {
-        return 'families_images';
+        return 'images';
     }
 }
