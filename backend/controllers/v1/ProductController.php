@@ -8,6 +8,8 @@ use app\models\fields\FieldLastId;
 use app\models\forms\EmptyForm;
 use app\models\forms\FamilyForm;
 use app\models\forms\ImagesForm;
+use app\models\queries\ram\CachedRelation;
+use app\models\queries\ram\CacheOne;
 use app\models\shop\families\decorators\CachedFamily;
 use app\models\shop\families\decorators\FamiliesWithImages;
 use app\models\shop\families\decorators\test\CachedFamilies;
@@ -19,6 +21,7 @@ use app\models\shop\families\FamiliesSQL;
 use app\models\shop\families\FamilyByForm;
 use app\models\shop\families\FamilySQL;
 use app\models\shop\images\decorators\CachedImage;
+use app\models\shop\images\decorators\CachedImages;
 use app\models\shop\images\decorators\WithCachedImages;
 use app\models\shop\images\Image;
 use app\models\shop\images\ImagesByForm;
@@ -66,13 +69,25 @@ class ProductController extends Controller
 
     public function addImage()
     {
+        $condition = new InTable(TableFamilies::class);
         $family =
-            new FamilyWithImages(
-                new FamilySQL(
-                    new FieldOfForm(
-                        new IdForm(),
-                        'id'
+            new CachedImages(
+                new FamilyWithImages(
+                    new CachedFamily(
+                        new FamilySQL(
+                            new FieldOfForm(
+                                new IdForm(),
+                                'id'
+                            )
+                        ),
+                        $cache = new CacheOne(
+                            $condition
+                        )
                     )
+                ),
+                new CachedRelation(
+                    $cache,
+                    'images'
                 )
             );
         $family
