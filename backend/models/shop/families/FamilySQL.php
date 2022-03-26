@@ -26,7 +26,6 @@ class FamilySQL extends AbstractFamily implements IFamily
     public function remove(): void
     {
         TableFamilies::deleteAll(['id' => $this->id->value()]);
-        $this->__destruct();
     }
 
     /**
@@ -59,10 +58,5 @@ class FamilySQL extends AbstractFamily implements IFamily
             'id' => $this->id->value(),
             'isNewRecord' => false
         ]);
-    }
-
-    private function __destruct()
-    {
-
     }
 }

@@ -11,26 +11,21 @@ use app\models\forms\ImagesForm;
 use app\models\queries\ram\CachedRelation;
 use app\models\queries\ram\CacheOne;
 use app\models\shop\families\decorators\CachedFamily;
-use app\models\shop\families\decorators\FamiliesWithImages;
-use app\models\shop\families\decorators\test\CachedFamilies;
-use app\models\shop\families\decorators\test\InOneRequest;
+use app\models\shop\families\decorators\families\WithProdcuts;
 use app\models\shop\families\decorators\FamilyWithImages;
-use app\models\shop\families\decorators\WithOneRequestForFamilies;
-use app\models\shop\families\decorators\WithOneRequestForFamily;
 use app\models\shop\families\FamiliesSQL;
 use app\models\shop\families\FamilyByForm;
 use app\models\shop\families\FamilySQL;
 use app\models\shop\images\decorators\CachedImage;
 use app\models\shop\images\decorators\CachedImages;
-use app\models\shop\images\decorators\WithCachedImages;
 use app\models\shop\images\Image;
-use app\models\shop\images\ImagesByForm;
 use app\tables\TableFamilies;
 use app\tables\TableFamiliesImages;
 use Exception;
 use vloop\entities\exceptions\AbstractException;
 use vloop\entities\fields\Field;
 use vloop\entities\fields\FieldOfForm;
+use vloop\entities\standarts\json\JsonStandart;
 use vloop\entities\yii2\forms\IdForm;
 use vloop\entities\yii2\queries\InTable;
 use Yii;
@@ -53,18 +48,19 @@ class ProductController extends Controller
 
     public function actionCreate()
     {
-        $families =
-            new FamiliesWithImages(
-                new FamiliesSQL()
-            );
-        return $families
-            ->addFamily(
-                new ImagesForm(
+        $families = new WithProdcuts(
+            new FamiliesSQL()
+        );
+        $json = new JsonStandart(
+            $families
+                ->addFamily(
                     new FamilyForm()
                 )
-            )
-            ->lastAdded()
-            ->printYourSelf();
+                ->lastAdded(),
+            'Family',
+            false
+        );
+        return $json->printYourSelf();
     }
 
     public function addImage()

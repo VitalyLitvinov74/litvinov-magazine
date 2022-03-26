@@ -14,6 +14,7 @@ abstract class AbstractFamily implements IFamily
     public function printYourSelf(): array
     {
         $record = $this->record();
+        $record->refresh();
         return [
             'id' => $record->id,
             'title' => $record->title,
