@@ -28,4 +28,12 @@ class CacheOne implements ICache
         $this->_cached = $this->query->queryOfSearch()->one();
         return $this->_cached;
     }
+
+    /**
+     * Очищает кеш.
+     */
+    public function clean(): void
+    {
+        $this->_cached = false;
+    }
 }

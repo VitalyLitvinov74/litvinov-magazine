@@ -30,4 +30,12 @@ class CachedRelation implements ICache
         $this->_cached = $this->mainCache->value()->$relationName;
         return $this->_cached;
     }
+
+    /**
+     * Очищает кеш.
+     */
+    public function clean(): void
+    {
+        $this->_cached = false;
+    }
 }

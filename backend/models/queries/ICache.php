@@ -12,4 +12,9 @@ interface ICache
      * @return mixed - возвращает результат кеширования в ОП.
      */
     public function value();
+
+    /**
+     * Очищает кеш.
+     */
+    public function clean(): void;
 }

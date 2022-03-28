@@ -30,4 +30,13 @@ class CacheAll implements ICache
         $this->_cached = $query->all();
         return $this->_cached;
     }
+
+
+    /**
+     * Очищает кеш.
+     */
+    public function clean(): void
+    {
+        $this->_cached = false;
+    }
 }
