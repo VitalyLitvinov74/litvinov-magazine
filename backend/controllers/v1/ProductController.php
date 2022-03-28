@@ -10,15 +10,12 @@ use app\models\forms\FamilyForm;
 use app\models\forms\ImagesForm;
 use app\models\queries\ram\CachedRelation;
 use app\models\queries\ram\CacheOne;
-use app\models\shop\families\decorators\CachedFamily;
-use app\models\shop\families\decorators\families\WithProdcuts;
 use app\models\shop\families\decorators\FamilyWithImages;
-use app\models\shop\families\FamiliesSQL;
-use app\models\shop\families\FamilyByForm;
-use app\models\shop\families\FamilySQL;
 use app\models\shop\images\decorators\CachedImage;
 use app\models\shop\images\decorators\CachedImages;
 use app\models\shop\images\Image;
+use app\models\shop\images\ImagesByForm;
+use app\models\shop\images\ImagesSQL;
 use app\tables\TableFamilies;
 use app\tables\TableFamiliesImages;
 use Exception;
@@ -123,5 +120,33 @@ class ProductController extends Controller
     public function actionChangeImages()
     {
 
+    }
+
+    public function actionTest()
+    {
+        $families = new \app\models\shop\families2\FamiliesSQL();
+        $families->addFamily(
+            new FamilyWithImages2(
+                new FamylyByPost(
+                    new FamilyForm()
+                ),
+                new ImagesByForm(
+                    new ImagesForm(
+                        new EmptyForm()
+                    )
+                )
+            )
+        );
+
+        $family =
+        $images = new CachedImages(
+            new ImagesSQL(),
+            new CachedRelation(
+                $cache,
+                'images'
+            )
+        );
+        $images->addImages();
+        return $family->printYourSelf();
     }
 }

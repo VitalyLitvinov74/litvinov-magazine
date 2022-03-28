@@ -4,19 +4,18 @@
 namespace app\models\shop\families\contracts;
 
 
-use vloop\entities\contracts\IForm;
 use vloop\PrintYourSelf\PrintYourSelf;
 
 interface WeFamilies extends PrintYourSelf
 {
     /**
+     * @param IFamily $family
+     * @return WeFamilies - возвращает семейство продуктов с новым добавленным семейством
+     */
+    public function addFamily(IFamily $family): WeFamilies;
+
+    /**
      * @return IFamily[]
      */
-    public function list(): array;
-
-    public function addFamily(IForm $form): WeFamilies;
-
-    public function lastAdded(): IFamily;
-
-    public function printYourSelf(): array;
+    public function list():array;
 }

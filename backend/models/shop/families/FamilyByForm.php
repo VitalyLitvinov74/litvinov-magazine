@@ -1,21 +1,18 @@
 <?php
 
 
-namespace app\models\shop\families\decorators;
+namespace app\models\shop\families;
 
 
 use app\models\shop\families\contracts\IFamily;
-use app\models\shop\images\contracts\WeImages;
 use vloop\entities\contracts\IForm;
 
-class FamilyWithImages implements IFamily
+class FamilyByForm implements IFamily
 {
-
-    public function __construct(IFamily $origin, WeImages $images)
+    public function __construct(IForm $form)
     {
-
+        
     }
-
 
     public function remove(): void
     {
