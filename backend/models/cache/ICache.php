@@ -1,7 +1,7 @@
 <?php
 
 
-namespace app\models\queries;
+namespace app\models\cache;
 
 
 use yii\db\ActiveRecord;

@@ -8,14 +8,15 @@ use app\models\fields\FieldLastId;
 use app\models\forms\EmptyForm;
 use app\models\forms\FamilyForm;
 use app\models\forms\ImagesForm;
-use app\models\queries\ram\CachedRelation;
-use app\models\queries\ram\CacheOne;
+use app\models\cache\ram\CachedRelation;
+use app\models\cache\ram\CacheOne;
 use app\models\shop\families\decorators\FamilyWithImages;
 use app\models\shop\images\decorators\CachedImage;
 use app\models\shop\images\decorators\CachedImages;
 use app\models\shop\images\Image;
 use app\models\shop\images\ImagesByForm;
 use app\models\shop\images\ImagesSQL;
+use app\models\shop\product\ProductCardCollection;
 use app\tables\TableFamilies;
 use app\tables\TableFamiliesImages;
 use Exception;
@@ -45,51 +46,14 @@ class ProductController extends Controller
 
     public function actionCreate()
     {
-        $families = new WithProdcuts(
-            new FamiliesSQL()
+        $cards = new ProductCardCollection();
+        $cards->addProductCard(
+            new FamilyForm()
         );
-        $json = new JsonStandart(
-            $families
-                ->addFamily(
-                    new FamilyForm()
-                )
-                ->lastAdded(),
-            'Family',
-            false
-        );
-        return $json->printYourSelf();
     }
 
     public function addImage()
     {
-        $condition = new InTable(TableFamilies::class);
-        $family =
-            new CachedImages(
-                new FamilyWithImages(
-                    new CachedFamily(
-                        new FamilySQL(
-                            new FieldOfForm(
-                                new IdForm(),
-                                'id'
-                            )
-                        ),
-                        $cache = new CacheOne(
-                            $condition
-                        )
-                    )
-                ),
-                new CachedRelation(
-                    $cache,
-                    'images'
-                )
-            );
-        $family
-            ->addImages(
-                new ImagesForm(
-                    new EmptyForm()
-                )
-            )
-            ->printYourSelf();
     }
 
     public function actionShowAll()
@@ -124,29 +88,6 @@ class ProductController extends Controller
 
     public function actionTest()
     {
-        $families = new \app\models\shop\families2\FamiliesSQL();
-        $families->addFamily(
-            new FamilyWithImages2(
-                new FamylyByPost(
-                    new FamilyForm()
-                ),
-                new ImagesByForm(
-                    new ImagesForm(
-                        new EmptyForm()
-                    )
-                )
-            )
-        );
 
-        $family =
-        $images = new CachedImages(
-            new ImagesSQL(),
-            new CachedRelation(
-                $cache,
-                'images'
-            )
-        );
-        $images->addImages();
-        return $family->printYourSelf();
     }
 }

@@ -1,15 +1,14 @@
 <?php
 
 
-namespace app\models\queries\ram;
+namespace app\models\cache\ram;
 
 
-use app\models\queries\ICache;
+use app\models\cache\ICache;
 use vloop\entities\yii2\queries\IImprovedQuery;
 
-class CacheAll implements ICache
+class CacheOne implements ICache
 {
-
     private $query;
     private $_cached = false;
 
@@ -19,18 +18,16 @@ class CacheAll implements ICache
     }
 
     /**
-     * @inheritDoc
+     * @return mixed - возвращает результат кеширования в ОП.
      */
     public function value()
     {
-        if($this->_cached !== false){
+        if ($this->_cached !== false){
             return $this->_cached;
         }
-        $query = clone $this->query->queryOfSearch();
-        $this->_cached = $query->all();
+        $this->_cached = $this->query->queryOfSearch()->one();
         return $this->_cached;
     }
-
 
     /**
      * Очищает кеш.

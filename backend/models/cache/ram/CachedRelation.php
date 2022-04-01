@@ -1,10 +1,10 @@
 <?php
 
 
-namespace app\models\queries\ram;
+namespace app\models\cache\ram;
 
 
-use app\models\queries\ICache;
+use app\models\cache\ICache;
 
 class CachedRelation implements ICache
 {
