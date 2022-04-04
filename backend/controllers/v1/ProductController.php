@@ -10,6 +10,9 @@ use app\models\forms\FamilyForm;
 use app\models\forms\ImagesForm;
 use app\models\cache\ram\CachedRelation;
 use app\models\cache\ram\CacheOne;
+use app\models\shop\catalog\images\decorators\PrintedWithImages;
+use app\models\shop\catalog\products\images\ProductImages;
+use app\models\shop\catalog\products\ProductCard;
 use app\models\shop\families\decorators\FamilyWithImages;
 use app\models\shop\images\decorators\CachedImage;
 use app\models\shop\images\decorators\CachedImages;
@@ -46,10 +49,7 @@ class ProductController extends Controller
 
     public function actionCreate()
     {
-        $cards = new ProductCardCollection();
-        $cards->addProductCard(
-            new FamilyForm()
-        );
+
     }
 
     public function addImage()
@@ -63,7 +63,14 @@ class ProductController extends Controller
 
     public function actionById(int $id)
     {
-
+        $productCard =
+            new PrintedWithImages(
+                new ProductCard(
+                    $productId = new Field('id', $id)
+                ),
+                new ProductImages($productId)
+            );
+        $productCard->printYourSelf();
     }
 
     public function actionList()
