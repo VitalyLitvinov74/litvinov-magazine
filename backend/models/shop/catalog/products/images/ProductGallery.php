@@ -5,9 +5,10 @@ namespace app\models\shop\catalog\products\images;
 
 
 use app\models\shop\catalog\products\images\contracts\IProductImages;
+use app\models\shop\images\contracts\IGallery;
 use app\models\shop\images\contracts\IImage;
+use app\models\shop\images\Gallery;
 use app\models\shop\images\Image;
-use app\tables\TableImages;
 use app\tables\TableProductCards;
 use app\tables\TableProductImages;
 use vloop\entities\contracts\IField;
@@ -18,7 +19,7 @@ use vloop\entities\fields\Field;
 use yii\base\InvalidConfigException;
 use yii\web\UploadedFile;
 
-class ProductImages implements IProductImages
+class ProductGallery implements IGallery
 {
     private $productId;
 
@@ -27,9 +28,9 @@ class ProductImages implements IProductImages
         $this->productId = $productId;
     }
 
+
     /**
      * @return IImage[]
-     * @throws InvalidConfigException
      */
     public function list(): array
     {
@@ -40,10 +41,6 @@ class ProductImages implements IProductImages
         return $list;
     }
 
-    /**
-     * @return array
-     * @throws InvalidConfigException
-     */
     public function printYourSelf(): array
     {
         $self = [];
@@ -55,53 +52,54 @@ class ProductImages implements IProductImages
 
     /**
      * @param IForm $imagesForm
-     * @return IProductImages
+     * @return IImage[]
      * @throws NotSavedData
-     * @throws NotValidatedFields
      */
-    public function addImages(IForm $imagesForm): IProductImages
+    public function addImages(IForm $imagesForm): array
     {
-        $fields = $imagesForm->validatedFields();
-        foreach ($fields['images'] as $image) {
-            /**@var UploadedFile $image */
-            if (!$image->saveAs('')) {
-                throw new NotSavedData([], 422);
-            }
-            $record = new TableImages([
-                'path' => ''
+        $added = [];
+        $savedImages = $this->gallery()->addImages($imagesForm); //сохераняем на диск
+        foreach ($savedImages as $image) {
+            $record = new TableProductImages([
+                'path' => $image->printYourSelf()['path'],
+                'product_id' => $this->productId->value()
             ]);
-            if (!$record->save()) {
+            if ($record->save()) {
+                $added[] = $this->image($record->id);
+            } else {
                 throw new NotSavedData($record->getErrors(), 422);
             }
-            $record->refresh();
-            $viaRecord = new TableProductImages([
-                'product_id' => $this->productId->value(),
-                'image_id' => $record->id
-            ]);
-            if (!$viaRecord->save()) {
-                throw new NotSavedData($viaRecord->getErrors(), 422);
-            }
         }
-        return new self($this->productId);
+        return $added;
+    }
+
+    private function gallery(): IGallery
+    {
+        return new Gallery(
+            new Field('path', '@productImages/' . $this->productId->value())
+        );
     }
 
     /**
-     * @return TableImages[]
-     * @throws InvalidConfigException
+     * @return TableProductImages[]
      */
     private function records(): array
     {
-        $record = new TableProductCards([
-            'id' => $this->productId->value(),
-            'isNewRecord' => false
-        ]);
-        return $record->getImages();
+        return TableProductImages::find()
+            ->where([
+                'product_id' => $this->productId->value()
+            ])
+            ->all();
     }
 
-    private function image(int $id): IImage
+    /**
+     * @param int $imageId
+     * @return IImage|ProductImage
+     */
+    private function image(int $imageId): IImage
     {
-        return new Image(
-            new Field('id', $id)
+        return new ProductImage(
+            new Field('id', $imageId)
         );
     }
 }

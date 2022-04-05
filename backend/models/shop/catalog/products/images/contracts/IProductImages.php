@@ -12,7 +12,7 @@ interface IProductImages extends IGallery
 {
     /**
      * @param IForm $imagesForm
-     * @return IProductImages - Новый объект галереи, с добавленными изображениями.
+     * @return IGallery|IProductImages - Новый объект галереи, с добавленными изображениями.
      */
-    public function addImages(IForm $imagesForm): IProductImages;
+    public function addImages(IForm $imagesForm): IGallery;
 }

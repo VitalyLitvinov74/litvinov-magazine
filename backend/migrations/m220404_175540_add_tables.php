@@ -21,16 +21,11 @@ class m220404_175540_add_tables extends Migration
             'short_description' => $this->text()
                 ->comment('Краткое описание товара'),
         ]);
-
-        $this->createTable('images', [
+        $this->createTable('product_images', [
             'id' => $this->primaryKey(),
+            'product_id' => $this->integer()->notNull()->comment('это id из таблицы product_cards'),
             'path' => $this->string()
                 ->comment('Путь картинки, относительно корня домена api')
-        ]);
-
-        $this->createTable('product_images', [
-            'product_id' => $this->integer()->notNull(),
-            'image_id' => $this->integer()->notNull()
         ]);
     }
 
@@ -40,7 +35,6 @@ class m220404_175540_add_tables extends Migration
     public function safeDown()
     {
         $this->dropTable('product_cards');
-        $this->dropTable('images');
         $this->dropTable('product_images');
     }
 
