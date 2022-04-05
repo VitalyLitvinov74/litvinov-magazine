@@ -4,12 +4,16 @@
 namespace app\controllers\v1;
 
 
+use app\models\chains\ChainInTransaction;
+use app\models\chains\ChainOfResponsibility;
+use app\models\chains\DynamicElement;
 use app\models\shop\catalog\images\decorators\PrintedWithImages;
 use app\models\shop\catalog\products\images\ProductGallery;
 use app\models\shop\catalog\products\ProductCard;
 use Exception;
 use vloop\entities\exceptions\AbstractException;
 use vloop\entities\fields\Field;
+use yii\helpers\VarDumper;
 use yii\rest\Controller;
 
 class ProductController extends Controller
@@ -29,6 +33,24 @@ class ProductController extends Controller
     public function actionCreate()
     {
 
+        $hello = 'hello';
+        $word = 'world';
+        $chain =
+            new ChainInTransaction(
+                new ChainOfResponsibility([
+                    new DynamicElement(
+                        function () use ($hello) {
+                            echo $hello;
+                        }
+                    ),
+                    new DynamicElement(
+                        function () use ($word) {
+                            echo $word;
+                        }
+                    )
+                ])
+            );
+        $chain->begin();
     }
 
     public function addImage()
