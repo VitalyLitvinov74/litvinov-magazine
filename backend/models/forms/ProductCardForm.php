@@ -6,7 +6,7 @@ namespace app\models\forms;
 
 use vloop\entities\yii2\AbstractForm;
 
-class FamilyForm extends AbstractForm
+class ProductCardForm extends AbstractForm
 {
     public $description;
     public $shortDescription;

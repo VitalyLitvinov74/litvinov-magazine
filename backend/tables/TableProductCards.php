@@ -15,7 +15,7 @@ use yii\db\ActiveRecord;
  * @property string $title [varchar(255)]  Наименование товара
  * @property string $description Полное описание товара
  * @property string $short_description Краткое описание товара
- * @property TableImages[] $images
+ * @property TableProductImages[] $images
  */
 class TableProductCards extends ActiveRecord
 {
@@ -25,13 +25,13 @@ class TableProductCards extends ActiveRecord
     }
 
     /**
-     * @return ActiveQuery|TableImages[]
+     * @return ActiveQuery|TableProductImages[]
      * @throws InvalidConfigException
      */
     public function getImages()
     {
         return $this
-            ->hasMany(TableImages::class, ['id' => 'image_id'])
+            ->hasMany(TableProductImages::class, ['id' => 'image_id'])
             ->viaTable('product_images', ['product_id' => 'id']);
     }
 }
