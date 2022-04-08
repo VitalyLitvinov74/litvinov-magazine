@@ -51,11 +51,11 @@ class ProductGallery implements IGallery
     }
 
     /**
-     * @param IForm $imagesForm
-     * @return IImage[]
+     * @param array $images
+     * @return IGallery
      * @throws NotSavedData
      */
-    public function addImages(IForm $imagesForm): array
+    public function addImages(array $images): IGallery
     {
         $added = [];
         $savedImages = $this->gallery()->addImages($imagesForm); //сохераняем на диск

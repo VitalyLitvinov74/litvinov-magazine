@@ -18,8 +18,8 @@ interface IGallery extends PrintYourSelf
     public function printYourSelf(): array;
 
     /**
-     * @param IForm $imagesForm
-     * @return IImage[]
+     * @param IImage[] $images
+     * @return IGallery - вернут новую галерею или себя же.
      */
-    public function addImages(IForm $imagesForm): array ;
+    public function addImages(array $images): IGallery;
 }
