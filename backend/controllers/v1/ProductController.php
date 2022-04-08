@@ -34,41 +34,6 @@ class ProductController extends Controller
 
     public function actionCreate()
     {
-        //Создание.
-        $card =
-            ;
-        $card->printYourSelf();
-        $factory = new ProductCardFactory();
-        $factory->createProductCard( //как буду извлекать данные? через printYourself?
-            new WithInfo(
-                new WithImages(
-                    new ProductCardByPost(
-                        new ProductCardForm()
-                    ),//может имет метод save
-                    new ProductGalleryByPost() //как мержить при printYourSelf?
-                ),
-                new InfoByPost
-            )
-        );
-        //чтение
-        new WithInfo(
-            new WithImages(
-                $product = new ProductCard(
-                    $productId = new Field('id', 444)
-                ),//может имет метод save
-                new ProductGallery($productId) //оставить по дефолту.
-            ),
-            new ProductCardInfo($productId)
-        );
-
-        //обновление
-        $gallery = new ProductGallery(
-            $product
-        );
-        $gallery->addImages(
-            new GalleryByPost()
-        );
-
     }
 
     public function addImage()
