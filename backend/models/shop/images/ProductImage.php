@@ -1,15 +1,17 @@
 <?php
 
 
-namespace app\models\shop\catalog\products\images;
+namespace app\models\shop\images;
 
 
 use app\models\shop\images\contracts\IImage;
 use app\models\shop\images\Image;
 use app\tables\TableProductImages;
 use vloop\entities\contracts\IField;
+use vloop\entities\exceptions\NotFoundEntity;
 use vloop\entities\fields\Field;
 use yii\db\StaleObjectException;
+use yii\helpers\VarDumper;
 
 class ProductImage implements IImage
 {
@@ -50,6 +52,7 @@ class ProductImage implements IImage
     private function imageFile(): IImage
     {
         $imagePath = $this->record(true)->path;
+        VarDumper::dump($this->record(true));
         return new Image(
             new Field(
                 'path',
@@ -65,7 +68,12 @@ class ProductImage implements IImage
             'isNewRecord' => false
         ]);
         if ($needleRefresh) {
-            $record->refresh();
+            $record = TableProductImages::find()
+                ->where(['product_id'=>$this->productId->value()])
+                ->one();
+            if(!$record){
+                throw new NotFoundEntity('Не получилось найти изображение');
+            }
         }
         return $record;
     }

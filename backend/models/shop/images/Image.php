@@ -29,7 +29,10 @@ class Image implements IImage
      */
     public function printYourSelf(): array
     {
-        return pathinfo($this->path->value());
+        return array_merge(
+            pathinfo($this->path->value()),
+            ['path'=>$this->path->value()]
+        );
     }
 
     /**

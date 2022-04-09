@@ -5,33 +5,29 @@ namespace app\models\forms;
 
 
 use vloop\entities\contracts\IForm;
+use vloop\entities\exceptions\NotValidatedFields;
 use vloop\entities\yii2\AbstractForm;
+use yii\base\Model;
+use yii\web\UploadedFile;
 
 class ImagesForm extends AbstractForm
 {
-    private $origin;
-
-    public function __construct(IForm $origin, $method = 'post', $config = [])
-    {
-        $this->origin = $origin;
-        parent::__construct($method, $config);
-    }
-
-    public function validatedFields(): array
-    {
-        return array_merge(
-            parent::validatedFields(),
-            $this->origin->validatedFields()
-        );
-    }
-
     public $images;
 
     public function rules()
     {
         return [
-            ['images', 'required'],
-            ['images', 'file', 'maxFiles' => 6]
+            [['images'], 'file', 'maxFiles' => 6]
         ];
+    }
+
+    /**
+     * @return array - проверенные поля в формате ключ=>значение
+     * @throws NotValidatedFields
+     */
+    public function validatedFields(): array
+    {
+        $this->images = UploadedFile::getInstancesByName('images');
+        return parent::validatedFields();
     }
 }

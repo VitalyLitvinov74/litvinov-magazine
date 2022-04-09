@@ -1,11 +1,11 @@
 <?php
 
 
-namespace app\models\shop\catalog\products;
+namespace app\models\shop\products;
 
 
 use app\models\forms\ProductCardForm;
-use app\models\shop\catalog\products\contracts\IProductCard;
+use app\models\shop\products\contracts\IProductCard;
 use app\tables\TableProductCards;
 use vloop\entities\contracts\IField;
 use vloop\entities\contracts\IForm;
@@ -62,7 +62,11 @@ class ProductCardByPost implements IProductCard
     public function printYourSelf(): array
     {
         $fields = $this->productForm->validatedFields();
-        return $fields;
+        return [
+            'title' => $fields['title'],
+            'description' => $fields['description'],
+            'shortDescription' => $fields['shortDescription']
+        ];
     }
 
     /**
@@ -73,7 +77,7 @@ class ProductCardByPost implements IProductCard
         $this->__destruct();
     }
 
-    private function __destruct()
+    public function __destruct()
     {
 
     }

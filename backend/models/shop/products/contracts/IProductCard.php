@@ -1,7 +1,7 @@
 <?php
 
 
-namespace app\models\shop\catalog\products\contracts;
+namespace app\models\shop\products\contracts;
 
 
 use app\models\contracts\ToTrash;

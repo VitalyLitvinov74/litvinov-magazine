@@ -10,5 +10,4 @@ use vloop\PrintYourSelf\PrintYourSelf;
 
 interface IImage extends PrintYourSelf, ToTrash
 {
-
 }

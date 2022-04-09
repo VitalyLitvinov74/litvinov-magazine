@@ -1,10 +1,10 @@
 <?php
 
 
-namespace app\models\shop\catalog\products;
+namespace app\models\shop\products;
 
 
-use app\models\shop\catalog\products\contracts\IProductCard;
+use app\models\shop\products\contracts\IProductCard;
 use app\tables\TableProductCards;
 use vloop\entities\contracts\IField;
 use vloop\entities\contracts\IForm;

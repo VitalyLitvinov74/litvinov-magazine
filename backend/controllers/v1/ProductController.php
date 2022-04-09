@@ -10,14 +10,14 @@ use app\models\chains\DynamicElement;
 use app\models\forms\EmptyForm;
 use app\models\forms\ImagesForm;
 use app\models\forms\ProductCardForm;
-use app\models\shop\catalog\images\decorators\PrintedWithImages;
-use app\models\shop\catalog\products\decorators\WithGallery;
-use app\models\shop\catalog\products\images\ProductGallery;
-use app\models\shop\catalog\products\ProductCard;
-use app\models\shop\catalog\products\ProductCardByPost;
-use app\models\shop\catalog\products\ProductCardFactory;
+use app\models\shop\images\decorators\PrintedWithImages;
+use app\models\shop\products\decorators\WithGallery;
+use app\models\shop\images\ProductGallery;
+use app\models\shop\products\ProductCard;
+use app\models\shop\products\ProductCardByPost;
+use app\models\shop\products\ProductCardFactory;
 use app\models\shop\images\Gallery;
-use app\models\shop\images\GalleryByPost;
+use app\models\shop\images\PostGallery;
 use Exception;
 use vloop\entities\exceptions\AbstractException;
 use vloop\entities\fields\Field;
@@ -45,12 +45,11 @@ class ProductController extends Controller
                 new ProductCardByPost(
                     new ProductCardForm()
                 ),
-                new GalleryByPost(
-                    new ImagesForm(
-                        new EmptyForm()
-                    )
+                new PostGallery(
+                    new ImagesForm()
                 )
             );
+
         return $productCard
             ->copyToSystem()
             ->printYourSelf();
@@ -59,11 +58,8 @@ class ProductController extends Controller
     public function actionById(int $id)
     {
         $card =
-            new WithGallery(
-                new ProductCard(
-                    $cardId = new Field('id', $id)
-                ),
-                new ProductGallery($cardId)
+            new ProductCard(
+                $cardId = new Field('id', $id)
             );
         return $card->printYourSelf();
     }
@@ -73,13 +69,13 @@ class ProductController extends Controller
         $gallery = new ProductGallery(
             new Field('id', 22)
         );
-        $galleryPost = new GalleryByPost(
+        $galleryPost = new PostGallery(
             new ImagesForm(
                 new EmptyForm()
             )
         );
         $gallery
-            ->addImages($galleryPost->list())//иожет сделать мерж галерей?
+            ->mergeGalleries($galleryPost->list())//иожет сделать мерж галерей?
             ->printYourSelf();
     }
 

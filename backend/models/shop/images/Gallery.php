@@ -30,7 +30,7 @@ class Gallery implements IGallery
     public function list(): array
     {
         $list = [];
-        foreach ($this->files() as $file){
+        foreach ($this->files() as $file) {
             $list[] = $this->image($file);
         }
         return $list;
@@ -39,46 +39,40 @@ class Gallery implements IGallery
     public function printYourSelf(): array
     {
         $self = [];
-        foreach ($this->list() as $image){
+        foreach ($this->list() as $image) {
             $self[] = $image->printYourSelf();
         }
         return $self;
     }
 
     /**
-     * @param IForm $imagesForm
-     * @return IImage[]
+     * @param IGallery $needleMerge
+     * @return IGallery
      * @throws NotSavedData
-     * @throws NotValidatedFields
      */
-    public function addImages(IForm $imagesForm): array
+    public function mergeGalleries(IGallery $needleMerge): IGallery
     {
-        $added = [];
-        $fields = $imagesForm->validatedFields();
-        foreach ($fields['images'] as $uploadedImage){
-            /**@var UploadedFile $uploadedImage*/
-            $saved = $uploadedImage->saveAs(
-                $imagesPath = $this->newImagePath($uploadedImage->extension)
+        foreach ($needleMerge->list() as $image) {
+            $info = $image->printYourSelf();
+            rename(
+                $info['dirname'] . '/' . $info['basename'],
+                $this->folder() . '/' . $info['basename']
             );
-            if($saved){
-                $added[] = $this->image($imagesPath);
-            }else{
-                throw new NotSavedData([$uploadedImage->error], 422);
-            }
         }
-        return $added;
+        return new self($this->_folder);
     }
 
     /**
      * @return string[] - список абсолютных путей до файлов в текущем каталоге
-     *
      */
-    private function files(): array{
+    private function files(): array
+    {
 
         return FileHelper::findFiles($this->folder());
     }
 
-    private function image(string $path): IImage{
+    private function image(string $path): IImage
+    {
         return new Image(
             new Field('path', $path)
         );
@@ -87,15 +81,14 @@ class Gallery implements IGallery
     /**
      * @return string - абсолютный путь до папки с изображениями (без слеша в конце)
      */
-    private function folder(): string{
+    private function folder(): string
+    {
         $dir = $this->_folder->value();
-        if(!is_dir($dir)){
+        if (!is_dir($dir)) {
+            $old_umask = umask(0);
             mkdir($dir, 0775, true);
+            umask($old_umask);
         }
         return $dir;
-    }
-
-    private function newImagePath(string $extension){
-        return $this->folder() . '/' . microtime() . '.' . $extension;
     }
 }

@@ -1,47 +1,48 @@
 <?php
 
 
-namespace app\models\shop\catalog\products\decorators;
+namespace app\models\shop\products\decorators;
 
 
-use app\models\shop\catalog\products\contracts\IProductCard;
-use app\models\shop\catalog\products\images\ProductGallery;
+use app\models\shop\images\ProductGallery;
+use app\models\shop\products\contracts\IProductCard;
 use app\models\shop\images\contracts\IGallery;
 use vloop\entities\contracts\IField;
 use vloop\entities\contracts\IForm;
 use vloop\entities\fields\Field;
+use yii\helpers\VarDumper;
 
 class WithGallery implements IProductCard
 {
-    private $gallery;
-    private $origin;
+    private $originGallery;
+    private $originProduct;
 
     public function __construct(IProductCard $origin, IGallery $gallery)
     {
-        $this->gallery = $gallery;
-        $this->origin = $origin;
+        $this->originGallery = $gallery;
+        $this->originProduct = $origin;
     }
 
     public function changeDescriptions(IForm $descriptionForm): IProductCard
     {
-        return $this->origin->changeDescriptions($descriptionForm);
+        return $this->originProduct->changeDescriptions($descriptionForm);
     }
 
     public function changeTitle(IField $title): IProductCard
     {
-        return $this->origin->changeTitle($title);
+        return $this->originProduct->changeTitle($title);
     }
 
     public function copyToSystem(): IProductCard
     {
-        $product = $this->origin->copyToSystem();
-        $gallery = new ProductGallery(
+        $product = $this->originProduct->copyToSystem();
+        $productGallery = new ProductGallery(
             $productId = new Field('id', $product->printYourSelf()['id'])
         );
-        $gallery->addImages('');
-        return new self(// не много запутался.
+        $productGallery->mergeGalleries($this->originGallery);
+        return new self(
             $product,
-            $gallery
+            $productGallery
         );
     }
 
@@ -52,9 +53,9 @@ class WithGallery implements IProductCard
     public function printYourSelf(): array
     {
         return array_merge(
-            $this->origin->printYourSelf(),
+            $this->originProduct->printYourSelf(),
             [
-                'images'=>$this->gallery->printYourSelf()
+                'images'=>$this->originGallery->printYourSelf()
             ]
         );
     }
@@ -64,9 +65,9 @@ class WithGallery implements IProductCard
      */
     public function moveToTrash(): void
     {
-        foreach ($this->gallery->list() as $image){
+        foreach ($this->originGallery->list() as $image){
             $image->moveToTrash();
         }
-        $this->origin->moveToTrash();
+        $this->originProduct->moveToTrash();
     }
 }

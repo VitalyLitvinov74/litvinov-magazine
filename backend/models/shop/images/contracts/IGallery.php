@@ -15,11 +15,14 @@ interface IGallery extends PrintYourSelf
      */
     public function list(): array;
 
+    /**
+     * @return array - объект, преобразованный в массив, для чтения.
+     */
     public function printYourSelf(): array;
 
     /**
-     * @param IImage[] $images
-     * @return IGallery - вернут новую галерею или себя же.
+     * @param IGallery $gallery
+     * @return IGallery - вернет новую галерею или себя же. но уже со скопированными изображениями.
      */
-    public function addImages(array $images): IGallery;
+    public function mergeGalleries(IGallery $gallery): IGallery;
 }

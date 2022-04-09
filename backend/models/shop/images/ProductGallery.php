@@ -1,23 +1,16 @@
 <?php
 
 
-namespace app\models\shop\catalog\products\images;
+namespace app\models\shop\images;
 
-
-use app\models\shop\catalog\products\images\contracts\IProductImages;
 use app\models\shop\images\contracts\IGallery;
 use app\models\shop\images\contracts\IImage;
-use app\models\shop\images\Gallery;
-use app\models\shop\images\Image;
-use app\tables\TableProductCards;
 use app\tables\TableProductImages;
 use vloop\entities\contracts\IField;
-use vloop\entities\contracts\IForm;
 use vloop\entities\exceptions\NotSavedData;
-use vloop\entities\exceptions\NotValidatedFields;
 use vloop\entities\fields\Field;
-use yii\base\InvalidConfigException;
-use yii\web\UploadedFile;
+use Yii;
+use yii\helpers\VarDumper;
 
 class ProductGallery implements IGallery
 {
@@ -51,32 +44,29 @@ class ProductGallery implements IGallery
     }
 
     /**
-     * @param array $images
+     * @param IGallery $needleMerge
      * @return IGallery
      * @throws NotSavedData
      */
-    public function addImages(array $images): IGallery
+    public function mergeGalleries(IGallery $needleMerge): IGallery
     {
-        $added = [];
-        $savedImages = $this->gallery()->addImages($imagesForm); //сохераняем на диск
-        foreach ($savedImages as $image) {
+        $folderGallery = $this->gallery()->mergeGalleries($needleMerge); //сохераняем на диск
+        foreach ($folderGallery->list() as $image) {
             $record = new TableProductImages([
                 'path' => $image->printYourSelf()['path'],
                 'product_id' => $this->productId->value()
             ]);
-            if ($record->save()) {
-                $added[] = $this->image($record->id);
-            } else {
+            if (!$record->save()) {
                 throw new NotSavedData($record->getErrors(), 422);
             }
         }
-        return $added;
+        return $this;
     }
 
     private function gallery(): IGallery
     {
         return new Gallery(
-            new Field('path', '@productImages/' . $this->productId->value())
+            new Field('path', Yii::getAlias('@product/') . $this->productId->value())
         );
     }
 

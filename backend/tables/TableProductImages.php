@@ -19,4 +19,9 @@ class TableProductImages extends ActiveRecord
     {
         return 'product_images';
     }
+
+//    public function rules()
+//    {
+//        return ['id', 'exist', 'message'=>'Вы пытаетесь получить доступ к изображению которого нет'];
+//    }
 }
