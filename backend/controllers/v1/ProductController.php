@@ -28,14 +28,7 @@ class ProductController extends Controller
 {
     public function runAction($id, $params = [])
     {
-        try {
-            return parent::runAction($id, $params);
-        } catch (AbstractException $e) {
-
-        } catch (Exception $e) {
-//            $json = new Error($e->getMessage(), $e->getCode());
-
-        }
+        return parent::runAction($id, $params);
     }
 
     public function actionCreate()

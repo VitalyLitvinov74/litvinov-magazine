@@ -15,16 +15,17 @@ use yii\helpers\VarDumper;
 
 class ProductImage implements IImage
 {
-    private $productId;
+    private $imageId;
 
     public function __construct(IField $imageId)
     {
-        $this->productId = $imageId;
+        $this->imageId = $imageId;
     }
 
     /**
      * @return array - printing self as array, for frontend.
      *               or represents an object as an array
+     * @throws NotFoundEntity
      */
     public function printYourSelf(): array
     {
@@ -40,8 +41,8 @@ class ProductImage implements IImage
 
     /**
      * Выкидывает текущий элемент из системы.
-     *
      * @throws StaleObjectException
+     * @throws NotFoundEntity
      */
     public function moveToTrash(): void
     {
@@ -52,7 +53,6 @@ class ProductImage implements IImage
     private function imageFile(): IImage
     {
         $imagePath = $this->record(true)->path;
-        VarDumper::dump($this->record(true));
         return new Image(
             new Field(
                 'path',
@@ -64,12 +64,12 @@ class ProductImage implements IImage
     private function record($needleRefresh = false)
     {
         $record = new TableProductImages([
-            'product_id' => $this->productId->value(),
+            'id' => $this->imageId->value(),
             'isNewRecord' => false
         ]);
         if ($needleRefresh) {
             $record = TableProductImages::find()
-                ->where(['product_id'=>$this->productId->value()])
+                ->where(['id'=>$this->imageId->value()])
                 ->one();
             if(!$record){
                 throw new NotFoundEntity('Не получилось найти изображение');

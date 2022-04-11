@@ -40,6 +40,7 @@ class WithGallery implements IProductCard
             $productId = new Field('id', $product->printYourSelf()['id'])
         );
         $productGallery->mergeGalleries($this->originGallery);
+//        VarDumper::dump($productGallery->list());
         return new self(
             $product,
             $productGallery
@@ -52,6 +53,7 @@ class WithGallery implements IProductCard
      */
     public function printYourSelf(): array
     {
+
         return array_merge(
             $this->originProduct->printYourSelf(),
             [
