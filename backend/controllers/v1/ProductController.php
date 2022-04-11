@@ -51,8 +51,11 @@ class ProductController extends Controller
     public function actionById(int $id)
     {
         $card =
-            new ProductCard(
-                $cardId = new Field('id', $id)
+            new WithGallery(
+                new ProductCard(
+                    $cardId = new Field('id', $id)
+                ),
+                new ProductGallery($cardId)
             );
         return $card->printYourSelf();
     }
@@ -60,15 +63,13 @@ class ProductController extends Controller
     public function addImage()
     {
         $gallery = new ProductGallery(
-            new Field('id', 22)
+            $cardId = new Field('id', 22)
         );
         $galleryPost = new PostGallery(
-            new ImagesForm(
-                new EmptyForm()
-            )
+            new ImagesForm()
         );
-        $gallery
-            ->mergeGalleries($galleryPost->list())//иожет сделать мерж галерей?
+        return $gallery
+            ->mergeGalleries($galleryPost)
             ->printYourSelf();
     }
 
@@ -89,16 +90,11 @@ class ProductController extends Controller
 
     public function actionChangeDescription()
     {
-
-    }
-
-    public function actionChangeImages()
-    {
-
-    }
-
-    public function actionTest()
-    {
-
+        $productCard = new ProductCard(
+            new Field('id', 22)
+        );
+        return $productCard
+            ->changeDescriptions(new ProductCardForm())
+            ->printYourSelf();
     }
 }
