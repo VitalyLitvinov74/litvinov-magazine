@@ -11,7 +11,7 @@ use yii\db\ActiveRecord;
  * @package app\tables
  * @property int $id [int(11)]
  * @property string $path [varchar(255)]  Путь картинки, относительно корня домена api
- * @property int $product_id [int(11)]  это id из таблицы product_cards
+ * @property int    $product_id [int(11)]  id из таблицы products
  */
 class TableProductImages extends ActiveRecord
 {

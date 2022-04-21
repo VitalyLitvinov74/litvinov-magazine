@@ -1,0 +1,42 @@
+<?php
+
+use yii\db\Migration;
+
+/**
+ * Class m220419_173911_recreateTables
+ */
+class m220419_173911_recreateTables extends Migration
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function safeUp()
+    {
+
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function safeDown()
+    {
+        echo "m220419_173911_recreateTables cannot be reverted.\n";
+
+        return false;
+    }
+
+    /*
+    // Use up()/down() to run migration code without a transaction.
+    public function up()
+    {
+
+    }
+
+    public function down()
+    {
+        echo "m220419_173911_recreateTables cannot be reverted.\n";
+
+        return false;
+    }
+    */
+}
