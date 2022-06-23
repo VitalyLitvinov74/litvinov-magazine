@@ -44,7 +44,6 @@ class ProductController extends Controller
             );
 
         return $productCard
-            ->copyToSystem()
             ->printYourSelf();
     }
 
