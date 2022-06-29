@@ -15,7 +15,7 @@ use yii\db\ActiveRecord;
  * @property TableProductCards $productCard
  * @property TableProductImages[] $images
  */
-class TableProducts extends ActiveRecord
+class TableProducts extends Table
 {
     public static function tableName()
     {

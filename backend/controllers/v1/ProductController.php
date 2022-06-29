@@ -33,43 +33,17 @@ class ProductController extends Controller
 
     public function actionCreate()
     {
-        $productCard =
-            new WithGallery(
-                new ProductCardByPost(
-                    new ProductCardForm()
-                ),
-                new PostGallery(
-                    new ImagesForm()
-                )
-            );
 
-        return $productCard
-            ->printYourSelf();
     }
 
     public function actionById(int $id)
     {
-        $card =
-            new WithGallery(
-                new ProductCard(
-                    $cardId = new Field('id', $id)
-                ),
-                new ProductGallery($cardId)
-            );
-        return $card->printYourSelf();
+
     }
 
     public function addImage()
     {
-        $gallery = new ProductGallery(
-            $cardId = new Field('id', 22)
-        );
-        $galleryPost = new PostGallery(
-            new ImagesForm()
-        );
-        return $gallery
-            ->mergeGalleries($galleryPost)
-            ->printYourSelf();
+
     }
 
     public function actionShowAll()
@@ -89,11 +63,6 @@ class ProductController extends Controller
 
     public function actionChangeDescription()
     {
-        $productCard = new ProductCard(
-            new Field('id', 22)
-        );
-        return $productCard
-            ->changeDescriptions(new ProductCardForm())
-            ->printYourSelf();
+
     }
 }
