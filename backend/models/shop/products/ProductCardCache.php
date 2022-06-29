@@ -4,15 +4,21 @@
 namespace app\models\shop\products;
 
 
+use app\models\cache\ICache;
 use app\models\shop\products\contracts\IProductCard;
 use app\models\trash\IMedia;
+use app\tables\TableProductCards;
 use vloop\entities\contracts\IField;
 use vloop\entities\contracts\IForm;
+use vloop\entities\exceptions\NotFoundEntity;
 
-class ProductCardSQL implements IProductCard
+class ProductCardCache implements IProductCard
 {
-    public function __construct(IField $id)
+    private $cache;
+
+    public function __construct(ICache $productCachedRecord)
     {
+        $this->cache = $productCachedRecord;
     }
 
     /**
@@ -21,7 +27,7 @@ class ProductCardSQL implements IProductCard
      */
     public function printTo(IMedia $media): IMedia
     {
-        
+        return $media;
     }
 
     /**
@@ -30,7 +36,11 @@ class ProductCardSQL implements IProductCard
      */
     public function changeTitle(IForm $form): IProductCard
     {
-        // TODO: Implement changeTitle() method.
+        $record = $this->record();
+        $fields = $form->validatedFields();
+        $record->title = $fields['title'];
+        $record->save();
+        return $this;
     }
 
     /**
@@ -57,5 +67,12 @@ class ProductCardSQL implements IProductCard
     public function remove(): void
     {
         // TODO: Implement remove() method.
+    }
+
+    private function record(): TableProductCards{
+        if(is_null($this->cache->value())){
+            throw new NotFoundEntity('Не существуте карточки продкута');
+        }
+        return $this->cache->value();
     }
 }
