@@ -3,7 +3,7 @@ version: '3.2'
 services:
   reverse-proxy:
     image: 'jwilder/nginx-proxy'
-    container_name: 'reverse-proxy'
+    container_name: 'reverse-proxy-magazine'
     ports:
       - '${PORT}:80'
     volumes:
@@ -15,7 +15,7 @@ services:
   ## статика
   nuxt-proxy:
     image: nginx
-    container_name: "nuxt-proxy"
+    container_name: "nuxt-proxy-magazine"
     volumes:
       - './nuxt/proxy/conf:/etc/nginx/conf.d'
     environment:
@@ -26,7 +26,7 @@ services:
       - nuxt-js
 
   nuxt-js:
-    container_name: "nuxt-js"
+    container_name: "nuxt-js-magazine"
     image: node:latest
     working_dir: "/app"
     restart: always
@@ -44,7 +44,7 @@ services:
   # прокси для пхп
   php-proxy:
     image: nginx
-    container_name: "php-proxy"
+    container_name: "php-proxy-magazine"
     volumes:
       - './php/proxy/conf:/etc/nginx/conf.d'
     environment:
@@ -55,7 +55,7 @@ services:
       - php
 
   php:
-    container_name: "php"
+    container_name: "php-magazine"
     build:
        context: ./php/
     volumes:
@@ -63,7 +63,7 @@ services:
 
   mysql:
     image: mysql:5.7
-    container_name: "mysql"
+    container_name: "mysql-magazine"
     env_file:
       - .env
     ports:
@@ -74,7 +74,7 @@ services:
 
 ### тут происходит подгрузка зависимостей для бека и фронта
   php-cli:
-    container_name: "php-cli"
+    container_name: "php-cli-magazine"
     build:
       context: ./php/
     volumes:
@@ -86,7 +86,7 @@ services:
   ## статика панели пользователя
   nuxt-user-panel-proxy:
     image: nginx
-    container_name: "nuxt-user-panel-proxy"
+    container_name: "nuxt-user-panel-proxy-magazine"
     volumes:
       - './nuxt/proxy/panel:/etc/nginx/conf.d'
     environment:
@@ -97,7 +97,7 @@ services:
       - nuxt-js-user-panel
 
   nuxt-js-user-panel:
-    container_name: "nuxt-js-user-panel"
+    container_name: "nuxt-js-user-panel-magazine"
     image: node:latest
     working_dir: "/app"
     restart: always
