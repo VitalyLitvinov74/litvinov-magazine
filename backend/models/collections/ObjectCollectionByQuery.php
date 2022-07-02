@@ -4,7 +4,7 @@
 namespace app\models\collections;
 
 
-use app\models\trash\IMedia;
+use app\models\contracts\IMedia;
 use yii\db\ActiveRecord;
 use yii\db\Query;
 

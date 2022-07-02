@@ -4,8 +4,8 @@
 namespace app\models\collections;
 
 
-use app\models\trash\IMedia;
-use app\models\trash\IPRinter;
+use app\models\contracts\IMedia;
+use app\models\contracts\IPrinter;
 
 interface ICollection extends IPRinter
 {

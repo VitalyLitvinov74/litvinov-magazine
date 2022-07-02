@@ -1,7 +1,7 @@
 <?php
 
 
-namespace app\models\trash;
+namespace app\models\contracts;
 
 
 interface ITrash

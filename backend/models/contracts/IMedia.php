@@ -1,10 +1,10 @@
 <?php
 
 
-namespace app\models\trash;
+namespace app\models\contracts;
 
 
-interface IMedia
+interface IMedia extends IPrinter
 {
     /**
      * @param string $key

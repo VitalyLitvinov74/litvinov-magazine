@@ -1,10 +1,12 @@
 <?php
 
 
-namespace app\models\trash;
+namespace app\models\contracts;
 
 
-interface IPRinter
+use app\models\contracts\IMedia;
+
+interface IPrinter
 {
     /**
      * @param IMedia $media - источник информации куда необходимо записать себя

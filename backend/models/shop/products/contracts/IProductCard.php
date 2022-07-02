@@ -4,11 +4,11 @@
 namespace app\models\shop\products\contracts;
 
 
-use app\models\trash\IMedia;
-use app\models\trash\IPRinter;
+use app\models\contracts\IMedia;
+use app\models\contracts\IPrinter;
 use vloop\entities\contracts\IForm;
 
-interface IProductCard extends IPRinter
+interface IProductCard extends IPrinter
 {
     /**
      * @param IForm $form
@@ -21,12 +21,6 @@ interface IProductCard extends IPRinter
      * @return $this - возвращает новую карточку товара с измененными кратким, и полным описаниями
      */
     public function changeDescriptions(IForm $form): self;
-
-    /**
-     * @param IForm $form
-     * @return $this - вернет новую карточку товара с изменной обще информацией
-     */
-    public function changeInformation(IForm $form): self;
 
     /**
      * Удаляет карточку товара

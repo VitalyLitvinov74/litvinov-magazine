@@ -17,7 +17,7 @@ use yii\db\ActiveRecord;
  * @property string $short_description Краткое описание товара
  * @property TableProductImages[] $images
  */
-class TableProductCards extends ActiveRecord
+class TableProductCards extends Table
 {
     public static function tableName()
     {

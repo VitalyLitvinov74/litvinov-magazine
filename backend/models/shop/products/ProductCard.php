@@ -5,7 +5,7 @@ namespace app\models\shop\products;
 
 
 use app\models\shop\products\contracts\IProductCard;
-use app\models\trash\IMedia;
+use app\models\contracts\IMedia;
 use vloop\entities\contracts\IField;
 use vloop\entities\contracts\IForm;
 use vloop\entities\exceptions\NotValidatedFields;
@@ -14,18 +14,15 @@ use vloop\entities\fields\FieldOfForm;
 class ProductCard implements IProductCard
 {
     private $title;
+    private $shortDescription;
     private $description;
-    private $fullDescription;
-    private $information;
 
     public function __construct(IField $title,
-                                IField $description,
-                                IField $fullDescription,
-                                IField $information)
+                                IField $shortDescription,
+                                IField $description)
     {
-        $this->information = $information;
-        $this->fullDescription = $fullDescription;
         $this->description = $description;
+        $this->shortDescription = $shortDescription;
         $this->title = $title;
     }
 
@@ -36,10 +33,9 @@ class ProductCard implements IProductCard
     public function printTo(IMedia $media): IMedia
     {
         return $media
-            ->add('title', $this->title)
-            ->add('description', $this->description)
-            ->add('fullDescription', $this->fullDescription)
-            ->add('information', $this->information);
+            ->add('title', $this->title->value())
+            ->add('shortDescription', $this->shortDescription->value())
+            ->add('description', $this->description->value());
     }
 
     /**
@@ -50,9 +46,8 @@ class ProductCard implements IProductCard
     {
         return new ProductCard(
             new FieldOfForm($form,'title'),
-            $this->description,
-            $this->fullDescription,
-            $this->information
+            $this->shortDescription,
+            $this->description
         );
     }
 
@@ -64,23 +59,8 @@ class ProductCard implements IProductCard
     {
         return new ProductCard(
             $this->title,
-            new FieldOfForm($form, 'description'),
-            new FieldOfForm($form, 'fullDescription'),
-            $this->information
-        );
-    }
-
-    /**
-     * @param IForm $form
-     * @return $this - вернет новую карточку товара с изменной обще информацией
-     */
-    public function changeInformation(IForm $form): IProductCard
-    {
-        return new ProductCard(
-            $this->title,
-            $this->description,
-            $this->fullDescription,
-            new FieldOfForm($form, 'information')
+            new FieldOfForm($form, 'shortDescription'),
+            new FieldOfForm($form, 'description')
         );
     }
 

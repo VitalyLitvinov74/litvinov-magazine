@@ -5,7 +5,7 @@ namespace app\models\shop\products\contracts;
 
 
 use app\models\shop\products\characteristics\contract\ICharacteristic;
-use app\models\trash\IPRinter;
+use app\models\contracts\IPrinter;
 use vloop\entities\contracts\IField;
 
 interface IProduct extends IPRinter

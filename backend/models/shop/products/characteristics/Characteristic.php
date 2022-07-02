@@ -5,7 +5,7 @@ namespace app\models\shop\products\characteristics;
 
 
 use app\models\shop\products\characteristics\contract\ICharacteristic;
-use app\models\trash\IMedia;
+use app\models\contracts\IMedia;
 use vloop\entities\contracts\IField;
 
 class Characteristic implements ICharacteristic
