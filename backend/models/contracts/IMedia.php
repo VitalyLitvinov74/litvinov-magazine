@@ -18,4 +18,9 @@ interface IMedia extends IPrinter
      * @return $this
      */
     public function commit(): self;
+
+    /**
+     * @return array
+     */
+    public function toArray();
 }

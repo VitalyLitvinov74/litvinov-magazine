@@ -1,10 +1,9 @@
 <?php
-
-
 namespace app\models\collections;
 
 
 use app\models\contracts\IMedia;
+use app\models\media\JsonMedia;
 use yii\db\ActiveRecord;
 use yii\db\Query;
 
@@ -43,6 +42,12 @@ class ObjectCollectionByQuery extends CollectionByRecord
      */
     public function printTo(IMedia $media): IMedia
     {
+        $medias = [];
+        foreach ($this->list() as $item){
+            /**@var IPrinter $item*/
+            $medias[] =  $item->printTo(new JsonMedia());
+        }
+
         return $media;
     }
 }

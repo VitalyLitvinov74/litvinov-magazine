@@ -40,4 +40,12 @@ class JsonMedia implements IMedia
         }
         return $media;
     }
+
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
+        return $this->needleAdd;
+    }
 }
