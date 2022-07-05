@@ -3,7 +3,9 @@ namespace app\models\collections;
 
 
 use app\models\contracts\IMedia;
+use app\models\contracts\IPrinter;
 use app\models\media\JsonMedia;
+use vloop\entities\contracts\IField;
 use yii\db\ActiveRecord;
 use yii\db\Query;
 
@@ -28,6 +30,13 @@ class ObjectCollectionByQuery extends CollectionByRecord
 
     protected function records(): array
     {
+        $paramsList = $this->query->params;
+        foreach ($paramsList as $paramKey => $param){
+            if($param instanceof IField){
+                $paramsList[$paramKey] = $param->value();
+            }
+        }
+        $this->query->params = $paramsList;
         return $this->query->all();
     }
 
@@ -45,9 +54,9 @@ class ObjectCollectionByQuery extends CollectionByRecord
         $medias = [];
         foreach ($this->list() as $item){
             /**@var IPrinter $item*/
-            $medias[] =  $item->printTo(new JsonMedia());
+            $medias[] =  $item->printTo(new JsonMedia())->toArray();
         }
-
+        $media->add('type', $medias);
         return $media;
     }
 }

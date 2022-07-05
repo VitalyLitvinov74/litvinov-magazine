@@ -8,31 +8,19 @@ use app\tables\Table;
 use vloop\entities\contracts\IField;
 use yii\db\ActiveRecord;
 use yii\db\Query;
+use yii\helpers\VarDumper;
 
 abstract class ObjectFactoryByQuery
 {
     private $query;
-    private $_params;
 
     /**
      * ObjectFactoryByRecord constructor.
      * @param Query $query
-     * @param IField[] $params
      */
-    public function __construct(Query $query, array $params)
+    public function __construct(Query $query)
     {
-        $this->_params = $params;
         $this->query = $query;
-    }
-
-    protected function params(): array{
-        $list = [];
-        foreach ($this->_params as $param){
-            $paramKey = array_key_first($param->printYourSelf());
-            $newKey = ":" . $paramKey;
-            $list[$newKey] = $param->value();
-        }
-        return $list;
     }
 
     /**
@@ -40,7 +28,13 @@ abstract class ObjectFactoryByQuery
      */
     protected function record() {
         $query = $this->query;
-        $query->params = $this->params();
+        $paramsList = $query->params;
+        foreach ($paramsList as $paramKey => $param){
+            if($param instanceof IField){
+                $paramsList[$paramKey] = $param->value();
+            }
+        }
+        $query->params = $paramsList;
         return $this->query->one();
     }
 

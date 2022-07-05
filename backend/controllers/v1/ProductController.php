@@ -19,11 +19,11 @@ use app\models\shop\products\decorators\WithGallery;
 use app\models\shop\images\ProductGallery;
 use app\models\shop\products\ProductCard;
 use app\models\shop\products\ProductCardByPost;
-use app\models\shop\products\ProductCardByQuery;
+use app\models\shop\products\ProductCardById;
 use app\models\shop\products\ProductCardFactory;
 use app\models\shop\images\Gallery;
 use app\models\shop\images\PostGallery;
-use app\models\shop\products\ProductCardSQL;
+use app\models\shop\products\ProductCardMySQL;
 use app\tables\TableProductCards;
 use Exception;
 use vloop\entities\exceptions\AbstractException;
@@ -58,11 +58,8 @@ class ProductController extends Controller
 
     public function actionById($id)
     {
-        $productCard = ProductCardSQL::byId(
-            new FieldOfForm(
-                new IdForm('get'),
-                'id'
-            )
+        $productCard = new ProductCardById(
+            new Field('id', $id)
         );
         return $productCard
             ->printTo(new JsonMedia())
@@ -79,11 +76,11 @@ class ProductController extends Controller
         $list = new ObjectCollectionByQuery(
             TableProductCards::find(),
             function (TableProductCards $record) {
-                return new ProductCardSQL(
+                return new ProductCardMySQL(
                     new Field('id', $record->id),
                     new ProductCard(
                         new Field('id', $record->title),
-                        new Field('shortDescription', $record->short_description),
+                        new Field('shortDescription', (string) $record->short_description),
                         new Field('description', $record->description)
                     )
                 );
@@ -94,18 +91,10 @@ class ProductController extends Controller
             ->toArray();
     }
 
-    public function actionList()
-    {
-
-    }
-
     public function actionDelete(int $id)
     {
-        $product = new ProductCardByQuery(
-            TableProductCards::find()->where("id=:id"),
-            [
-                new Field('id', $id)
-            ]
+        $product = new ProductCardById(
+            new Field('id', $id)
         );
         $product->remove();
     }

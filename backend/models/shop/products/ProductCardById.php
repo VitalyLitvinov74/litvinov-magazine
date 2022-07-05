@@ -8,15 +8,18 @@ use app\models\collections\ObjectFactoryByQuery;
 use app\models\contracts\IMedia;
 use app\models\shop\products\contracts\IProductCard;
 use app\tables\TableProductCards;
+use vloop\entities\contracts\IField;
 use vloop\entities\contracts\IForm;
 use vloop\entities\fields\Field;
 use yii\db\Query;
 
-class ProductCardByQuery extends ObjectFactoryByQuery implements IProductCard
+class ProductCardById implements IProductCard
 {
-    public function __construct(Query $query, array $params = [])
+    private $id;
+
+    public function __construct(IField $id)
     {
-        parent::__construct($query, $params);
+        $this->id = $id;
     }
 
     /**
@@ -25,7 +28,7 @@ class ProductCardByQuery extends ObjectFactoryByQuery implements IProductCard
      */
     public function printTo(IMedia $media): IMedia
     {
-        return $this->object()->printTo($media);
+        return $this->origin()->printTo($media);
     }
 
     /**
@@ -34,7 +37,7 @@ class ProductCardByQuery extends ObjectFactoryByQuery implements IProductCard
      */
     public function changeTitle(IForm $form): IProductCard
     {
-        return $this->object()->changeTitle($form);
+        return $this->origin()->changeTitle($form);
     }
 
     /**
@@ -43,7 +46,7 @@ class ProductCardByQuery extends ObjectFactoryByQuery implements IProductCard
      */
     public function changeDescriptions(IForm $form): IProductCard
     {
-        return $this->object()->changeDescriptions($form);
+        return $this->origin()->changeDescriptions($form);
     }
 
     /**
@@ -51,19 +54,19 @@ class ProductCardByQuery extends ObjectFactoryByQuery implements IProductCard
      */
     public function remove(): void
     {
-        $this->object()->remove();
+        $this->origin()->remove();
     }
 
     /**
      * @return IProductCard
      */
-    protected function object()
+    private function origin()
     {
         $record = $this->record();
-        /**@var TableProductCards $record*/
-        if($record){
-            return new ProductCardSQL(
-                new Field('id',$record->id),
+        /**@var TableProductCards $record */
+        if ($record) {
+            return new ProductCardMySQL(
+                new Field('id', $record->id),
                 new ProductCard(
                     new Field('title', $record->title),
                     new Field('shortDescription', $record->short_description),
@@ -71,5 +74,10 @@ class ProductCardByQuery extends ObjectFactoryByQuery implements IProductCard
                 )
             );
         }
+    }
+
+    private function record(): TableProductCards
+    {
+       return TableProductCards::find()->where(['id' => $this->id->value()])->one();
     }
 }

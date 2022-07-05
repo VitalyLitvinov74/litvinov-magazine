@@ -14,8 +14,9 @@ use vloop\entities\contracts\IForm;
 use vloop\entities\exceptions\NotFoundEntity;
 use vloop\entities\exceptions\NotSavedData;
 use vloop\entities\fields\Field;
+use yii\db\Query;
 
-class ProductCardSQL implements IProductCard
+class ProductCardMySQL implements IProductCard
 {
     private $orign;
     private $id;
@@ -24,25 +25,6 @@ class ProductCardSQL implements IProductCard
     {
         $this->id = $id;
         $this->orign = $productCard;
-    }
-
-    public function byRecord(TableProductCards $record):self{
-        return new self(
-            new Field('id', $record->id),
-            new ProductCard(
-                new Field('title', $record->title),
-                new Field('shortDescription', $record->short_description),
-                new Field('description', $record->description)
-            )
-        );
-    }
-
-    public static function byId(IField $id){
-        $record = TableProductCards::find()->where(['id'=>$id->value()])->one();
-        if($record){
-            return self::byRecord($record);
-        }
-        throw new NotFoundEntity("Не удалось найти карточку продукта");
     }
 
 
