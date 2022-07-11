@@ -4,6 +4,7 @@
 namespace app\tables;
 
 
+use lhs\Yii2SaveRelationsBehavior\SaveRelationsBehavior;
 use yii\base\InvalidConfigException;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
@@ -19,6 +20,25 @@ use yii\db\ActiveRecord;
  */
 class TableProductCards extends Table
 {
+    public function behaviors()
+    {
+        return [
+            'saveRelations'=>[
+                'class'=>SaveRelationsBehavior::class,
+                'relations' => [
+                    'images',
+                ]
+            ]
+        ];
+    }
+
+    public function rules()
+    {
+        return [
+            [['images'], 'safe']
+        ];
+    }
+
     public static function tableName()
     {
         return 'product_cards';

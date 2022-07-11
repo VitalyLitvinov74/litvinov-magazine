@@ -1,7 +1,7 @@
 <?php
 
 
-namespace app\models\shop\products;
+namespace app\models\shop\products\decorators;
 
 
 use app\models\collections\ObjectFactoryByQuery;

@@ -1,28 +1,22 @@
 <?php
 
 
-namespace app\models\shop\products\characteristics;
+namespace app\models\shop\products\characteristics\decorators;
 
 
-use app\models\shop\products\characteristics\contract\ICharacteristic;
 use app\models\contracts\IMedia;
+use app\models\shop\products\characteristics\contract\ICharacteristic;
 use vloop\entities\contracts\IField;
 
-class Characteristic implements ICharacteristic
+class CharacteristicMySQL implements ICharacteristic
 {
+    private $orirign;
+    private $id;
 
-    private $name;
-    private $value;
-
-    public function __construct(string $name, string $value)
+    public function __construct(IField $id, ICharacteristic $characteristic)
     {
-        $this->name = $name;
-        $this->value = $value;
-    }
-
-    public function __destruct()
-    {
-        //none
+        $this->id = $id;
+        $this->orirign = $characteristic;
     }
 
     /**
@@ -30,7 +24,8 @@ class Characteristic implements ICharacteristic
      */
     public function remove(): void
     {
-        $this->__destruct();
+
+        $this->orirign->remove();
     }
 
     /**
@@ -39,8 +34,7 @@ class Characteristic implements ICharacteristic
      */
     public function changeName(IField $field): ICharacteristic
     {
-        $this->name = $field->value();
-        return $this;
+        // TODO: Implement changeName() method.
     }
 
     /**
@@ -49,18 +43,15 @@ class Characteristic implements ICharacteristic
      */
     public function changeValue(IField $field): ICharacteristic
     {
-        $this->value = $field->value();
-        return $this;
+        // TODO: Implement changeValue() method.
     }
 
     /**
      * @param IMedia $media - источник информации куда необходимо записать себя
      * @return IMedia - источник информации с только что записанными данными
      */
-    public function printTo(IMedia $media): IMedia
+    public function printTo(\app\models\contracts\IMedia $media): IMedia
     {
-        return $media
-            ->add('name', $this->name)
-            ->add('value', $this->value);
+        // TODO: Implement printTo() method.
     }
 }
