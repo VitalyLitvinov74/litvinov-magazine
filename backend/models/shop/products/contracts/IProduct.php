@@ -16,20 +16,6 @@ interface IProduct extends IPRinter
      */
     public function changePrice(IField $newPrice): self;
 
-//    /**
-//     * в параметры нужно добавить объект характеристики
-//     * @param ICharacteristic $characteristic
-//     * @return $this
-//     */
-//    public function addCharacteristic(ICharacteristic $characteristic): self;
-//
-//    /**
-//     * в параметры нужно добавить объект характеристики
-//     * @param ICharacteristic $characteristic
-//     * @return IProduct
-//     */
-//    public function removeCharacteristic(ICharacteristic $characteristic): self;
-
     /**
      * @param IField $newCount
      * @return $this - меняет кол-во товара на складе.

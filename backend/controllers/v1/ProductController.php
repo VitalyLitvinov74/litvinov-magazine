@@ -6,11 +6,14 @@ namespace app\controllers\v1;
 
 
 
+use app\models\collections\ObjectCollectionByForm;
 use app\models\collections\ObjectCollectionByQuery;
 use app\models\forms\ProductCardForm;
 use app\models\media\JsonMedia;
+use app\models\shop\products\decorators\CardWithProducts;
 use app\models\shop\products\decorators\ProductCardById;
 use app\models\shop\products\decorators\ProductCardMySQL;
+use app\models\shop\products\Product;
 use app\models\shop\products\ProductCard;
 use app\tables\TableProductCards;
 use vloop\entities\fields\Field;
@@ -27,10 +30,22 @@ class ProductController extends Controller
     public function actionCreate()
     {
         $form = new ProductCardForm();
-        $productCard = new ProductCard(
-            new FieldOfForm($form, 'title'),
-            new FieldOfForm($form, 'shortDescription'),
-            new FieldOfForm($form, 'description')
+        $productCard = new CardWithProducts(
+            new ProductCard(
+                new FieldOfForm($form, 'title'),
+                new FieldOfForm($form, 'shortDescription'),
+                new FieldOfForm($form, 'description')
+            ),
+            new ObjectCollectionByForm(
+                $form,
+                'products',
+                function(/*????*/){
+                    return new Product(
+                        new Field('price',''),
+                        new Field('count', '')
+                    );
+                }
+            )
         );
         return $productCard
             ->printTo(new TableProductCards())

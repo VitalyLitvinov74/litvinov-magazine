@@ -3,9 +3,9 @@
 use yii\db\Migration;
 
 /**
- * Class m220711_125553_addCharacteristicsTable
+ * Class m220714_103323_addCharacteristicTable
  */
-class m220711_125553_addCharacteristicsTable extends Migration
+class m220714_103323_addCharacteristicTable extends Migration
 {
     /**
      * {@inheritdoc}
@@ -20,7 +20,7 @@ class m220711_125553_addCharacteristicsTable extends Migration
      */
     public function safeDown()
     {
-        echo "m220711_125553_addCharacteristicsTable cannot be reverted.\n";
+        echo "m220714_103323_addCharacteristicTable cannot be reverted.\n";
 
         return false;
     }
@@ -34,7 +34,7 @@ class m220711_125553_addCharacteristicsTable extends Migration
 
     public function down()
     {
-        echo "m220711_125553_addCharacteristicsTable cannot be reverted.\n";
+        echo "m220714_103323_addCharacteristicTable cannot be reverted.\n";
 
         return false;
     }
