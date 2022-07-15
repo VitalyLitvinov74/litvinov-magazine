@@ -4,7 +4,10 @@
 namespace app\models\forms;
 
 
+use vloop\entities\contracts\IForm;
+use vloop\entities\exceptions\NotValidatedFields;
 use vloop\entities\yii2\AbstractForm;
+use yii\base\Model;
 
 class ProductForm extends AbstractForm
 {

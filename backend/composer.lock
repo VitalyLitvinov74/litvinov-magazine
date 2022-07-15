@@ -951,12 +951,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/VitalyLitvinov74/vloop.entities.git",
-                "reference": "2c086ef4b9551e72ad255949dd4513cbfaa09783"
+                "reference": "20dc3eee4585370c09947db80b1763f2bcb1c6dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/VitalyLitvinov74/vloop.entities/zipball/2c086ef4b9551e72ad255949dd4513cbfaa09783",
-                "reference": "2c086ef4b9551e72ad255949dd4513cbfaa09783",
+                "url": "https://api.github.com/repos/VitalyLitvinov74/vloop.entities/zipball/20dc3eee4585370c09947db80b1763f2bcb1c6dd",
+                "reference": "20dc3eee4585370c09947db80b1763f2bcb1c6dd",
                 "shasum": ""
             },
             "require": {
@@ -993,7 +993,7 @@
                 "issues": "https://github.com/VitalyLitvinov74/vloop.entities/issues",
                 "source": "https://github.com/VitalyLitvinov74/vloop.entities/tree/master"
             },
-            "time": "2022-04-11T11:08:29+00:00"
+            "time": "2022-07-15T04:07:09+00:00"
         },
         {
             "name": "vloop/print-your-self",

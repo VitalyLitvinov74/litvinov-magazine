@@ -6,7 +6,7 @@ namespace app\controllers\v1;
 
 
 
-use app\models\collections\ObjectCollectionByForm;
+use app\models\collections\ConvertedCollection;
 use app\models\collections\ObjectCollectionByQuery;
 use app\models\forms\ProductCardForm;
 use app\models\media\JsonMedia;
@@ -36,9 +36,8 @@ class ProductController extends Controller
                 new FieldOfForm($form, 'shortDescription'),
                 new FieldOfForm($form, 'description')
             ),
-            new ObjectCollectionByForm(
+            new ConvertedCollection(
                 $form,
-                'products',
                 function(/*????*/){
                     return new Product(
                         new Field('price',''),
