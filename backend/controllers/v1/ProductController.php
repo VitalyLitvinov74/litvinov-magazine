@@ -6,6 +6,7 @@ namespace app\controllers\v1;
 
 
 
+use app\models\collections\CollectionByForm;
 use app\models\collections\ConvertedCollection;
 use app\models\collections\ObjectCollectionByQuery;
 use app\models\forms\ProductCardForm;
@@ -18,6 +19,8 @@ use app\models\shop\products\ProductCard;
 use app\tables\TableProductCards;
 use vloop\entities\fields\Field;
 use vloop\entities\fields\FieldOfForm;
+use Yii;
+use yii\helpers\VarDumper;
 use yii\rest\Controller;
 
 class ProductController extends Controller
@@ -36,19 +39,20 @@ class ProductController extends Controller
                 new FieldOfForm($form, 'shortDescription'),
                 new FieldOfForm($form, 'description')
             ),
-            new ConvertedCollection(
-                $form,
-                function(/*????*/){
+            new CollectionByForm(
+                function (array $item){
                     return new Product(
-                        new Field('price',''),
-                        new Field('count', '')
+                        new Field('price', $item['price']),
+                        new Field('count', $item['count'])
                     );
-                }
+                },
+                'products',
+                $form
             )
         );
         return $productCard
-            ->printTo(new TableProductCards())
-            ->commit()
+//            ->printTo(new TableProductCards())
+//            ->commit()
             ->printTo(new JsonMedia())
             ->toArray();
     }

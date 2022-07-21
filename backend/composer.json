@@ -24,7 +24,8 @@
     "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
     "vloop/print-your-self": "dev-main",
     "vloop/entities": "dev-master",
-    "la-haute-societe/yii2-save-relations-behavior": "*"
+    "la-haute-societe/yii2-save-relations-behavior": "*",
+    "vloop/yii2-custom-validators": "dev-main"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.1.0",
