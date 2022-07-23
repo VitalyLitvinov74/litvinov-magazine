@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9358f46fb6825247a3023ab1fa80f1aa",
+    "content-hash": "2a538497afba29605d3e074fdce163e3",
     "packages": [
         {
             "name": "bower-asset/inputmask",
@@ -1046,7 +1046,7 @@
         },
         {
             "name": "vloop/yii2-custom-validators",
-            "version": "dev-main",
+            "version": "v1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/VitalyLitvinov74/yii2-custom-validators.git",
@@ -1062,7 +1062,6 @@
                 "php": ">=7.0",
                 "yiisoft/yii2": ">=2.0.4"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -1086,7 +1085,7 @@
                 "yii2"
             ],
             "support": {
-                "source": "https://github.com/VitalyLitvinov74/yii2-custom-validators/tree/main"
+                "source": "https://github.com/VitalyLitvinov74/yii2-custom-validators/tree/v1.0.0"
             },
             "time": "2022-07-21T17:59:37+00:00"
         },
@@ -5663,8 +5662,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "vloop/print-your-self": 20,
-        "vloop/entities": 20,
-        "vloop/yii2-custom-validators": 20
+        "vloop/entities": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

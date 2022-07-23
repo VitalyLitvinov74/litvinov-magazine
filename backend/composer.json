@@ -25,7 +25,7 @@
     "vloop/print-your-self": "dev-main",
     "vloop/entities": "dev-master",
     "la-haute-societe/yii2-save-relations-behavior": "*",
-    "vloop/yii2-custom-validators": "dev-main"
+    "vloop/yii2-custom-validators": ">=1.0.0"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.1.0",
