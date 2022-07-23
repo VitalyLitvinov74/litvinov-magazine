@@ -33,6 +33,9 @@ class ProductController extends Controller
     public function actionCreate()
     {
         $form = new ProductCardForm();
+        $form->load(Yii::$app->request->post(), '');
+        $form->validate();
+        VarDumper::dump($form->getErrors());die;
         $productCard = new CardWithProducts(
             new ProductCard(
                 new FieldOfForm($form, 'title'),
