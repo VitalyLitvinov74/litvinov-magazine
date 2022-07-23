@@ -15,13 +15,18 @@ class Table extends ActiveRecord implements IMedia
     /**
      * @param string $key
      * @param        $value
+     * @param bool $keyIsList
      * @return $this
      */
-    public function add(string $key, $value): IMedia
+    public function add(string $key, $value, bool $keyIsList = false): IMedia
     {
         $key = Inflector::camel2id($key, '_');
         if($this->hasAttribute($key)){
-            $this->setAttribute($key, $value);
+            if($keyIsList){
+                $this->$key[] = $value;
+            }else{
+                $this->setAttribute($key, $value);
+            }
         }
         return $this;
     }

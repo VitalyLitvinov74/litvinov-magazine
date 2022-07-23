@@ -4,7 +4,6 @@
 namespace app\models\shop\products\decorators;
 
 
-use app\models\collections\ObjectFactoryByQuery;
 use app\models\contracts\IMedia;
 use app\models\shop\products\contracts\IProductCard;
 use app\tables\TableProductCards;

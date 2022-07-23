@@ -17,9 +17,19 @@ class JsonMedia implements IMedia
         $this->needleAdd = $needleAdd;
     }
 
-    public function add(string $key, $value): IMedia
+    /**
+     * @param string $key
+     * @param $value
+     * @param bool $keyIsList
+     * @return IMedia
+     */
+    public function add(string $key, $value, bool $keyIsList = false): IMedia
     {
-        $this->needleAdd[$key] = $value;
+        if($keyIsList){
+            $this->needleAdd[$key][] = $value;
+        }else{
+            $this->needleAdd[$key] = $value;
+        }
         return $this;
     }
 
