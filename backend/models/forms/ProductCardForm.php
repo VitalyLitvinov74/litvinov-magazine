@@ -7,6 +7,7 @@ namespace app\models\forms;
 use vloop\entities\yii2\AbstractForm;
 use vloop\Yii2\Validators\ArrayValidator;
 use vloop\Yii2\Validators\CustomEachValidator;
+use vloop\Yii2\Validators\ValidationModelTrait;
 
 class ProductCardForm extends AbstractForm
 {
@@ -28,7 +29,18 @@ class ProductCardForm extends AbstractForm
                     'subRules'=>[
                         [['price', 'count'], 'required'],
                         ['price','number', 'min'=>0],
-                        ['count', 'integer', 'min'=>0]
+                        ['count', 'integer', 'min'=>0],
+                        [
+                            'characteristics',
+                            CustomEachValidator::class,
+                            'rule'=>[
+                                ArrayValidator::class,
+                                "subRules"=>[
+                                    [['type', 'value'], 'required']
+                                ]
+                            ]
+                        ],
+                        ['characteristics', 'required']
                     ]
                 ]
             ]

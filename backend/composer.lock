@@ -1046,16 +1046,16 @@
         },
         {
             "name": "vloop/yii2-custom-validators",
-            "version": "v1.0.0",
+            "version": "v1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/VitalyLitvinov74/yii2-custom-validators.git",
-                "reference": "8e34a435cc52dda09206615e9083741dcb23ac78"
+                "reference": "88fef76228ac06b596f0ff0dd997e94b11674c07"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/VitalyLitvinov74/yii2-custom-validators/zipball/8e34a435cc52dda09206615e9083741dcb23ac78",
-                "reference": "8e34a435cc52dda09206615e9083741dcb23ac78",
+                "url": "https://api.github.com/repos/VitalyLitvinov74/yii2-custom-validators/zipball/88fef76228ac06b596f0ff0dd997e94b11674c07",
+                "reference": "88fef76228ac06b596f0ff0dd997e94b11674c07",
                 "shasum": ""
             },
             "require": {
@@ -1085,9 +1085,9 @@
                 "yii2"
             ],
             "support": {
-                "source": "https://github.com/VitalyLitvinov74/yii2-custom-validators/tree/v1.0.0"
+                "source": "https://github.com/VitalyLitvinov74/yii2-custom-validators/tree/v1.0.2"
             },
-            "time": "2022-07-21T17:59:37+00:00"
+            "time": "2022-07-24T21:18:32+00:00"
         },
         {
             "name": "yiisoft/yii2",

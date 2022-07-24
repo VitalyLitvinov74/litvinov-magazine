@@ -1,6 +1,7 @@
 FROM php:7.3-fpm
 ARG COMPOSER_VER
 ENV COMPOSER_VER ${COMPOSER_VER:-2.2.9}
+USER $USER
 
 WORKDIR /var/www/html
 
@@ -46,4 +47,4 @@ RUN curl -sS https://getcomposer.org/installer | \
 #RUN echo "max_execution_time = ${PHP_EXEC_TIME}" > $PHP_INI_DIR/conf.d/php_max_execution_time.ini
 #RUN echo "error_reporting = ${PHP_ERR_REPORT}" > $PHP_INI_DIR/conf.d/php_error_reporting.ini
 #RUN echo "upload_max_filesize=${UPLOAD_MAX_FILESIZE}" > $PHP_INI_DIR/conf.d/upload_max_filesize.ini
-USER 1000
+USER $USER
