@@ -30,7 +30,7 @@ class CollectionByForm implements ICollection
     }
 
     /**
-     * @return mixed - вернет список объектов, которые получились в следствии преобразования.
+     * @return IPrinter[] - вернет список объектов, которые получились в следствии преобразования.
      * @throws NotValidatedFields
      * @throws \Exception
      */
@@ -52,12 +52,11 @@ class CollectionByForm implements ICollection
      */
     public function printTo(IMedia $media): IMedia
     {
-        $medias = [];
-        foreach ($this->list() as $object){
-            /**@var IPrinter $object*/
-            $medias[] = $object->printTo(new JsonMedia())->toArray();
-        }
         $objectsType = end(explode('.', $this->objectsPathInForm));
-        return $media->add($objectsType, $medias);
+        foreach ($this->list() as $object){
+            $object->printTo($media);
+            $media->add($object, )
+        }
+        $media->add($objectsType, ??)
     }
 }

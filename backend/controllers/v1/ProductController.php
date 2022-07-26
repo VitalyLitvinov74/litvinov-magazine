@@ -7,7 +7,6 @@ namespace app\controllers\v1;
 
 
 use app\models\collections\CollectionByForm;
-use app\models\collections\ConvertedCollection;
 use app\models\collections\ObjectCollectionByQuery;
 use app\models\forms\ProductCardForm;
 use app\models\media\JsonMedia;
@@ -22,20 +21,14 @@ use vloop\entities\fields\FieldOfForm;
 use Yii;
 use yii\helpers\VarDumper;
 use yii\rest\Controller;
+use yii\web\JsonResponseFormatter;
+use yii\web\Response;
 
 class ProductController extends Controller
 {
-    public function runAction($id, $params = [])
-    {
-        return parent::runAction($id, $params);
-    }
-
     public function actionCreate()
     {
         $form = new ProductCardForm();
-        $form->load(Yii::$app->request->post(), '');
-        $form->validate();
-        VarDumper::dump($form->getErrors());die;
         $productCard = new CardWithProducts(
             new ProductCard(
                 new FieldOfForm($form, 'title'),
@@ -53,11 +46,12 @@ class ProductController extends Controller
                 $form
             )
         );
+//        Yii::$app->response->content =
+//            $productCard->printTo(new JsonMedia());
         return $productCard
 //            ->printTo(new TableProductCards())
 //            ->commit()
-            ->printTo(new JsonMedia())
-            ->toArray();
+            ->printTo(new JsonMedia());
     }
 
     public function actionById($id)

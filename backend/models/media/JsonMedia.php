@@ -5,10 +5,14 @@ namespace app\models\media;
 
 
 use app\models\contracts\IMedia;
+use JsonSerializable;
 use vloop\entities\standarts\json\IJsonStandart;
 use Yii;
+use yii\base\Arrayable;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
 
-class JsonMedia implements IMedia
+class JsonMedia implements IMedia, JsonSerializable
 {
     private $needleAdd;
 
@@ -19,17 +23,12 @@ class JsonMedia implements IMedia
 
     /**
      * @param string $key
-     * @param $value
-     * @param bool $keyIsList
+     * @param        $value
      * @return IMedia
      */
-    public function add(string $key, $value, bool $keyIsList = false): IMedia
+    public function add(string $key, $value): IMedia
     {
-        if($keyIsList){
-            $this->needleAdd[$key][] = $value;
-        }else{
-            $this->needleAdd[$key] = $value;
-        }
+        $this->needleAdd[$key] = $value;
         return $this;
     }
 
@@ -52,9 +51,13 @@ class JsonMedia implements IMedia
     }
 
     /**
-     * @return array
+     * Specify data which should be serialized to JSON
+     * @link  https://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4
      */
-    public function toArray()
+    public function jsonSerialize()
     {
         return $this->needleAdd;
     }
