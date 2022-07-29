@@ -4,6 +4,7 @@ namespace app\models\collections;
 
 use app\models\contracts\IMedia;
 use app\models\contracts\IPrinter;
+use app\models\media\ArrayMedia;
 use app\models\media\JsonMedia;
 use vloop\entities\contracts\IForm;
 use vloop\entities\exceptions\NotValidatedFields;
@@ -54,9 +55,12 @@ class CollectionByForm implements ICollection
     {
         $objectsType = end(explode('.', $this->objectsPathInForm));
         foreach ($this->list() as $object){
-            $object->printTo($media);
-            $media->add($object, )
+            /**@var ArrayMedia $arrayMedia*/
+            $arrayMedia = $object->printTo(new ArrayMedia());
+            foreach ($arrayMedia->toArray() as $item){
+                $media->add($objectsType, $item);
+            }
         }
-        $media->add($objectsType, ??)
+        return $media;
     }
 }

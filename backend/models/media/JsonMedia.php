@@ -38,19 +38,6 @@ class JsonMedia implements IMedia, JsonSerializable
     }
 
     /**
-     * В данном случае можем печатать себя в другие источники информации
-     * @param IMedia $media - источник информации куда необходимо записать себя
-     * @return IMedia - источник информации с только что записанными данными
-     */
-    public function printTo(IMedia $media): IMedia
-    {
-        foreach ($this->needleAdd as $key=>$val){
-            $media->add($key, $val);
-        }
-        return $media;
-    }
-
-    /**
      * Specify data which should be serialized to JSON
      * @link  https://php.net/manual/en/jsonserializable.jsonserialize.php
      * @return mixed data which can be serialized by <b>json_encode</b>,
