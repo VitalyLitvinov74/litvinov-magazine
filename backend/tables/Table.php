@@ -29,9 +29,9 @@ abstract class Table extends ActiveRecord implements IMedia
             $this->setAttribute($key, $value);
         }else{
             if($keyIsList){
-                $this->addedProperty[$key] = $value;
-            }else{
                 $this->addedProperty[$key][] = $value;
+            }else{
+                $this->addedProperty[$key] = $value;
             }
         }
         return $this;
