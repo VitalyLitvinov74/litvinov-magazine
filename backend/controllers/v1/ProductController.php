@@ -4,8 +4,7 @@
 namespace app\controllers\v1;
 
 
-
-
+use app\models\collections\CollectionByArray;
 use app\models\collections\CollectionByForm;
 use app\models\collections\ObjectCollectionByQuery;
 use app\models\forms\ProductCardForm;
@@ -39,34 +38,32 @@ class ProductController extends Controller
                 new FieldOfForm($form, 'description')
             ),
             new CollectionByForm( //Products collection into productCard
-                function (array $item) use ($form){
+                $form,
+                'products',
+                function (array $itemProduct) {
                     return new ProductWithCharacteristics(
                         new Product(
-                            new Field('price', $item['price']),
-                            new Field('count', $item['count'])
+                            new Field('price', $itemProduct['price']),
+                            new Field('count', $itemProduct['count'])
                         ),
-                        new CollectionByForm( //characteristic collection in Product
-                            function (array $item){
+                        new CollectionByArray( //characteristic collection in Product
+                            $itemProduct['characteristics'],
+                            'characteristics',
+                            function (array $itemCharacteristic) {
                                 return new Characteristic(
-                                    $item['type'],
-                                    $item['value']
+                                    $itemCharacteristic['name'],
+                                    $itemCharacteristic['value']
                                 );
-                            },
-                            'products.characteristics',
-                             $form
+                            }
                         )
                     );
-                },
-                'products',
-                $form
+                }
             )
         );
-//        Yii::$app->response->content =
-//            $productCard->printTo(new JsonMedia());
         return $productCard
-//            ->printTo(new TableProductCards())
-//            ->commit()
-            ->printTo(new JsonMedia());
+                ->printTo(new TableProductCards())
+                ->commit()
+                ->printTo(new JsonMedia());
     }
 
     public function actionById($id)
@@ -93,7 +90,7 @@ class ProductController extends Controller
                     new Field('id', $record->id),
                     new ProductCard(
                         new Field('id', $record->title),
-                        new Field('shortDescription', (string) $record->short_description),
+                        new Field('shortDescription', (string)$record->short_description),
                         new Field('description', $record->description)
                     )
                 );

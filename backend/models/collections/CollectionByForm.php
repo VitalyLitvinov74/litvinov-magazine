@@ -23,7 +23,7 @@ class CollectionByForm implements ICollection
      * @param string $objectsPathInForm - 'foo.bar.objectType', will be used Array::helper
      * @param IForm $form
      */
-    public function __construct(callable $exampleOfCreate, string $objectsPathInForm, IForm $form)
+    public function __construct(IForm $form, string $objectsPathInForm, callable $exampleOfCreate)
     {
         $this->form = $form;
         $this->exampleOfCreate = $exampleOfCreate;
@@ -38,9 +38,6 @@ class CollectionByForm implements ICollection
     public function list()
     {
         $validatedFields = $this->form->validatedFields();
-        if($this->objectsPathInForm == 'products.characteristics'){
-            VarDumper::dump($validatedFields);die;
-        }
         $objectsArrayList = ArrayHelper::getValue($validatedFields, $this->objectsPathInForm, []);
         $objectList = [];
         foreach ($objectsArrayList as $item){

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace app\models\shop\products\characteristics\contract;
+namespace app\models\shop\products\characteristics\contracts;
 
 
 use app\models\contracts\IPrinter;

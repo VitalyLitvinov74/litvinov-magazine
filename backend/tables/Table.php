@@ -6,12 +6,16 @@ namespace app\tables;
 
 use app\models\contracts\IMedia;
 use app\models\contracts\IPrinter;
+use app\models\media\ArrayMedia;
 use vloop\entities\exceptions\NotSavedData;
 use yii\db\ActiveRecord;
 use yii\helpers\Inflector;
+use yii\helpers\VarDumper;
 
-class Table extends ActiveRecord implements IMedia
+abstract class Table extends ActiveRecord implements IMedia
 {
+    protected $addedProperty = [];
+
     /**
      * @param string $key
      * @param        $value
@@ -22,10 +26,12 @@ class Table extends ActiveRecord implements IMedia
     {
         $key = Inflector::camel2id($key, '_');
         if($this->hasAttribute($key)){
+            $this->setAttribute($key, $value);
+        }else{
             if($keyIsList){
-                $this->$key[] = $value;
+                $this->addedProperty[$key] = $value;
             }else{
-                $this->setAttribute($key, $value);
+                $this->addedProperty[$key][] = $value;
             }
         }
         return $this;
@@ -38,12 +44,16 @@ class Table extends ActiveRecord implements IMedia
      */
     public function commit(): IMedia
     {
+        if(!empty($this->addedProperty) and $this->hasMethod('loadRelations')){
+            $this->loadRelations($this->addedProperty);
+        }
         if($this->save()){
             if($this->hasAttribute('id')){
                 $this->add('id', $this->id);
             }
             return $this;
         }
+        VarDumper::dump($this->getErrors());die;
         throw new NotSavedData($this->getErrors(), 422);
     }
 
@@ -51,6 +61,15 @@ class Table extends ActiveRecord implements IMedia
     {
         foreach ($this->attributes as $attributeName=> $attributeVal) {
             $media->add($attributeName, $attributeVal);
+        }
+        if(!empty($this->addedProperty)){
+            foreach ($this->addedProperty as $property=>$value){
+                if(is_array($value)){
+                    $media->add($property,$value, true);
+                }else{
+                    $media->add($property,$value);
+                }
+            }
         }
         return $media;
     }

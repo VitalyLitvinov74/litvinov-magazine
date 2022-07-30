@@ -4,7 +4,7 @@
 namespace app\models\shop\products\characteristics;
 
 
-use app\models\shop\products\characteristics\contract\ICharacteristic;
+use app\models\shop\products\characteristics\contracts\ICharacteristic;
 use app\models\contracts\IMedia;
 use vloop\entities\contracts\IField;
 

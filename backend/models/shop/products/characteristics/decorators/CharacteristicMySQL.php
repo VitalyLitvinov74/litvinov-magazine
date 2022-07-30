@@ -5,7 +5,7 @@ namespace app\models\shop\products\characteristics\decorators;
 
 
 use app\models\contracts\IMedia;
-use app\models\shop\products\characteristics\contract\ICharacteristic;
+use app\models\shop\products\characteristics\contracts\ICharacteristic;
 use vloop\entities\contracts\IField;
 
 class CharacteristicMySQL implements ICharacteristic

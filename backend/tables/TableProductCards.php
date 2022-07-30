@@ -5,9 +5,11 @@ namespace app\tables;
 
 
 use lhs\Yii2SaveRelationsBehavior\SaveRelationsBehavior;
+use lhs\Yii2SaveRelationsBehavior\SaveRelationsTrait;
 use yii\base\InvalidConfigException;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\helpers\VarDumper;
 
 /**
  * Class TableProductCards
@@ -17,9 +19,12 @@ use yii\db\ActiveRecord;
  * @property string $description Полное описание товара
  * @property string $short_description Краткое описание товара
  * @property TableProductImages[] $images
+ * @property TableProducts[] $products
  */
 class TableProductCards extends Table
 {
+    use SaveRelationsTrait;
+
     public function behaviors()
     {
         return [
@@ -27,6 +32,7 @@ class TableProductCards extends Table
                 'class'=>SaveRelationsBehavior::class,
                 'relations' => [
                     'images',
+                    'products'
                 ]
             ]
         ];
@@ -53,5 +59,15 @@ class TableProductCards extends Table
         return $this
             ->hasMany(TableProductImages::class, ['id' => 'image_id'])
             ->viaTable('product_images', ['product_id' => 'id']);
+    }
+
+    /**
+     * @return ActiveQuery
+     * @throws InvalidConfigException
+     */
+    public function getProducts(){
+        return $this
+            ->hasMany(TableProducts::class, ['id'=>'product_id'])
+            ->viaTable('products_via_cards', ['card_id'=>'id']);
     }
 }

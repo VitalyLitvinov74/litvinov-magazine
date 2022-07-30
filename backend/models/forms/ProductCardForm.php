@@ -36,7 +36,7 @@ class ProductCardForm extends AbstractForm
                             'rule'=>[
                                 ArrayValidator::class,
                                 "subRules"=>[
-                                    [['type', 'value'], 'required']
+                                    [['name', 'value'], 'required']
                                 ]
                             ]
                         ],
