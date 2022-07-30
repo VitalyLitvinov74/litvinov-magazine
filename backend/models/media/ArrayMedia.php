@@ -20,13 +20,18 @@ class ArrayMedia implements IMedia, Arrayable
 
     /**
      * @param string $key
-     * @param        $value
+     * @param mixed       $value
      * и добавляет новое значение в список
+     * @param bool $keyIsList
      * @return $this
      */
-    public function add(string $key, $value): IMedia
+    public function add(string $key, $value, bool $keyIsList = false): IMedia
     {
-        $this->list[$key] = $value;
+        if($keyIsList){
+            $this->list[$key][] = $value;
+        }else{
+            $this->list[$key] = $value;
+        }
         return $this;
     }
 
@@ -44,7 +49,7 @@ class ArrayMedia implements IMedia, Arrayable
      */
     public function fields()
     {
-        // TODO: Implement fields() method.
+        return $this->list;
     }
 
     /**
@@ -52,7 +57,7 @@ class ArrayMedia implements IMedia, Arrayable
      */
     public function extraFields()
     {
-        // TODO: Implement extraFields() method.
+        return $this->list;
     }
 
     /**
@@ -60,6 +65,6 @@ class ArrayMedia implements IMedia, Arrayable
      */
     public function toArray(array $fields = [], array $expand = [], $recursive = true)
     {
-        // TODO: Implement toArray() method.
+        return $this->list;
     }
 }

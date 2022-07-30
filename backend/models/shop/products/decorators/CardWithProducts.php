@@ -7,6 +7,7 @@ namespace app\models\shop\products\decorators;
 use app\models\collections\CollectionByForm;
 use app\models\collections\ICollection;
 use app\models\contracts\IMedia;
+use app\models\media\ArrayMedia;
 use app\models\media\JsonMedia;
 use app\models\shop\products\contracts\IProduct;
 use app\models\shop\products\contracts\IProductCard;

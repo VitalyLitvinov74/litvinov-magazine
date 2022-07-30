@@ -26,9 +26,14 @@ class JsonMedia implements IMedia, JsonSerializable
      * @param        $value
      * @return IMedia
      */
-    public function add(string $key, $value): IMedia
+    public function add(string $key, $value, bool $keyIsList = false): IMedia
     {
-        $this->needleAdd[$key] = $value;
+        if($keyIsList){
+            $this->needleAdd[$key][] = $value;
+        }
+        else{
+            $this->needleAdd[$key] = $value;
+        }
         return $this;
     }
 

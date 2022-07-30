@@ -38,6 +38,9 @@ class CollectionByForm implements ICollection
     public function list()
     {
         $validatedFields = $this->form->validatedFields();
+        if($this->objectsPathInForm == 'products.characteristics'){
+            VarDumper::dump($validatedFields);die;
+        }
         $objectsArrayList = ArrayHelper::getValue($validatedFields, $this->objectsPathInForm, []);
         $objectList = [];
         foreach ($objectsArrayList as $item){
@@ -57,9 +60,7 @@ class CollectionByForm implements ICollection
         foreach ($this->list() as $object){
             /**@var ArrayMedia $arrayMedia*/
             $arrayMedia = $object->printTo(new ArrayMedia());
-            foreach ($arrayMedia->toArray() as $item){
-                $media->add($objectsType, $item);
-            }
+            $media->add($objectsType, $arrayMedia->fields(), true);
         }
         return $media;
     }

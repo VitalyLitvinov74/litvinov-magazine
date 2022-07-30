@@ -10,9 +10,11 @@ use app\models\collections\CollectionByForm;
 use app\models\collections\ObjectCollectionByQuery;
 use app\models\forms\ProductCardForm;
 use app\models\media\JsonMedia;
+use app\models\shop\products\characteristics\Characteristic;
 use app\models\shop\products\decorators\CardWithProducts;
 use app\models\shop\products\decorators\ProductCardById;
 use app\models\shop\products\decorators\ProductCardMySQL;
+use app\models\shop\products\decorators\ProductWithCharacteristics;
 use app\models\shop\products\Product;
 use app\models\shop\products\ProductCard;
 use app\tables\TableProductCards;
@@ -29,17 +31,30 @@ class ProductController extends Controller
     public function actionCreate()
     {
         $form = new ProductCardForm();
+
         $productCard = new CardWithProducts(
             new ProductCard(
                 new FieldOfForm($form, 'title'),
                 new FieldOfForm($form, 'shortDescription'),
                 new FieldOfForm($form, 'description')
             ),
-            new CollectionByForm(
-                function (array $item){
-                    return new Product(
-                        new Field('price', $item['price']),
-                        new Field('count', $item['count'])
+            new CollectionByForm( //Products collection into productCard
+                function (array $item) use ($form){
+                    return new ProductWithCharacteristics(
+                        new Product(
+                            new Field('price', $item['price']),
+                            new Field('count', $item['count'])
+                        ),
+                        new CollectionByForm( //characteristic collection in Product
+                            function (array $item){
+                                return new Characteristic(
+                                    $item['type'],
+                                    $item['value']
+                                );
+                            },
+                            'products.characteristics',
+                             $form
+                        )
                     );
                 },
                 'products',
