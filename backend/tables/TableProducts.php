@@ -4,7 +4,9 @@
 namespace app\tables;
 
 
+use lhs\Yii2SaveRelationsBehavior\SaveRelationsBehavior;
 use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 
 /**
  * Class TableProducts
@@ -14,6 +16,7 @@ use yii\db\ActiveRecord;
  * @property int $price [int(11)]  Стоимость продукта умноженная на 100
  * @property TableProductCards $productCard
  * @property TableProductImages[] $images
+ * @property TableProductCharacteristics
  */
 class TableProducts extends Table
 {
@@ -22,10 +25,25 @@ class TableProducts extends Table
         return 'products';
     }
 
+    public function behaviors()
+    {
+        return ArrayHelper::merge(
+            parent::behaviors(),
+            [
+                'saveRelations'=>[
+                    'relations'=>[
+                        'characteristics'
+                    ]
+                ]
+            ]
+        );
+    }
+
     public function rules()
     {
         return [
-            ['id', 'exist', 'message' => 'Не удалось найти товар с указанным ID']
+            ['id', 'exist', 'message' => 'Не удалось найти товар с указанным ID'],
+            [['price', 'count'], 'safe']
         ];
     }
 
@@ -36,8 +54,8 @@ class TableProducts extends Table
             ->viaTable('products_via_cards', ['product_id'=>'id']);
     }
 
-    public function getImages()
-    {
-        return $this->hasMany(TableProductImages::class, ['product_id'=>'id']);
+    public function getCharacteristics(){
+        return $this
+            ->hasMany(TableProductCharacteristics::class, ['product_id'=>'id']);
     }
 }

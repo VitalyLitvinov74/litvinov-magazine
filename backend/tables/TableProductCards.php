@@ -9,40 +9,34 @@ use lhs\Yii2SaveRelationsBehavior\SaveRelationsTrait;
 use yii\base\InvalidConfigException;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 use yii\helpers\VarDumper;
 
 /**
  * Class TableProductCards
  * @package app\tables
- * @property int $id [int(11)]
- * @property string $title [varchar(255)]  Наименование товара
- * @property string $description Полное описание товара
- * @property string $short_description Краткое описание товара
+ * @property int                  $id                [int(11)]
+ * @property string               $title             [varchar(255)]  Наименование товара
+ * @property string               $description       Полное описание товара
+ * @property string               $short_description Краткое описание товара
  * @property TableProductImages[] $images
- * @property TableProducts[] $products
+ * @property TableProducts[]      $products
  */
 class TableProductCards extends Table
 {
-    use SaveRelationsTrait;
 
     public function behaviors()
     {
-        return [
-            'saveRelations'=>[
-                'class'=>SaveRelationsBehavior::class,
-                'relations' => [
-                    'images',
-                    'products'
+        return ArrayHelper::merge(
+            parent::behaviors(),
+            [
+                'saveRelations' => [
+                    'relations' => [
+                        'products',
+                    ],
                 ]
             ]
-        ];
-    }
-
-    public function rules()
-    {
-        return [
-            [['images'], 'safe']
-        ];
+        );
     }
 
     public static function tableName()
@@ -65,9 +59,10 @@ class TableProductCards extends Table
      * @return ActiveQuery
      * @throws InvalidConfigException
      */
-    public function getProducts(){
+    public function getProducts()
+    {
         return $this
-            ->hasMany(TableProducts::class, ['id'=>'product_id'])
-            ->viaTable('products_via_cards', ['card_id'=>'id']);
+            ->hasMany(TableProducts::class, ['id' => 'product_id'])
+            ->viaTable('products_via_cards', ['card_id' => 'id']);
     }
 }

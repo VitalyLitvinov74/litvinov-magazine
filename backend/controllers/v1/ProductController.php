@@ -17,6 +17,7 @@ use app\models\shop\products\decorators\ProductWithCharacteristics;
 use app\models\shop\products\Product;
 use app\models\shop\products\ProductCard;
 use app\tables\TableProductCards;
+use app\tables\TableProducts;
 use vloop\entities\fields\Field;
 use vloop\entities\fields\FieldOfForm;
 use Yii;
@@ -30,7 +31,6 @@ class ProductController extends Controller
     public function actionCreate()
     {
         $form = new ProductCardForm();
-
         $productCard = new CardWithProducts(
             new ProductCard(
                 new FieldOfForm($form, 'title'),
@@ -41,29 +41,36 @@ class ProductController extends Controller
                 $form,
                 'products',
                 function (array $itemProduct) {
-                    return new ProductWithCharacteristics(
-                        new Product(
-                            new Field('price', $itemProduct['price']),
-                            new Field('count', $itemProduct['count'])
-                        ),
-                        new CollectionByArray( //characteristic collection in Product
-                            $itemProduct['characteristics'],
-                            'characteristics',
-                            function (array $itemCharacteristic) {
-                                return new Characteristic(
-                                    $itemCharacteristic['name'],
-                                    $itemCharacteristic['value']
-                                );
-                            }
-                        )
+                    if (isset($itemProduct['characteristics'])) {
+                        return
+                            new ProductWithCharacteristics(
+                                new Product(
+                                    new Field('price', $itemProduct['price']),
+                                    new Field('count', $itemProduct['count'])
+                                ),
+                                new CollectionByArray(
+                                    $itemProduct['characteristics'],
+                                    'characteristics',
+                                    function (array $characteristic) {
+                                        return new Characteristic(
+                                            $characteristic['name'],
+                                            $characteristic['value']
+                                        );
+                                    }
+                                )
+                            );
+                    }
+                    return new Product(
+                        new Field('price', $itemProduct['price']),
+                        new Field('count', $itemProduct['count'])
                     );
                 }
             )
         );
         return $productCard
-                ->printTo(new TableProductCards())
-                ->commit()
-                ->printTo(new JsonMedia());
+            ->printTo(new TableProductCards())
+            ->commit()
+            ->printTo(new JsonMedia());
     }
 
     public function actionById($id)

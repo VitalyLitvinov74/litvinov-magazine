@@ -40,7 +40,7 @@ class ProductCardForm extends AbstractForm
                                 ]
                             ]
                         ],
-                        ['characteristics', 'required']
+                        ['characteristics', 'safe']
                     ]
                 ]
             ]
