@@ -21,6 +21,7 @@ use app\tables\TableProducts;
 use vloop\entities\fields\Field;
 use vloop\entities\fields\FieldOfForm;
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii\helpers\VarDumper;
 use yii\rest\Controller;
 use yii\web\JsonResponseFormatter;
@@ -41,29 +42,23 @@ class ProductController extends Controller
                 $form,
                 'products',
                 function (array $itemProduct) {
-                    if (isset($itemProduct['characteristics'])) {
-                        return
-                            new ProductWithCharacteristics(
-                                new Product(
-                                    new Field('price', $itemProduct['price']),
-                                    new Field('count', $itemProduct['count'])
-                                ),
-                                new CollectionByArray(
-                                    $itemProduct['characteristics'],
-                                    'characteristics',
-                                    function (array $characteristic) {
-                                        return new Characteristic(
-                                            $characteristic['name'],
-                                            $characteristic['value']
-                                        );
-                                    }
-                                )
-                            );
-                    }
-                    return new Product(
-                        new Field('price', $itemProduct['price']),
-                        new Field('count', $itemProduct['count'])
-                    );
+                    return
+                        new ProductWithCharacteristics(
+                            new Product(
+                                new Field('price', $itemProduct['price']),
+                                new Field('count', $itemProduct['count'])
+                            ),
+                            new CollectionByArray(
+                                ArrayHelper::getValue($itemProduct, 'characteristics', []),
+                                'characteristics',
+                                function (array $characteristic) {
+                                    return new Characteristic(
+                                        $characteristic['name'],
+                                        $characteristic['value']
+                                    );
+                                }
+                            )
+                        );
                 }
             )
         );

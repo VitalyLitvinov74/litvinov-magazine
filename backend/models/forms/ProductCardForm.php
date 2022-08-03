@@ -26,21 +26,21 @@ class ProductCardForm extends AbstractForm
                 CustomEachValidator::class,
                 "rule" => [
                     ArrayValidator::class,
-                    'subRules'=>[
+                    'subRules' => [
                         [['price', 'count'], 'required'],
-                        ['price','number', 'min'=>0],
-                        ['count', 'integer', 'min'=>0],
+                        ['price', 'number', 'min' => 0],
+                        ['count', 'integer', 'min' => 0],
+                        ['characteristics', 'default', 'value'=>[]],
                         [
                             'characteristics',
                             CustomEachValidator::class,
-                            'rule'=>[
+                            'rule' => [
                                 ArrayValidator::class,
-                                "subRules"=>[
+                                "subRules" => [
                                     [['name', 'value'], 'required']
-                                ]
-                            ]
+                                ],
+                            ],
                         ],
-                        ['characteristics', 'safe']
                     ]
                 ]
             ]
