@@ -21,29 +21,29 @@ class ProductCardForm extends AbstractForm
         return [
             [['description', 'shortDescription', 'title'], 'required'],
             [['description', 'shortDescription', 'title'], 'string'],
-            [
-                'products',
-                CustomEachValidator::class,
-                "rule" => [
-                    ArrayValidator::class,
-                    'subRules' => [
-                        [['price', 'count'], 'required'],
-                        ['price', 'number', 'min' => 0],
-                        ['count', 'integer', 'min' => 0],
-                        ['characteristics', 'default', 'value'=>[]],
-                        [
-                            'characteristics',
-                            CustomEachValidator::class,
-                            'rule' => [
-                                ArrayValidator::class,
-                                "subRules" => [
-                                    [['name', 'value'], 'required']
-                                ],
-                            ],
-                        ],
-                    ]
-                ]
-            ]
+//            [
+//                'products',
+//                CustomEachValidator::class,
+//                "rule" => [
+//                    ArrayValidator::class,
+//                    'subRules' => [
+//                        [['price', 'count'], 'required'],
+//                        ['price', 'number', 'min' => 0],
+//                        ['count', 'integer', 'min' => 0],
+//                        ['characteristics', 'default', 'value'=>[]],
+//                        [
+//                            'characteristics',
+//                            CustomEachValidator::class,
+//                            'rule' => [
+//                                ArrayValidator::class,
+//                                "subRules" => [
+//                                    [['name', 'value'], 'required']
+//                                ],
+//                            ],
+//                        ],
+//                    ]
+//                ]
+//            ]
         ];
     }
 }
