@@ -16,7 +16,7 @@ use yii\helpers\ArrayHelper;
  * @property int $price [int(11)]  Стоимость продукта умноженная на 100
  * @property TableProductCards $productCard
  * @property TableProductImages[] $images
- * @property TableProductCharacteristics
+ * @property TableProductCharacteristics[] $characteristics
  */
 class TableProducts extends Table
 {

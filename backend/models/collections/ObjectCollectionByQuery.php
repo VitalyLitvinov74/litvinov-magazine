@@ -4,6 +4,7 @@ namespace app\models\collections;
 
 use app\models\contracts\IMedia;
 use app\models\contracts\IPrinter;
+use app\models\media\ArrayMedia;
 use app\models\media\JsonMedia;
 use vloop\entities\contracts\IField;
 use yii\db\ActiveRecord;
@@ -54,7 +55,7 @@ class ObjectCollectionByQuery extends CollectionByRecord
         $medias = [];
         foreach ($this->list() as $item){
             /**@var IPrinter $item*/
-            $medias[] =  $item->printTo(new JsonMedia())->toArray();
+            $medias[] =  $item->printTo(new ArrayMedia());
         }
         $media->add('type', $medias);
         return $media;
