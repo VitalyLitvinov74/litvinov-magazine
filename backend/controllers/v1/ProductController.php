@@ -46,16 +46,16 @@ class ProductController extends Controller
                 'products',
                 function (array $itemProduct) {
                     return
-                        new ProductWithCharacteristics(
+                        new ProductWithCharacteristics( // Concrete product
                             new Product(
                                 new Field('price', $itemProduct['price']),
                                 new Field('count', $itemProduct['count'])
                             ),
-                            new CollectionByArray(
+                            new CollectionByArray( // Collection of characteristics
                                 ArrayHelper::getValue($itemProduct, 'characteristics', []),
                                 'characteristics',
                                 function (array $characteristic) {
-                                    return new Characteristic(
+                                    return new Characteristic( // Concrete Characteristic
                                         $characteristic['name'],
                                         $characteristic['value']
                                     );

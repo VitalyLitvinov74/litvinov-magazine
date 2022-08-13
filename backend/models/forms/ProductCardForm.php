@@ -28,10 +28,8 @@ class ProductCardForm extends AbstractForm
                 CustomEachValidator::class,
                 "rule" => [
                     ArrayValidator::class,
-                    'subRules' => [
-                        $this->otherFormRules(
-                            new ProductForm()
-                        ),
+                    'subRules' => $this->mergeWithFormRules(
+                        new ProductForm(),
                         ['characteristics', 'default', 'value' => []],
                         [
                             'characteristics',
@@ -42,15 +40,19 @@ class ProductCardForm extends AbstractForm
                                     [['name', 'value'], 'required']
                                 ],
                             ],
-                        ],
-                    ]
+                        ]
+                    )
                 ]
             ]
         ];
     }
 
-    private function otherFormRules(Model $form): array
-    {
-        return $form->rules()[0];
+    private function mergeWithFormRules(Model $model, array ...$rulesList): array {
+        $totalRules = [];
+        $totalRules = array_merge($totalRules, $model->rules());
+        foreach ($rulesList as $rule){
+            $totalRules = array_merge($totalRules, [$rule]);
+        }
+        return $totalRules;
     }
 }
