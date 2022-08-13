@@ -29,7 +29,7 @@ class ProductCardForm extends AbstractForm
                 "rule" => [
                     ArrayValidator::class,
                     'subRules' => [
-                        $this->rulesFormForm(
+                        $this->otherFormRules(
                             new ProductForm()
                         ),
                         ['characteristics', 'default', 'value' => []],
@@ -49,7 +49,7 @@ class ProductCardForm extends AbstractForm
         ];
     }
 
-    private function rulesFormForm(Model $form): array
+    private function otherFormRules(Model $form): array
     {
         return $form->rules()[0];
     }
