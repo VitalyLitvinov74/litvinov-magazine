@@ -6,7 +6,7 @@ namespace app\controllers\v1;
 
 use app\models\collections\CollectionByArray;
 use app\models\collections\CollectionByForm;
-use app\models\collections\ObjectCollectionByQuery;
+use app\models\collections\CollectionByQuery;
 use app\models\forms\FormFamily;
 use app\models\forms\FamilyForm;
 use app\models\forms\ProductCardForm;
@@ -14,7 +14,7 @@ use app\models\forms\ProductForm;
 use app\models\media\ArrayMedia;
 use app\models\media\JsonMedia;
 use app\models\shop\products\characteristics\Characteristic;
-use app\models\shop\products\decorators\CardWithProducts;
+use app\models\shop\products\decorators\ProductCardWithProducts;
 use app\models\shop\products\decorators\ProductCardById;
 use app\models\shop\products\decorators\ProductCardMySQL;
 use app\models\shop\products\decorators\ProductMysql;
@@ -38,7 +38,7 @@ class ProductController extends Controller
     public function actionCreate()
     {
         $form = new ProductCardForm();
-        $productCard = new CardWithProducts(
+        $productCard = new ProductCardWithProducts(
             new ProductCard(
                 new FieldOfForm($form, 'title'),
                 new FieldOfForm($form, 'shortDescription'),
@@ -74,28 +74,38 @@ class ProductController extends Controller
             ->printTo(new JsonMedia());
     }
 
-    public function actionById($id)
+    public function actionById(int $id)
     {
-        $productCard = new ProductCardById(
-            new Field('id', $id)
+        $productCard = new ProductCardWithProducts(
+            new ProductCardById(
+                new Field('id', $id)
+            ),
+            new CollectionByQuery(
+                TableProducts::find()
+                    ->rightJoin( 'products_via_cards', 'product_id = products.id')
+                    ->where(['card_id' => $id]),
+                function (TableProducts $product) {
+                    return new ProductMysql(
+                        new Field('id', $product->id),
+                        new Product(
+                            new Field('count', $product->price),
+                            new Field('price', $product->count)
+                        )
+                    );
+                }
+            )
         );
         return $productCard
-            ->printTo(new JsonMedia())
-            ->toArray();
-    }
-
-    public function addImage()
-    {
-
+            ->printTo(new JsonMedia());
     }
 
     public function actionShowAll()
     {
-        $list = new ObjectCollectionByQuery(
+        $list = new CollectionByQuery(
             TableProductCards::find(),
             function (TableProductCards $record) {
                 return
-                    new CardWithProducts(
+                    new ProductCardWithProducts(
                         new ProductCardMySQL(
                             new Field('id', $record->id),
                             new ProductCard(

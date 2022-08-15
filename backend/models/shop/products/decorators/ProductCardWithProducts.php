@@ -14,7 +14,7 @@ use app\models\shop\products\contracts\IProductCard;
 use app\models\shop\products\Product;
 use vloop\entities\contracts\IForm;
 
-class CardWithProducts implements IProductCard
+class ProductCardWithProducts implements IProductCard
 {
     private $cardOrigin;
     private $products;

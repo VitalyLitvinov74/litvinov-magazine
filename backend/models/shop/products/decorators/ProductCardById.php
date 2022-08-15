@@ -6,9 +6,11 @@ namespace app\models\shop\products\decorators;
 
 use app\models\contracts\IMedia;
 use app\models\shop\products\contracts\IProductCard;
+use app\models\shop\products\ProductCard;
 use app\tables\TableProductCards;
 use vloop\entities\contracts\IField;
 use vloop\entities\contracts\IForm;
+use vloop\entities\exceptions\NotFoundEntity;
 use vloop\entities\fields\Field;
 use yii\db\Query;
 
@@ -24,6 +26,7 @@ class ProductCardById implements IProductCard
     /**
      * @param IMedia $media - источник информации куда необходимо записать себя
      * @return IMedia - источник информации с только что записанными данными
+     * @throws NotFoundEntity
      */
     public function printTo(IMedia $media): IMedia
     {
@@ -33,6 +36,7 @@ class ProductCardById implements IProductCard
     /**
      * @param IForm $form
      * @return $this - возвращает новую карточку товара с изменнным именем
+     * @throws NotFoundEntity
      */
     public function changeTitle(IForm $form): IProductCard
     {
@@ -42,6 +46,7 @@ class ProductCardById implements IProductCard
     /**
      * @param IForm $form
      * @return $this - возвращает новую карточку товара с измененными кратким, и полным описаниями
+     * @throws NotFoundEntity
      */
     public function changeDescriptions(IForm $form): IProductCard
     {
@@ -58,6 +63,7 @@ class ProductCardById implements IProductCard
 
     /**
      * @return IProductCard
+     * @throws NotFoundEntity
      */
     private function origin()
     {
@@ -73,6 +79,7 @@ class ProductCardById implements IProductCard
                 )
             );
         }
+        throw new NotFoundEntity('Карточка продукта не найдена', 'Объект не найден');
     }
 
     private function record(): TableProductCards

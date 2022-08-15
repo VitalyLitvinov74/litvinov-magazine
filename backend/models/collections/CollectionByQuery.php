@@ -10,7 +10,7 @@ use vloop\entities\contracts\IField;
 use yii\db\ActiveRecord;
 use yii\db\Query;
 
-class ObjectCollectionByQuery extends CollectionByRecord
+class CollectionByQuery extends CollectionByRecord
 {
     private $_exampleOfCreate;
     private $query;
