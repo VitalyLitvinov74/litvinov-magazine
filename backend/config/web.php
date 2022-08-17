@@ -1,5 +1,10 @@
 <?php
 
+use app\controllers\JsonErrorsAction;
+use vloop\entities\exceptions\AbstractException;
+use yii\helpers\Inflector;
+use yii\web\Response;
+
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 
@@ -9,8 +14,8 @@ $config = [
     'bootstrap' => ['log'],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
-        '@npm'   => '@vendor/npm-asset',
-        '@product'=>'@app/web/files/product'
+        '@npm' => '@vendor/npm-asset',
+        '@product' => '@app/web/files/product'
     ],
     'components' => [
         'request' => [
@@ -20,6 +25,21 @@ $config = [
                 'application/json' => 'yii\web\JsonParser',
             ]
         ],
+        'response'=>[
+            'on beforeSend'=>function ($event) {
+                /**@var Response $response */
+                $response = $event->sender;
+                $exception = Yii::$app->errorHandler->exception;
+                if ($exception instanceof AbstractException and $response->statusCode >= 400){
+                    $response->data = [
+                        'status'=> $exception->getCode(),
+                        'title'=>$exception->getMessage(),
+                        'detail'=>$exception->errors()
+                    ];
+                    $response->statusCode = $exception->getCode();
+                }
+            },
+        ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
@@ -27,9 +47,7 @@ $config = [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
         ],
-        'errorHandler' => [
-            'errorAction' => 'site/error',
-        ],
+
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
             // send all mails to a file by default. You have to set
@@ -51,7 +69,7 @@ $config = [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'rules' => [
+            'rules' =>  [
             ],
         ],
 

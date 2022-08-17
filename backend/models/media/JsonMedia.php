@@ -5,7 +5,9 @@ namespace app\models\media;
 
 
 use app\models\contracts\IMedia;
+use Exception;
 use JsonSerializable;
+use vloop\entities\exceptions\AbstractException;
 use vloop\entities\standarts\json\IJsonStandart;
 use Yii;
 use yii\base\Arrayable;
