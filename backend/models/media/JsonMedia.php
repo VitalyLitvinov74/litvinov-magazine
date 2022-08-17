@@ -11,6 +11,7 @@ use Yii;
 use yii\base\Arrayable;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
+use yii\helpers\VarDumper;
 
 class JsonMedia implements IMedia, JsonSerializable
 {

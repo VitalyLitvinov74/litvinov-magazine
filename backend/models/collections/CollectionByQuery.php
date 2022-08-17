@@ -6,19 +6,23 @@ use app\models\contracts\IMedia;
 use app\models\contracts\IPrinter;
 use app\models\media\ArrayMedia;
 use app\models\media\JsonMedia;
+use app\tables\Table;
 use vloop\entities\contracts\IField;
 use yii\db\ActiveRecord;
 use yii\db\Query;
+use yii\helpers\VarDumper;
 
 class CollectionByQuery extends CollectionByRecord
 {
     private $_exampleOfCreate;
     private $query;
+    private $objectsType;
 
     public function __construct(Query $query, callable $exampleOfCreate)
     {
         $this->_exampleOfCreate = $exampleOfCreate;
         $this->query = $query;
+        $this->objectsType = $objectsType;
     }
 
     /**
@@ -52,12 +56,13 @@ class CollectionByQuery extends CollectionByRecord
      */
     public function printTo(IMedia $media): IMedia
     {
-        $medias = [];
-        foreach ($this->list() as $item){
-            /**@var IPrinter $item*/
-            $medias[] =  $item->printTo(new ArrayMedia());
+        foreach ($this->list() as $key=>$item){
+            /**@var Table $item*/
+            //айтем печатает себя в массив. затем добавляем этот массив в наш медиа.
+            $media->add(
+                $key,
+                $item->printTo(new ArrayMedia()));
         }
-        $media->add('type', $medias);
         return $media;
     }
 }
