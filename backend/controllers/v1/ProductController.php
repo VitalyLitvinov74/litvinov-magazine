@@ -155,4 +155,27 @@ class ProductController extends Controller
     {
 
     }
+
+    public function actionTestCreate(){
+        $form = new ProductCardForm();
+        $productCard = new ProductCard(
+            new FieldOfForm($form, 'title'),
+            new FieldOfForm($form, 'shortDescription'),
+            new FieldOfForm($form, 'description')
+        );
+        $products = new CollectionByForm($form,'products', function($item){
+            return new Product(
+                new Field('price', $item['count']),
+                new Field('count', $item['count']),
+            );
+        });
+        $somebody = new SomeBody(
+            [
+                new TableProductCards(),
+                new JsonMedia()
+            ],
+            
+        );
+        return $somebody->mergedMedias();
+    }
 }
