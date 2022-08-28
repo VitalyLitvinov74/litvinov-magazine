@@ -6,11 +6,12 @@ namespace app\models\shop\products\decorators;
 
 use app\models\collections\ICollection;
 use app\models\contracts\IMedia;
+use app\models\contracts\IPrinter;
 use app\models\shop\products\characteristics\contracts\ICharacteristic;
 use app\models\shop\products\contracts\IProduct;
 use vloop\entities\contracts\IField;
 
-class ProductWithCharacteristics implements IProduct
+class ProductWithCollection implements IPrinter
 {
     private $origin;
     private $characteristicsCollection;

@@ -14,20 +14,20 @@ use app\models\shop\products\contracts\IProductCard;
 use app\models\shop\products\Product;
 use vloop\entities\contracts\IForm;
 
-class ProductCardWithProducts implements IProductCard
+class ProductCardWithCollection implements IProductCard
 {
-    private $cardOrigin;
-    private $products;
+    private $origin;
+    private $list;
 
     /**
      * CardsWithProducts constructor.
      * @param IProductCard $productCard
-     * @param ICollection  $products
+     * @param ICollection  $collection
      */
-    public function __construct(IProductCard $productCard, ICollection $products)
+    public function __construct(IProductCard $productCard, ICollection $collection)
     {
-        $this->cardOrigin = $productCard;
-        $this->products = $products;
+        $this->origin = $productCard;
+        $this->list = $collection;
     }
 
     /**
@@ -36,8 +36,8 @@ class ProductCardWithProducts implements IProductCard
      */
     public function printTo(IMedia $media): IMedia
     {
-        $this->cardOrigin->printTo($media);
-        $this->products->printTo($media);
+        $this->origin->printTo($media);
+        $this->list->printTo($media);
         return $media;
     }
 
@@ -47,7 +47,7 @@ class ProductCardWithProducts implements IProductCard
      */
     public function changeTitle(IForm $form): IProductCard
     {
-        $this->cardOrigin->changeTitle($form);
+        $this->origin->changeTitle($form);
         return $this;
     }
 
@@ -57,7 +57,7 @@ class ProductCardWithProducts implements IProductCard
      */
     public function changeDescriptions(IForm $form): IProductCard
     {
-        $this->cardOrigin->changeDescriptions($form);
+        $this->origin->changeDescriptions($form);
         return $this;
     }
 
@@ -66,9 +66,9 @@ class ProductCardWithProducts implements IProductCard
      */
     public function remove(): void
     {
-        foreach ($this->products as $product){
-            $product->remove();
+        foreach ($this->list as $item){
+            $item->remove();
         }
-        $this->cardOrigin->remove();
+        $this->origin->remove();
     }
 }

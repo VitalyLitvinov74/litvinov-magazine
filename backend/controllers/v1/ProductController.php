@@ -9,13 +9,16 @@ use app\models\collections\CollectionByArray;
 use app\models\collections\CollectionByForm;
 use app\models\collections\CollectionByQuery;
 use app\models\forms\ProductCardForm;
+use app\models\media\ArrayMedia;
 use app\models\media\JsonMedia;
+use app\models\media\MutationMedia;
+use app\models\media\RelationToPrint;
 use app\models\shop\products\characteristics\Characteristic;
-use app\models\shop\products\decorators\ProductCardWithProducts;
+use app\models\shop\products\decorators\ProductCardWithCollection;
 use app\models\shop\products\decorators\ProductCardById;
 use app\models\shop\products\decorators\ProductCardMySQL;
 use app\models\shop\products\decorators\ProductMysql;
-use app\models\shop\products\decorators\ProductWithCharacteristics;
+use app\models\shop\products\decorators\ProductWithCollection;
 use app\models\shop\products\Product;
 use app\models\shop\products\ProductCard;
 use app\tables\TableProductCards;
@@ -34,7 +37,7 @@ class ProductController extends Controller
     public function actionCreate()
     {
         $form = new ProductCardForm();
-        $productCard = new ProductCardWithProducts(
+        $productCard = new ProductCardWithCollection(
             new ProductCard(
                 new FieldOfForm($form, 'title'),
                 new FieldOfForm($form, 'shortDescription'),
@@ -45,7 +48,7 @@ class ProductController extends Controller
                 'products',
                 function (array $itemProduct) {
                     return
-                        new ProductWithCharacteristics( // Concrete product
+                        new ProductWithCollection( // Concrete product
                             new Product(
                                 new Field('price', $itemProduct['price']),
                                 new Field('count', $itemProduct['count'])
@@ -72,13 +75,13 @@ class ProductController extends Controller
 
     public function actionById(int $id)
     {
-        $productCard = new ProductCardWithProducts(
+        $productCard = new ProductCardWithCollection(
             new ProductCardById(
                 new Field('id', $id)
             ),
             new CollectionByQuery(
                 TableProducts::find()
-                    ->rightJoin( 'products_via_cards', 'product_id = products.id')
+                    ->rightJoin('products_via_cards', 'product_id = products.id')
                     ->where(['card_id' => $id]),
                 function (TableProducts $product) {
                     return new ProductMysql(
@@ -101,7 +104,7 @@ class ProductController extends Controller
             TableProductCards::find(),
             function (TableProductCards $record) {
                 return
-                    new ProductCardWithProducts(
+                    new ProductCardWithCollection(
                         new ProductCardMySQL(
                             new Field('id', $record->id),
                             new ProductCard(
@@ -115,7 +118,7 @@ class ProductController extends Controller
                             'products',
                             function (TableProducts $product) {
                                 return
-                                    new ProductWithCharacteristics(
+                                    new ProductWithCollection(
                                         new ProductMysql(
                                             new Field('id', $product->id),
                                             new Product(
@@ -154,28 +157,5 @@ class ProductController extends Controller
     public function actionChangeDescriptions()
     {
 
-    }
-
-    public function actionTestCreate(){
-        $form = new ProductCardForm();
-        $productCard = new ProductCard(
-            new FieldOfForm($form, 'title'),
-            new FieldOfForm($form, 'shortDescription'),
-            new FieldOfForm($form, 'description')
-        );
-        $products = new CollectionByForm($form,'products', function($item){
-            return new Product(
-                new Field('price', $item['count']),
-                new Field('count', $item['count']),
-            );
-        });
-        $somebody = new SomeBody(
-            [
-                new TableProductCards(),
-                new JsonMedia()
-            ],
-            
-        );
-        return $somebody->mergedMedias();
     }
 }

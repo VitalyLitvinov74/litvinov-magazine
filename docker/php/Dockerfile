@@ -1,4 +1,4 @@
-FROM php:7.3-fpm
+FROM php:7.4-fpm
 ARG COMPOSER_VER
 ENV COMPOSER_VER ${COMPOSER_VER:-2.2.9}
 USER $USER
@@ -17,7 +17,6 @@ RUN apt-get -y install nodejs \
     git \
     unzip
 #RUN npm --version
-RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
 RUN docker-php-ext-install \
         soap \
         zip \
@@ -26,13 +25,13 @@ RUN docker-php-ext-install \
         gd \
         iconv \
         intl \
-        mbstring \
+#        mbstring \
         opcache \
         pdo_mysql \
         sockets
 
-RUN pecl install xdebug \
-    && docker-php-ext-enable xdebug
+#RUN pecl install xdebug \
+#   && docker-php-ext-enable xdebug
 
 RUN curl -sS https://getcomposer.org/installer | \
             php -- --install-dir /usr/local/bin --filename composer --version ${COMPOSER_VER}
