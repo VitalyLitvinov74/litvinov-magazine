@@ -4,6 +4,7 @@ namespace app\models\collections;
 
 use app\models\contracts\IMedia;
 use app\models\contracts\IPrinter;
+use app\models\contracts\ITrash;
 use app\models\media\ArrayMedia;
 use app\models\media\JsonMedia;
 use app\tables\Table;
@@ -16,13 +17,11 @@ class CollectionByQuery extends CollectionByRecord
 {
     private $_exampleOfCreate;
     private $query;
-    private $objectsType;
 
     public function __construct(Query $query, callable $exampleOfCreate)
     {
         $this->_exampleOfCreate = $exampleOfCreate;
         $this->query = $query;
-        $this->objectsType = $objectsType;
     }
 
     /**

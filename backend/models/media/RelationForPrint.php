@@ -8,16 +8,18 @@ use app\models\collections\ICollection;
 use app\models\contracts\IMedia;
 use app\models\contracts\IPrinter;
 
-class RelationToPrint implements IPrinter, IMedia
+class RelationForPrint implements IPrinter, IMedia
 {
     private $child;
     private $parent;
     private $added;
+    private $childType;
 
-    public function __construct(IPrinter $parent, IPrinter $child)
+    public function __construct(IPrinter $parent, IPrinter $child, string $childType = '')
     {
         $this->child = $child;
         $this->parent = $parent;
+        $this->childType = $childType;
     }
 
     /**
@@ -26,7 +28,9 @@ class RelationToPrint implements IPrinter, IMedia
      */
     public function printTo(IMedia $media): IMedia
     {
-
+        $this->parent->printTo($media);
+        $this->child->printTo($media);
+        return $media;
     }
 
     /**

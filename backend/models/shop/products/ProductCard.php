@@ -67,7 +67,7 @@ class ProductCard implements IProductCard
     /**
      * Удаляет карточку товара
      */
-    public function remove(): void
+    public function moveToTrash(): void
     {
         $this->__destruct();
     }

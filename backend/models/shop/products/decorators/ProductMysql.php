@@ -69,7 +69,7 @@ class ProductMysql implements IProduct
     /**
      * Удаляет продукт из бд, вместе со всеми зависимыми частями.
      */
-    public function remove(): void
+    public function moveToTrash(): void
     {
         TableProducts::deleteAll(['id'=>$this->id->value()]);
     }

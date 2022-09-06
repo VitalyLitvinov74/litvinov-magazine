@@ -56,9 +56,9 @@ class ProductCardById implements IProductCard
     /**
      * Удаляет карточку товара
      */
-    public function remove(): void
+    public function moveToTrash(): void
     {
-        $this->origin()->remove();
+        $this->origin()->moveToTrash();
     }
 
     /**

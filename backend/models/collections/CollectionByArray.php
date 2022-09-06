@@ -9,7 +9,7 @@ use app\models\contracts\IPrinter;
 use app\models\media\ArrayMedia;
 use yii\helpers\ArrayHelper;
 
-class CollectionByArray implements ICollection
+class CollectionByArray extends AbstractCollection implements ICollection
 {
 
     private $example;

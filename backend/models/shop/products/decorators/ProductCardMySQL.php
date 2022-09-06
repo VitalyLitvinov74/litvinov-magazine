@@ -63,9 +63,9 @@ class ProductCardMySQL implements IProductCard
         throw new NotSavedData($record->getErrors(), 422);
     }
 
-    public function remove(): void
+    public function moveToTrash(): void
     {
-        $this->orign->remove();
+        $this->orign->moveToTrash();
         $this->record()->delete();
     }
 

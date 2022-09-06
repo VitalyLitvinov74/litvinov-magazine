@@ -6,9 +6,10 @@ namespace app\models\shop\products\contracts;
 
 use app\models\contracts\IMedia;
 use app\models\contracts\IPrinter;
+use app\models\contracts\ITrash;
 use vloop\entities\contracts\IForm;
 
-interface IProductCard extends IPrinter
+interface IProductCard extends IPrinter, ITrash
 {
     /**
      * @param IForm $form
@@ -25,5 +26,5 @@ interface IProductCard extends IPrinter
     /**
      * Удаляет карточку товара
      */
-    public function remove(): void;
+    public function moveToTrash(): void;
 }

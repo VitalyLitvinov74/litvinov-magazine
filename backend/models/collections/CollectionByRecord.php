@@ -6,7 +6,7 @@ namespace app\models\collections;
 
 use yii\db\ActiveRecord;
 
-abstract class CollectionByRecord implements ICollection
+abstract class CollectionByRecord extends AbstractCollection implements ICollection
 {
 
     private $list = [];

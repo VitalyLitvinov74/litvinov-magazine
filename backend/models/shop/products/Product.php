@@ -53,7 +53,7 @@ class Product implements IProduct
     /**
      * Удаляет продукт из бд, вместе со всеми зависимыми частями.
      */
-    public function remove(): void
+    public function moveToTrash(): void
     {
         $this->__destruct();
     }

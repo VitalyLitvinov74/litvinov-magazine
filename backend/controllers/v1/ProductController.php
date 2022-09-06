@@ -4,27 +4,22 @@
 namespace app\controllers\v1;
 
 
-use app\controllers\JsonErrorsAction;
 use app\models\collections\CollectionByArray;
 use app\models\collections\CollectionByForm;
 use app\models\collections\CollectionByQuery;
 use app\models\forms\ProductCardForm;
-use app\models\media\ArrayMedia;
 use app\models\media\JsonMedia;
-use app\models\media\MutationMedia;
-use app\models\media\RelationToPrint;
+use app\models\media\RelationForPrint;
+use app\models\media\RelationForRemove;
 use app\models\shop\products\characteristics\Characteristic;
-use app\models\shop\products\decorators\ProductCardWithCollection;
 use app\models\shop\products\decorators\ProductCardById;
 use app\models\shop\products\decorators\ProductCardMySQL;
 use app\models\shop\products\decorators\ProductMysql;
-use app\models\shop\products\decorators\ProductWithCollection;
 use app\models\shop\products\Product;
 use app\models\shop\products\ProductCard;
 use app\tables\TableProductCards;
 use app\tables\TableProductCharacteristics;
 use app\tables\TableProducts;
-use vloop\entities\exceptions\AbstractException;
 use vloop\entities\fields\Field;
 use vloop\entities\fields\FieldOfForm;
 use yii\helpers\ArrayHelper;
@@ -37,7 +32,7 @@ class ProductController extends Controller
     public function actionCreate()
     {
         $form = new ProductCardForm();
-        $productCard = new ProductCardWithCollection(
+        $productCard = new RelationForPrint(
             new ProductCard(
                 new FieldOfForm($form, 'title'),
                 new FieldOfForm($form, 'shortDescription'),
@@ -48,7 +43,7 @@ class ProductController extends Controller
                 'products',
                 function (array $itemProduct) {
                     return
-                        new ProductWithCollection( // Concrete product
+                        new RelationForPrint( // Concrete product
                             new Product(
                                 new Field('price', $itemProduct['price']),
                                 new Field('count', $itemProduct['count'])
@@ -75,7 +70,7 @@ class ProductController extends Controller
 
     public function actionById(int $id)
     {
-        $productCard = new ProductCardWithCollection(
+        $productCard = new RelationForPrint(
             new ProductCardById(
                 new Field('id', $id)
             ),
@@ -104,7 +99,7 @@ class ProductController extends Controller
             TableProductCards::find(),
             function (TableProductCards $record) {
                 return
-                    new ProductCardWithCollection(
+                    new RelationForPrint(
                         new ProductCardMySQL(
                             new Field('id', $record->id),
                             new ProductCard(
@@ -118,7 +113,7 @@ class ProductController extends Controller
                             'products',
                             function (TableProducts $product) {
                                 return
-                                    new ProductWithCollection(
+                                    new RelationForPrint(
                                         new ProductMysql(
                                             new Field('id', $product->id),
                                             new Product(
@@ -148,10 +143,52 @@ class ProductController extends Controller
 
     public function actionDelete(int $id)
     {
-        $product = new ProductCardById(
-            new Field('id', $id)
+        $product = new CollectionByQuery(
+            TableProductCards::find()
+                ->where(
+                    'id=:id',
+                    [':id' => new Field('id', $id)]
+                )
+                ->with('products', 'products.characteristics'),
+            function (TableProductCards $record) {
+                return new RelationForRemove(
+                    new ProductCardMySQL(
+                        new Field('id', $record->id),
+                        new ProductCard(
+                            new Field('title', $record->title),
+                            new Field('shortDescription', $record->short_description),
+                            new Field('Description', $record->description)
+                        )
+                    ),
+                    new CollectionByArray(
+                        $record->products,
+                        'products',
+                        function (TableProducts $product) {
+                            return new RelationForRemove(
+                                new ProductMysql(
+                                    new Field('', $product->id),
+                                    new Product(
+                                        new Field('price', $product->price),
+                                        new Field('count', $product->count)
+                                    )
+                                ),
+                                new CollectionByArray(
+                                    $product->characteristics,
+                                    'characteristics',
+                                    function (TableProductCharacteristics $characteristic) {
+                                        return new Characteristic(
+                                            $characteristic->name,
+                                            $characteristic->value
+                                        );
+                                    }
+                                )
+                            );
+                        }
+                    )
+                );
+            }
         );
-        $product->remove();
+        $product->moveToTrash();
     }
 
     public function actionChangeDescriptions()
