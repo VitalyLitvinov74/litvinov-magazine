@@ -38,29 +38,34 @@ class ProductController extends Controller
                 new FieldOfForm($form, 'shortDescription'),
                 new FieldOfForm($form, 'description')
             ),
-            new CollectionByForm( //Products collection into productCard
-                $form,
-                'products',
-                function (array $itemProduct) {
-                    return
-                        new RelationForPrint( // Concrete product
-                            new Product(
-                                new Field('price', $itemProduct['price']),
-                                new Field('count', $itemProduct['count'])
-                            ),
-                            new CollectionByArray( // Collection of characteristics
-                                ArrayHelper::getValue($itemProduct, 'characteristics', []),
-                                'characteristics',
-                                function (array $characteristic) {
-                                    return new Characteristic( // Concrete Characteristic
-                                        $characteristic['name'],
-                                        $characteristic['value']
-                                    );
-                                }
-                            )
-                        );
-                }
-            )
+            [
+                'products' =>
+                    new CollectionByForm( //Products collection into productCard
+                        $form,
+                        'products',
+                        function (array $itemProduct) {
+                            return
+                                new RelationForPrint( // Concrete product
+                                    new Product(
+                                        new Field('price', $itemProduct['price']),
+                                        new Field('count', $itemProduct['count'])
+                                    ),
+                                    [
+                                        'characteristics' =>
+                                            new CollectionByArray( // Collection of characteristics
+                                                ArrayHelper::getValue($itemProduct, 'characteristics', []),
+                                                function (array $characteristic) {
+                                                    return new Characteristic( // Concrete Characteristic
+                                                        $characteristic['name'],
+                                                        $characteristic['value']
+                                                    );
+                                                }
+                                            )
+                                    ]
+                                );
+                        }
+                    )
+            ]
         );
         return $productCard
             ->printTo(new TableProductCards())
@@ -74,20 +79,35 @@ class ProductController extends Controller
             new ProductCardById(
                 new Field('id', $id)
             ),
-            new CollectionByQuery(
-                TableProducts::find()
-                    ->rightJoin('products_via_cards', 'product_id = products.id')
-                    ->where(['card_id' => $id]),
-                function (TableProducts $product) {
-                    return new ProductMysql(
-                        new Field('id', $product->id),
-                        new Product(
-                            new Field('count', $product->price),
-                            new Field('price', $product->count)
-                        )
-                    );
-                }
-            )
+            [
+                'products' => new CollectionByQuery(
+                    TableProducts::find()
+                        ->rightJoin('products_via_cards', 'product_id = products.id')
+                        ->where(['card_id' => $id]),
+                    function (TableProducts $product) {
+                        return new RelationForPrint(
+                            new ProductMysql(
+                                new Field('id', $product->id),
+                                new Product(
+                                    new Field('count', $product->price),
+                                    new Field('price', $product->count)
+                                )
+                            ),
+                            [
+                                'characteristics' => new CollectionByArray(
+                                    $product->characteristics,
+                                    function (TableProductCharacteristics $characteristic) {
+                                        return new Characteristic(
+                                            $characteristic->name,
+                                            $characteristic->value
+                                        );
+                                    }
+                                )
+                            ]
+                        );
+                    }
+                )
+            ]
         );
         return $productCard
             ->printTo(new JsonMedia());
@@ -96,7 +116,7 @@ class ProductController extends Controller
     public function actionShowAll()
     {
         $list = new CollectionByQuery(
-            TableProductCards::find(),
+            TableProductCards::find()->where(['id' => 140])->orderBy(['id' => SORT_DESC]),
             function (TableProductCards $record) {
                 return
                     new RelationForPrint(
@@ -108,32 +128,34 @@ class ProductController extends Controller
                                 new Field('description', $record->description)
                             )
                         ),
-                        new CollectionByArray(
-                            $record->products,
-                            'products',
-                            function (TableProducts $product) {
-                                return
-                                    new RelationForPrint(
-                                        new ProductMysql(
-                                            new Field('id', $product->id),
-                                            new Product(
-                                                new Field('title', $product->price),
-                                                new Field('count', $product->count)
-                                            )
-                                        ),
-                                        new CollectionByArray(
-                                            $product->characteristics,
-                                            'characteristics',
-                                            function (TableProductCharacteristics $characteristic) {
-                                                return new Characteristic(
-                                                    $characteristic->name,
-                                                    $characteristic->value
-                                                );
-                                            }
-                                        )
-                                    );
-                            }
-                        )
+                        [
+                            "products" => new CollectionByArray(
+                                $record->products,
+                                function (TableProducts $product) {
+                                    return
+                                        new RelationForPrint(
+                                            new ProductMysql(
+                                                new Field('id', $product->id),
+                                                new Product(
+                                                    new Field('title', $product->price),
+                                                    new Field('count', $product->count)
+                                                )
+                                            ),
+                                            [
+                                                'characteristics' => new CollectionByArray(
+                                                    $product->characteristics,
+                                                    function (TableProductCharacteristics $characteristic) {
+                                                        return new Characteristic(
+                                                            $characteristic->name,
+                                                            $characteristic->value
+                                                        );
+                                                    }
+                                                )
+                                            ]
+                                        );
+                                }
+                            )
+                        ]
                     );
             }
         );
@@ -160,39 +182,36 @@ class ProductController extends Controller
                             new Field('Description', $record->description)
                         )
                     ),
-                    new CollectionByArray(
-                        $record->products,
-                        'products',
-                        function (TableProducts $product) {
-                            return new RelationForRemove(
-                                new ProductMysql(
-                                    new Field('', $product->id),
-                                    new Product(
-                                        new Field('price', $product->price),
-                                        new Field('count', $product->count)
-                                    )
-                                ),
-                                new CollectionByArray(
-                                    $product->characteristics,
-                                    'characteristics',
-                                    function (TableProductCharacteristics $characteristic) {
-                                        return new Characteristic(
-                                            $characteristic->name,
-                                            $characteristic->value
-                                        );
-                                    }
-                                )
-                            );
-                        }
-                    )
+                    [
+                        "products" => new CollectionByArray(
+                            $record->products,
+                            function (TableProducts $product) {
+                                return new RelationForRemove(
+                                    new ProductMysql(
+                                        new Field('', $product->id),
+                                        new Product(
+                                            new Field('price', $product->price),
+                                            new Field('count', $product->count)
+                                        )
+                                    ),
+                                    [
+                                        'characteristics' => new CollectionByArray(
+                                            $product->characteristics,
+                                            function (TableProductCharacteristics $characteristic) {
+                                                return new Characteristic(
+                                                    $characteristic->name,
+                                                    $characteristic->value
+                                                );
+                                            }
+                                        )
+                                    ]
+                                );
+                            }
+                        )
+                    ]
                 );
             }
         );
         $product->moveToTrash();
-    }
-
-    public function actionChangeDescriptions()
-    {
-
     }
 }

@@ -10,16 +10,19 @@ use app\models\contracts\IPrinter;
 
 class RelationForPrint implements IPrinter, IMedia
 {
-    private $child;
-    private $parent;
+    private array $childs;
+    private IPrinter $parent;
     private $added;
-    private $childType;
 
-    public function __construct(IPrinter $parent, IPrinter $child, string $childType = '')
+    /**
+     * RelationForPrint constructor.
+     * @param IPrinter $parent
+     * @param IPrinter[]    $child
+     */
+    public function __construct(IPrinter $parent, array $child)
     {
-        $this->child = $child;
+        $this->childs = $child;
         $this->parent = $parent;
-        $this->childType = $childType;
     }
 
     /**
@@ -29,7 +32,12 @@ class RelationForPrint implements IPrinter, IMedia
     public function printTo(IMedia $media): IMedia
     {
         $this->parent->printTo($media);
-        $this->child->printTo($media);
+        foreach ($this->childs as $childName=>$child){
+            /**@var ArrayMedia $arrayMedia */
+            $arrayMedia = $child->printTo(new ArrayMedia());
+            $media->add($childName, $arrayMedia->fields(), true);
+//            $child->printTo($media);
+        }
         return $media;
     }
 

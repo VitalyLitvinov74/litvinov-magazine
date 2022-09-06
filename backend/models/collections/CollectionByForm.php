@@ -6,22 +6,23 @@ use app\models\contracts\IMedia;
 use app\models\contracts\IPrinter;
 use app\models\media\ArrayMedia;
 use app\models\media\JsonMedia;
+use Iterator;
 use vloop\entities\contracts\IForm;
 use vloop\entities\exceptions\NotValidatedFields;
 use yii\helpers\ArrayHelper;
 use yii\helpers\VarDumper;
 
-class CollectionByForm implements ICollection
+class CollectionByForm extends AbstractCollection
 {
     private $exampleOfCreate;
     private $form;
     private $objectsPathInForm;
 
     /**
-     * @param callable $exampleOfCreate - пример создания объекта на фход в функцию будет передаваться
-     * элемент массива $needleList
-     * @param string $objectsPathInForm - 'foo.bar.objectType', will be used Array::helper
-     * @param IForm $form
+     * @param callable $exampleOfCreate   - пример создания объекта на фход в функцию будет передаваться
+     *                                    элемент массива $needleList
+     * @param string   $objectsPathInForm - 'foo.bar.objectType', will be used Array::helper
+     * @param IForm    $form
      */
     public function __construct(IForm $form, string $objectsPathInForm, callable $exampleOfCreate)
     {
@@ -40,7 +41,7 @@ class CollectionByForm implements ICollection
         $validatedFields = $this->form->validatedFields();
         $objectsArrayList = ArrayHelper::getValue($validatedFields, $this->objectsPathInForm, []);
         $objectList = [];
-        foreach ($objectsArrayList as $item){
+        foreach ($objectsArrayList as $item) {
             $objectList[] = call_user_func($this->exampleOfCreate, $item);
         }
         return $objectList;
@@ -54,8 +55,8 @@ class CollectionByForm implements ICollection
     public function printTo(IMedia $media): IMedia
     {
         $objectsType = end(explode('.', $this->objectsPathInForm));
-        foreach ($this->list() as $object){
-            /**@var ArrayMedia $arrayMedia*/
+        foreach ($this->list() as $object) {
+            /**@var ArrayMedia $arrayMedia */
             $arrayMedia = $object->printTo(new ArrayMedia());
             $media->add($objectsType, $arrayMedia->fields(), true);
         }

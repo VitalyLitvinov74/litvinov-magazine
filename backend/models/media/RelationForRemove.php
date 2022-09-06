@@ -9,11 +9,16 @@ use app\models\contracts\ITrash;
 class RelationForRemove implements ITrash
 {
     private $parent;
-    private $child;
+    private $childs;
 
-    public function __construct(ITrash $parent, ITrash $child)
+    /**
+     * RelationForRemove constructor.
+     * @param ITrash $parent
+     * @param ITrash[]  $childs
+     */
+    public function __construct(ITrash $parent, array $childs)
     {
-        $this->child = $child;
+        $this->childs = $childs;
         $this->parent = $parent;
     }
 
@@ -22,7 +27,9 @@ class RelationForRemove implements ITrash
      */
     public function moveToTrash(): void
     {
-        $this->child->moveToTrash();
+        foreach ($this->childs as $child){
+            $child->moveToTrash();
+        }
         $this->parent->moveToTrash();
     }
 }
