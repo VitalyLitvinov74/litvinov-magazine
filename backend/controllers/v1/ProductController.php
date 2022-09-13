@@ -11,18 +11,23 @@ use app\models\forms\ProductCardForm;
 use app\models\media\JsonMedia;
 use app\models\media\RelationForPrint;
 use app\models\media\RelationForRemove;
+use app\models\shop\products\CacheKey;
 use app\models\shop\products\characteristics\Characteristic;
 use app\models\shop\products\decorators\ProductCardById;
 use app\models\shop\products\decorators\ProductCardMySQL;
 use app\models\shop\products\decorators\ProductMysql;
 use app\models\shop\products\Product;
 use app\models\shop\products\ProductCard;
+use app\models\shop\products\ProductCards;
 use app\tables\TableProductCards;
 use app\tables\TableProductCharacteristics;
 use app\tables\TableProducts;
+use vloop\entities\contracts\IForm;
 use vloop\entities\fields\Field;
 use vloop\entities\fields\FieldOfForm;
+use Yii;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
 use yii\helpers\VarDumper;
 use yii\rest\Controller;
 
@@ -31,46 +36,24 @@ class ProductController extends Controller
 
     public function actionCreate()
     {
-        $form = new ProductCardForm();
-        $productCard = new RelationForPrint(
-            new ProductCard(
-                new FieldOfForm($form, 'title'),
-                new FieldOfForm($form, 'shortDescription'),
-                new FieldOfForm($form, 'description')
-            ),
-            [
-                'products' =>
-                    new CollectionByForm( //Products collection into productCard
-                        $form,
-                        'products',
-                        function (array $itemProduct) {
-                            return
-                                new RelationForPrint( // Concrete product
-                                    new Product(
-                                        new Field('price', $itemProduct['price']),
-                                        new Field('count', $itemProduct['count'])
-                                    ),
-                                    [
-                                        'characteristics' =>
-                                            new CollectionByArray( // Collection of characteristics
-                                                ArrayHelper::getValue($itemProduct, 'characteristics', []),
-                                                function (array $characteristic) {
-                                                    return new Characteristic( // Concrete Characteristic
-                                                        $characteristic['name'],
-                                                        $characteristic['value']
-                                                    );
-                                                }
-                                            )
-                                    ]
-                                );
-                        }
-                    )
-            ]
+        $cards = new ProductCards(
+            function (TableProductCards $record){
+                return
+                    new ProductCardMySQL(
+                        new Field('id', $record->id),
+                        new ProductCard(
+                            new Field('title', $record->title),
+                            new Field('shortDescription', $record->short_description),
+                            new Field('description', $record->description)
+                        )
+                    );
+            }
         );
-        return $productCard
-            ->printTo(new TableProductCards())
-            ->commit()
-            ->printTo(new JsonMedia());
+        return Yii::$app->cache->get(
+            new CacheKey(
+                $cards->add(new ProductCardForm())
+            )
+        );
     }
 
     public function actionById(int $id)

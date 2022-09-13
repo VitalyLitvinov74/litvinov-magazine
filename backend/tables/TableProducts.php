@@ -43,7 +43,7 @@ class TableProducts extends Table
     {
         return [
             ['id', 'exist', 'message' => 'Не удалось найти товар с указанным ID'],
-            [['price', 'count'], 'safe']
+            [['price', 'count', 'characteristics'], 'safe']
         ];
     }
 

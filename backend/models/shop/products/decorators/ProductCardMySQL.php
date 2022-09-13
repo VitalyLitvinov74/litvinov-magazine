@@ -27,15 +27,6 @@ class ProductCardMySQL implements IProductCard
         $this->orign = $productCard;
     }
 
-
-    public function printTo(IMedia $media): IMedia
-    {
-        return $this->orign
-            ->printTo($media)
-            ->add('id', $this->id->value())
-            ;
-    }
-
     public function changeTitle(IForm $form): IProductCard
     {
         $this->orign->changeTitle($form);
@@ -63,16 +54,15 @@ class ProductCardMySQL implements IProductCard
         throw new NotSavedData($record->getErrors(), 422);
     }
 
-    public function moveToTrash(): void
-    {
-        $this->orign->moveToTrash();
-        $this->record()->delete();
-    }
-
     private function record(): TableProductCards{
         return new TableProductCards([
             'id'=>$this->id->value(),
             'isNewRecord' => false
         ]);
+    }
+
+    public function id(): int
+    {
+        return $this->id->value();
     }
 }

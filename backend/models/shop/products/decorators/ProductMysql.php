@@ -66,13 +66,6 @@ class ProductMysql implements IProduct
         throw new NotSavedData($record->getErrors(), 422);
     }
 
-    /**
-     * Удаляет продукт из бд, вместе со всеми зависимыми частями.
-     */
-    public function moveToTrash(): void
-    {
-        TableProducts::deleteAll(['id'=>$this->id->value()]);
-    }
 
     private function record(): TableProducts
     {

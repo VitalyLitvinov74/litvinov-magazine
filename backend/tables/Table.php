@@ -10,15 +10,14 @@ use app\models\media\ArrayMedia;
 use lhs\Yii2SaveRelationsBehavior\SaveRelationsBehavior;
 use lhs\Yii2SaveRelationsBehavior\SaveRelationsTrait;
 use vloop\entities\exceptions\NotSavedData;
+use yii\base\Arrayable;
 use yii\db\ActiveRecord;
 use yii\helpers\Inflector;
 use yii\helpers\VarDumper;
 
-abstract class Table extends ActiveRecord implements IMedia
+abstract class Table extends ActiveRecord
 {
-    protected $addedProperty = [];
-
-    use SaveRelationsTrait;
+    private $afterSaveFields = [];
 
     public function behaviors()
     {
@@ -34,64 +33,38 @@ abstract class Table extends ActiveRecord implements IMedia
             );
     }
 
-    /**
-     * @param string $key
-     * @param        $value
-     * @param bool   $keyIsList
-     * @return $this
-     */
-    public function add(string $key, $value, bool $keyIsList = false): IMedia
+    public function load($data, $formName = '')
     {
-        $key = Inflector::camel2id($key, '_');
-        if ($this->hasAttribute($key)) {
-            $this->setAttribute($key, $value);
-        } else {
-            if ($keyIsList) {
-                $this->addedProperty[$key][] = $value;
-            } else {
-                $this->addedProperty[$key] = $value;
+        $newData = [];
+        foreach ($data as $key => $value) {
+            $newKey = Inflector::camel2id($key, '_');
+            $newData[$newKey] = $value;
+            if ($this->hasAttribute($newKey)) {
+                $this->setAttribute($newKey, $value);
             }
         }
-        return $this;
-    }
-
-    /**
-     * фиксирует изменения
-     * @return $this
-     * @throws NotSavedData
-     */
-    public function commit(): IMedia
-    {
-        if ($this->save()) {
-            if ($this->hasAttribute('id')) {
-                $this->add('id', $this->id);
-            }
-            return $this;
+        if ($this->hasMethod('loadRelations')) {
+            $this->loadRelations($newData);
         }
-        throw new NotSavedData($this->getErrors(), 422);
+        return $loaded;
     }
 
-    public function beforeSave($insert)
+    public function afterSave($insert, $changedAttributes)
     {
-        parent::beforeSave($insert);
-        $this->load($this->addedProperty, '');
-        return $insert;
-    }
-
-    public function printTo(IMedia $media): IMedia
-    {
-        foreach ($this->attributes as $attributeName => $attributeVal) {
-            $media->add($attributeName, $attributeVal);
-        }
-        if (!empty($this->addedProperty)) {
-            foreach ($this->addedProperty as $property => $value) {
-                if (is_array($value)) {
-                    $media->add($property, $value, true);
-                } else {
-                    $media->add($property, $value);
+        foreach ($this->relatedRecords as $name => $relations) {
+            if (is_array($relations)) {
+                foreach ($this->$name as $relation) {
+                    $relation->refresh();
                 }
+            }else{
+                $this->$name->refresh();
             }
         }
-        return $media;
+        parent::afterSave($insert, $changedAttributes);
+    }
+
+    public function fields()
+    {
+        return array_merge(parent::fields(), $this->afterSaveFields);
     }
 }

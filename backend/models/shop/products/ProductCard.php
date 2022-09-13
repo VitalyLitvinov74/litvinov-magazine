@@ -13,9 +13,9 @@ use vloop\entities\fields\FieldOfForm;
 
 class ProductCard implements IProductCard
 {
-    private $title;
-    private $shortDescription;
-    private $description;
+    private IField $title;
+    private IField $shortDescription;
+    private IField $description;
 
     public function __construct(IField $title,
                                 IField $shortDescription,
@@ -24,18 +24,6 @@ class ProductCard implements IProductCard
         $this->description = $description;
         $this->shortDescription = $shortDescription;
         $this->title = $title;
-    }
-
-    /**
-     * @param IMedia $media - источник информации куда необходимо записать себя
-     * @return IMedia - источник информации с только что записанными данными
-     */
-    public function printTo(IMedia $media): IMedia
-    {
-        return $media
-            ->add('title', $this->title->value())
-            ->add('shortDescription', $this->shortDescription->value())
-            ->add('description', $this->description->value());
     }
 
     /**
@@ -64,16 +52,8 @@ class ProductCard implements IProductCard
         );
     }
 
-    /**
-     * Удаляет карточку товара
-     */
-    public function moveToTrash(): void
+    public function id(): int
     {
-        $this->__destruct();
-    }
-
-    public function __destruct()
-    {
-
+        return 0;
     }
 }
