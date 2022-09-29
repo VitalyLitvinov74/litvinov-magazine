@@ -21,7 +21,11 @@ class ProductController extends Controller
 
     public function actionShowAll()
     {
-
+        $cads = new ProductCards();
+        return $cads
+            ->find()
+            ->orderBy(['id'=>SORT_DESC])
+            ->all();
     }
 
     public function actionById(int $id)
