@@ -14,7 +14,7 @@ use yii\helpers\ArrayHelper;
  * @property int $id    [int(11)]
  * @property int $count [int(11)]  Кол-во товара готового к продаже
  * @property int $price [int(11)]  Стоимость продукта умноженная на 100
- * @property TableProductCards $productCard
+ * @property RowProductCard $productCard
  * @property TableProductImages[] $images
  * @property TableProductCharacteristics[] $characteristics
  */
@@ -50,7 +50,7 @@ class TableProducts extends Table
     public function getProductCard()
     {
         return $this
-            ->hasOne(TableProductCards::class, ['id'=>'card_id'])
+            ->hasOne(RowProductCard::class, ['id'=>'card_id'])
             ->viaTable('products_via_cards', ['product_id'=>'id']);
     }
 

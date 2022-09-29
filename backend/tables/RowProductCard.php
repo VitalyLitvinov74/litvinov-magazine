@@ -22,9 +22,8 @@ use yii\helpers\VarDumper;
  * @property TableProductImages[] $images
  * @property TableProducts[]      $products
  */
-class TableProductCards extends Table
+class RowProductCard extends Table
 {
-
     public function behaviors()
     {
         return ArrayHelper::merge(

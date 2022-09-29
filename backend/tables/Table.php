@@ -14,7 +14,7 @@ use yii\db\ActiveRecord;
 use yii\helpers\Inflector;
 use yii\helpers\VarDumper;
 
-abstract class Table extends ActiveRecord implements IMedia
+abstract class Table extends ActiveRecord
 {
     protected $addedProperty = [];
 
@@ -34,43 +34,6 @@ abstract class Table extends ActiveRecord implements IMedia
             );
     }
 
-    /**
-     * @param string $key
-     * @param        $value
-     * @param bool   $keyIsList
-     * @return $this
-     */
-    public function add(string $key, $value, bool $keyIsList = false): IMedia
-    {
-        $key = Inflector::camel2id($key, '_');
-        if ($this->hasAttribute($key)) {
-            $this->setAttribute($key, $value);
-        } else {
-            if ($keyIsList) {
-                $this->addedProperty[$key][] = $value;
-            } else {
-                $this->addedProperty[$key] = $value;
-            }
-        }
-        return $this;
-    }
-
-    /**
-     * фиксирует изменения
-     * @return $this
-     * @throws NotSavedData
-     */
-    public function commit(): IMedia
-    {
-        if ($this->save()) {
-            if ($this->hasAttribute('id')) {
-                $this->add('id', $this->id);
-            }
-            return $this;
-        }
-        throw new NotSavedData($this->getErrors(), 422);
-    }
-
     public function beforeSave($insert)
     {
         parent::beforeSave($insert);
@@ -78,20 +41,18 @@ abstract class Table extends ActiveRecord implements IMedia
         return $insert;
     }
 
-    public function printTo(IMedia $media): IMedia
+    public function setAttributes($values, $safeOnly = false)
     {
-        foreach ($this->attributes as $attributeName => $attributeVal) {
-            $media->add($attributeName, $attributeVal);
+        $valuesWithNewKeys = [];
+        foreach ($values as $name => $value) {
+            $name = Inflector::camel2id($name, '_');
+            $valuesWithNewKeys[$name] = $value;
         }
-        if (!empty($this->addedProperty)) {
-            foreach ($this->addedProperty as $property => $value) {
-                if (is_array($value)) {
-                    $media->add($property, $value, true);
-                } else {
-                    $media->add($property, $value);
-                }
-            }
-        }
-        return $media;
+        parent::setAttributes($valuesWithNewKeys, $safeOnly);
+    }
+
+    public static function find()
+    {
+        return new BaseQuery(static::class);
     }
 }
