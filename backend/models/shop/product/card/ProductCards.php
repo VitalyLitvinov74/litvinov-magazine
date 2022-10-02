@@ -6,7 +6,7 @@ namespace app\models\shop\product\card;
 
 use app\models\forms\ProductCardForm;
 use app\models\shop\product\card\contracts\WeProductCards;
-use app\tables\RowProductCard;
+use app\tables\TableProductCard;
 use vloop\entities\contracts\IField;
 use vloop\entities\contracts\IForm;
 use vloop\entities\exceptions\NotSavedData;
@@ -22,14 +22,14 @@ class ProductCards implements WeProductCards
 
     /**
      * @param IForm|ProductCardForm $productCardForm
-     * @return RowProductCard
+     * @return TableProductCard
      * @throws NotSavedData
      * @throws NotValidatedFields
      */
-    public function add(IForm $productCardForm): RowProductCard
+    public function add(IForm $productCardForm): TableProductCard
     {
-        $record = new RowProductCard();
-        $record->setAttributes($productCardForm->validatedFields());
+        $record = new TableProductCard();
+        $record->load($productCardForm->validatedFields(), '');
         if($record->save()){
             return $record;
         }
@@ -38,11 +38,11 @@ class ProductCards implements WeProductCards
 
     public function remove(IField $id): void
     {
-        RowProductCard::deleteAll(['id'=>$id->value()]);
+        TableProductCard::deleteAll(['id'=>$id->value()]);
     }
 
     public function find(): Query
     {
-        return RowProductCard::find();
+        return TableProductCard::find();
     }
 }

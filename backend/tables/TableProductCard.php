@@ -22,7 +22,7 @@ use yii\helpers\VarDumper;
  * @property TableProductImages[] $images
  * @property TableProducts[]      $products
  */
-class RowProductCard extends Table
+class TableProductCard extends BaseTable
 {
     public function behaviors()
     {

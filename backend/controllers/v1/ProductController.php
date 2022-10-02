@@ -5,7 +5,7 @@ namespace app\controllers\v1;
 
 use app\models\forms\ProductCardForm;
 use app\models\shop\product\card\ProductCards;
-use app\tables\RowProductCard;
+use app\tables\TableProductCard;
 use vloop\entities\fields\Field;
 use yii\rest\Controller;
 

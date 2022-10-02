@@ -7,7 +7,7 @@ use app\models\contracts\IPrinter;
 use app\models\contracts\ITrash;
 use app\models\media\ArrayMedia;
 use app\models\media\JsonMedia;
-use app\tables\Table;
+use app\tables\BaseTable;
 use vloop\entities\contracts\IField;
 use yii\db\ActiveRecord;
 use yii\db\Query;
@@ -56,7 +56,7 @@ class CollectionByQuery extends CollectionByRecord
     public function printTo(IMedia $media): IMedia
     {
         foreach ($this->list() as $key=>$item){
-            /**@var Table $item*/
+            /**@var BaseTable $item*/
             //айтем печатает себя в массив. затем добавляем этот массив в наш медиа.
             $media->add(
                 $key,

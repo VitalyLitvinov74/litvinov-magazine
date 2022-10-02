@@ -14,10 +14,8 @@ use yii\db\ActiveRecord;
 use yii\helpers\Inflector;
 use yii\helpers\VarDumper;
 
-abstract class Table extends ActiveRecord
+abstract class BaseTable extends ActiveRecord
 {
-    protected $addedProperty = [];
-
     use SaveRelationsTrait;
 
     public function behaviors()
@@ -34,12 +32,31 @@ abstract class Table extends ActiveRecord
             );
     }
 
-    public function beforeSave($insert)
+    public function load($data, $formName = '')
     {
-        parent::beforeSave($insert);
-        $this->load($this->addedProperty, '');
-        return $insert;
+        $loaded = parent::load($data, $formName);
+        if ($loaded && $this->hasMethod('loadRelations')) {
+            $this->loadRelations($data);
+        }
+        return $loaded;
     }
+
+//    public function fields()
+//    {
+//        if(empty($this->_fields)){
+//            return parent::fields();
+//        }
+//        return $this->_fields;
+//    }
+//
+//    public function beforeSave($insert)
+//    {
+//        $this->_fields = array_merge(
+//            parent::fields(),
+//            array_combine(array_keys($this->relatedRecords), array_keys($this->relatedRecords))
+//        );
+//        parent::beforeSave($insert);
+//    }
 
     public function setAttributes($values, $safeOnly = false)
     {

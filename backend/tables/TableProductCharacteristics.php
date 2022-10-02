@@ -11,7 +11,7 @@ namespace app\tables;
  * @property string $name       [varchar(255)]  Наименование характеристики
  * @property string $value      [varchar(255)]  Значение характеристики
  */
-class TableProductCharacteristics extends Table
+class TableProductCharacteristics extends BaseTable
 {
     public static function tableName()
     {
