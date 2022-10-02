@@ -30,8 +30,8 @@ RUN docker-php-ext-install \
         pdo_mysql \
         sockets
 
-#RUN pecl install xdebug \
-#   && docker-php-ext-enable xdebug
+RUN pecl install xdebug \
+   && docker-php-ext-enable xdebug
 
 RUN curl -sS https://getcomposer.org/installer | \
             php -- --install-dir /usr/local/bin --filename composer --version ${COMPOSER_VER}
@@ -41,6 +41,7 @@ RUN curl -sS https://getcomposer.org/installer | \
 #ARG PHP_ERR_REPORT
 #ARG UPLOAD_MAX_FILESIZE
 
+COPY xdebug.ini $PHP_INI_DIR/conf.d/
 
 #RUN echo "memory_limit=${PHP_MEM_LIMIT}" > $PHP_INI_DIR/conf.d/memory-limit.ini
 #RUN echo "max_execution_time = ${PHP_EXEC_TIME}" > $PHP_INI_DIR/conf.d/php_max_execution_time.ini

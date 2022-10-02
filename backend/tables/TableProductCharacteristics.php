@@ -18,6 +18,13 @@ class TableProductCharacteristics extends BaseTable
         return 'products_characteristics';
     }
 
+    public function fields()
+    {
+        $parent = parent::fields();
+        unset($parent['productId']);
+        return $parent;
+    }
+
     public function rules()
     {
         return [

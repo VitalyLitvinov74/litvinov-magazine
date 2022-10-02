@@ -41,22 +41,18 @@ abstract class BaseTable extends ActiveRecord
         return $loaded;
     }
 
-//    public function fields()
-//    {
-//        if(empty($this->_fields)){
-//            return parent::fields();
-//        }
-//        return $this->_fields;
-//    }
-//
-//    public function beforeSave($insert)
-//    {
-//        $this->_fields = array_merge(
-//            parent::fields(),
-//            array_combine(array_keys($this->relatedRecords), array_keys($this->relatedRecords))
-//        );
-//        parent::beforeSave($insert);
-//    }
+    public function fields()
+    {
+        $merged =  array_merge(
+            parent::fields(),
+            static::extraFields()
+        );
+        foreach ($merged as $key=>$name){
+            unset($merged[$key]);
+            $merged[Inflector::variablize($key)]=$name;
+        }
+        return $merged;
+    }
 
     public function setAttributes($values, $safeOnly = false)
     {

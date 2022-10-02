@@ -47,6 +47,11 @@ class TableProducts extends BaseTable
         ];
     }
 
+    public function extraFields()
+    {
+        return ['characteristics'];
+    }
+
     public function getProductCard()
     {
         return $this
