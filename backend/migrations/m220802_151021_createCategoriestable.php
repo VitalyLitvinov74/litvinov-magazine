@@ -1,5 +1,6 @@
 <?php
 
+use app\tables\TableCategories;
 use yii\db\Migration;
 
 /**
@@ -40,6 +41,8 @@ class m220802_151021_createCategoriestable extends Migration
             'CASCADE',
             'CASCADE'
         );
+        $record = new TableCategories(['name'=>"Главная"]);
+        $record->save();
     }
 
     /**

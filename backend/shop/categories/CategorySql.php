@@ -19,7 +19,7 @@ class CategorySql implements ICategory
 
     public function buildTree(int $parentId): void
     {
-        $tree = TableCategoriesTree::find()->where([''])->all();
-        
+//        $tree = TableCategoriesTree::find()->where([''])->all();
+
     }
 }

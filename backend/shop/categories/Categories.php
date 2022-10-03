@@ -6,6 +6,7 @@ namespace app\shop\categories;
 
 use app\models\forms\CategoryForm;
 use app\shop\categories\contracts\ICategory;
+use app\shop\categories\contracts\WeCategories;
 use app\shop\product\card\contracts\WeProductCards;
 use app\tables\BaseQuery;
 use app\tables\TableCategories;
@@ -17,44 +18,21 @@ use vloop\entities\exceptions\NotValidatedFields;
 use vloop\entities\fields\Field;
 use yii\db\Query;
 
-class Categories implements WeProductCards
+class Categories implements WeCategories
 {
-    private $exampleOfCreateCategory;
-    private $queryOfSerach;
-
-    public function __construct(Query $queryOfSearch = null, callable $categoryExample = null)
-    {
-        if(is_null($categoryExample)){
-            $categoryExample = function (IField $id){
-                return new CategorySql($id);
-            };
-        }
-        $this->exampleOfCreateCategory = $categoryExample;
-
-//        if(is_null($queryOfSearch)){
-//            $queryOfSearch = new BaseQuery(TableCategories::class);
-//        }
-//        $this
-    }
-
     /**
      * @param IForm|CategoryForm $productCardForm
      * @return TableProductCard
      * @throws NotSavedData
      * @throws NotValidatedFields
      */
-    public function add(IForm $productCardForm): TableProductCard
+    public function add(IForm $productCardForm): TableCategories
     {
         $validatedFields = $productCardForm->validatedFields();
         $record = new TableCategories();
-        $record->load($validatedFields['name']);
+        $record->load($validatedFields);
         if($record->save()){
-            /**@var CategorySql $category*/
-            $category = call_user_func(
-                $this->exampleOfCreateCategory,
-                new Field('id', $record->id)
-            );
-            $category->buildTree($validatedFields['parentId']);
+            return $record;
         }
         throw new NotSavedData($record->getErrors(), 400);
     }
@@ -64,8 +42,9 @@ class Categories implements WeProductCards
         TableCategories::deleteAll(['id'=>$id->value()]);
     }
 
-    public function find(): Query
+    public function find()
     {
-        return new BaseQuery(TableCategories::class);
+
+//        return new BaseQuery(TableCategories::class);
     }
 }
