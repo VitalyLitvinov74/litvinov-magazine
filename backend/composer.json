@@ -26,7 +26,8 @@
     "vloop/entities": "dev-master",
     "la-haute-societe/yii2-save-relations-behavior": "*",
     "vloop/yii2-custom-validators": ">=1.0.0",
-    "ext-json": "*"
+    "ext-json": "*",
+    "v.chetkov/php-clean-architecture": "*"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.1.0",

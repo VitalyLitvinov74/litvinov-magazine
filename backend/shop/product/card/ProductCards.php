@@ -1,11 +1,11 @@
 <?php
 
 
-namespace app\models\shop\product\card;
+namespace app\shop\product\card;
 
 
 use app\models\forms\ProductCardForm;
-use app\models\shop\product\card\contracts\WeProductCards;
+use app\shop\product\card\contracts\WeProductCards;
 use app\tables\TableProductCard;
 use vloop\entities\contracts\IField;
 use vloop\entities\contracts\IForm;

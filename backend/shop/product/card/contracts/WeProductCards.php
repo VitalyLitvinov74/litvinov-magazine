@@ -1,7 +1,7 @@
 <?php
 
 
-namespace app\models\shop\product\card\contracts;
+namespace app\shop\product\card\contracts;
 
 
 use app\tables\TableProductCard;
