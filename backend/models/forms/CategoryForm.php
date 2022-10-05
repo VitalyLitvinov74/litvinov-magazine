@@ -8,9 +8,9 @@ use vloop\entities\yii2\AbstractForm;
 
 class CategoryForm extends AbstractForm
 {
-    public string $name;
+    public $name;
 
-    public int $parentId;
+    public $parentId;
 
     public function rules()
     {

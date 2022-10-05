@@ -4,6 +4,7 @@
 namespace app\shop\categories;
 
 
+use app\models\FieldValue;
 use app\models\forms\CategoryForm;
 use app\shop\categories\contracts\ICategory;
 use app\shop\categories\contracts\WeCategories;
@@ -31,7 +32,7 @@ class Categories implements WeCategories
         $validatedFields = $productCardForm->validatedFields();
         $record = new TableCategories();
         $record->load($validatedFields);
-        if($record->save()){
+        if ($record->save()) {
             return $record;
         }
         throw new NotSavedData($record->getErrors(), 400);
@@ -39,7 +40,7 @@ class Categories implements WeCategories
 
     public function remove(IField $id): void
     {
-        TableCategories::deleteAll(['id'=>$id->value()]);
+        TableCategories::deleteAll(['id' => $id->value()]);
     }
 
     public function find()

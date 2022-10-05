@@ -4,7 +4,14 @@
 namespace app\shop\categories\contracts;
 
 
+use vloop\entities\contracts\IField;
+
 interface ICategory
 {
-    public function buildTree(int $parentId): void;
+    /**
+     * @param IField $parentId
+     */
+    public function buildTree(IField $parentId): self;
+
+
 }

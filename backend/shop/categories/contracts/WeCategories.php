@@ -12,7 +12,6 @@ use yii\db\Query;
 
 interface WeCategories
 {
-
     public function add(IForm $categoryForm): TableCategories;
 
     public function remove(IField $id): void;
