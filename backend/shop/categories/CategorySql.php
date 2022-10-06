@@ -24,46 +24,71 @@ class CategorySql implements ICategory
     }
 
     /**
-     * generate Clousure table tree
+     * generate Closure table tree
      * @param IField $parentId
      * @return $this
      * @throws \Exception
      */
     public function buildTree(IField $parentId): self
     {
-
-        $simpleTree = new TableCategoriesTree([
+        $ancestorTree = TableCategoriesTree::find()
+            ->where(
+                'child_id=:ancestor',
+                [':ancestor' => $parentId])
+            ->orderBy(["level" => SORT_DESC])
+            ->all();
+        $needleTree = [];
+        foreach ($ancestorTree as $ancestorNode) {
+            $descendantNode = new TableCategoriesTree([
+                'child_id' => $this->id->value(),
+                'parent_id' => $ancestorNode->parent_id,
+                'level' => ++$ancestorNode->level
+            ]);
+            $needleTree[] = $descendantNode;
+        }
+        foreach ($this->destendantTree() as $descendantNode) {
+            $ancestorNode = new TableCategoriesTree([
+                'child_id' => $descendantNode->child_id,
+                'parent_id' => $parentId->value(),
+                'level' => ++$descendantNode->level
+            ]);
+            $needleTree[] = $ancestorNode;
+        }
+        $needleTree[] = new TableCategoriesTree([
             'child_id' => $this->id->value(),
             'parent_id' => $parentId->value(),
             'level' => $this->minTreeLevel->value()
         ]);
-        $parentSimpleTries = TableCategoriesTree::find()
-            ->where(
-                "child_id=:childId",
-                ['childId' => $parentId]
-            )->all();
-        $generalTrees = [];
-        foreach ($parentSimpleTries as $parentTree) {
-            $generalTrees[] = new TableCategoriesTree([
-                "parent_id" => $parentTree->parent_id,
-                "child_id" => $this->id->value(),
-                'level' => $parentTree->level + 1
-            ]);
-        }
-        $allTries = array_merge([$simpleTree], $generalTrees);
         $trx = Yii::$app->db->beginTransaction();
         try {
-            foreach ($allTries as $tree) {
-                /**@var TableCategoriesTree $tree */
-                if (!$tree->save()) {
-                    throw new NotSavedData($tree->getErrors(), 400);
+            foreach ($needleTree as $descendantNode) {
+                if (!$descendantNode->save()) {
+                    throw new NotSavedData($descendantNode->errors, 400);
                 }
             }
             $trx->commit();
-        } catch (\Exception $exception) {
+        } catch (\Exception $e) {
             $trx->rollBack();
-            throw $exception;
+            throw $e;
         }
         return $this;
+    }
+
+    private function destendantTree()
+    {
+        return TableCategoriesTree::find()
+            ->where(
+                "parent_id=:descendant",
+                [':descendant' => $this->id]
+            )
+            ->all();
+    }
+
+    private function parentTree(){
+
+    }
+
+    private function childTree(){
+
     }
 }

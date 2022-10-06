@@ -26,7 +26,7 @@ class CategoriesController extends Controller
         );
     }
 
-    public function actionBuildTree(){
+    public function actionRebuildTree(){
         $category = new CategorySql(
             new Field('id', Yii::$app->request->post('id'))
         );

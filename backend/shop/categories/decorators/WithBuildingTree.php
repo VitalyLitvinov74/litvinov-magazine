@@ -11,6 +11,7 @@ use app\tables\TableCategories;
 use vloop\entities\contracts\IField;
 use vloop\entities\contracts\IForm;
 use vloop\entities\fields\Field;
+use vloop\entities\fields\FieldOfForm;
 
 class WithBuildingTree implements WeCategories
 {
@@ -23,10 +24,14 @@ class WithBuildingTree implements WeCategories
 
     public function add(IForm $categoryForm): TableCategories
     {
-        $validatedFields = $categoryForm->validatedFields();
         $record = $this->origin->add($categoryForm);
         $category = new CategorySql(new Field('id', $record->id));
-        $category->buildTree($validatedFields['parentId']);
+        $category->buildTree(
+            new FieldOfForm(
+                $categoryForm,
+                'parentId'
+            )
+        );
         return $record;
     }
 
