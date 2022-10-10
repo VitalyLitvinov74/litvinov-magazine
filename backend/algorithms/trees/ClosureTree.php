@@ -56,8 +56,17 @@ class ClosureTree
             $missingNodes,
             $this->existedTree
         );
+
         return $treeAfterRelate;
 //        return new self($this->minLevel, $this->maxLevel, $treeAfterRelate);
+    }
+
+    /**
+     * @param array $comparedArray
+     * @return array
+     */
+    public function removeDublies(array $comparedArray): array {
+
     }
 
     /**
