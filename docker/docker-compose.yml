@@ -70,7 +70,11 @@ services:
       - "${MYSQL_PORT}:3306"
     volumes:
       - ./mysql:/docker-entrypoint-initdb.d
-    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+    command: [
+      'mysqld',
+      '--character-set-server=utf8mb4',
+      '--collation-server=utf8mb4_unicode_ci'
+    ]
 
 ### тут происходит подгрузка зависимостей для бека и фронта
   php-cli:

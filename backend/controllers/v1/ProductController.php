@@ -7,6 +7,7 @@ use app\models\forms\ProductCardForm;
 use app\shop\product\card\ProductCards;
 use app\tables\TableProductCard;
 use vloop\entities\fields\Field;
+use vloop\entities\fields\FieldOfForm;
 use yii\rest\Controller;
 
 class ProductController extends Controller

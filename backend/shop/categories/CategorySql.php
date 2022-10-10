@@ -4,7 +4,9 @@
 namespace app\shop\categories;
 
 
-use app\models\consts\MinTreeLevel;
+use app\algorithms\trees\ClosureTree;
+use app\algorithms\trees\MaxTreeLevel;
+use app\algorithms\trees\MinTreeLevel;
 use app\shop\categories\contracts\ICategory;
 use app\tables\TableCategoriesTree;
 use vloop\entities\contracts\IField;
@@ -20,10 +22,16 @@ class CategorySql implements ICategory
     private $minTreeLevel;
     private $_allRelatedNodes = null;
 
+
     public function __construct(IField $id)
     {
         $this->id = $id;
         $this->minTreeLevel = new MinTreeLevel();
+        $closureAlgorithm = new ClosureTree(
+            new MinTreeLevel(),
+            new MaxTreeLevel(),
+            
+        )
     }
 
     /**
