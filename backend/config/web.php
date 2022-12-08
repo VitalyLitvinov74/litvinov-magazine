@@ -22,23 +22,31 @@ $config = [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'Bne5-ySR4sESa5TPfGr_YlhJDpjoVsLe',
             'parsers' => [
-                'application/json' => 'yii\web\JsonParser',
+                'application/json' => yii\web\JsonParser::class,
             ]
         ],
-        'response'=>[
-            'on beforeSend'=>function ($event) {
+        'response' => [
+            'on beforeSend' => function ($event) {
                 /**@var Response $response */
                 $response = $event->sender;
                 $exception = Yii::$app->errorHandler->exception;
-                if ($exception instanceof AbstractException and $response->statusCode >= 400){
+                if ($exception instanceof AbstractException and $response->statusCode >= 400) {
                     $response->data = [
-                        'status'=> $exception->getCode(),
-                        'title'=>$exception->getMessage(),
-                        'detail'=>$exception->errors()
+                        'status' => $exception->getCode(),
+                        'title' => $exception->getMessage(),
+                        'detail' => $exception->errors()
                     ];
                     $response->statusCode = $exception->getCode();
                 }
             },
+            'formatters' => [
+                Response::FORMAT_JSON => [
+                    'class' => yii\web\JsonResponseFormatter::class,
+                    'prettyPrint' => YII_DEBUG, // use "pretty" output in debug mode
+                    'encodeOptions' => JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE,
+                    // ...
+                ],
+            ],
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -69,7 +77,7 @@ $config = [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'rules' =>  [
+            'rules' => [
             ],
         ],
 
