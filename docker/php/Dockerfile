@@ -1,9 +1,13 @@
-FROM php:7.4-fpm
+FROM php:8.1-fpm
 ARG COMPOSER_VER
 ENV COMPOSER_VER ${COMPOSER_VER:-2.2.9}
 USER $USER
 
 WORKDIR /var/www/html
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash
+RUN apt-get -y install nodejs \
+    git \
+    unzip
 
 RUN apt-get update && apt-get install -y \
         libfreetype6-dev \
@@ -12,11 +16,7 @@ RUN apt-get update && apt-get install -y \
         libzip-dev \
         libxml2-dev \
         curl
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash
-RUN apt-get -y install nodejs \
-    git \
-    unzip
-#RUN npm --version
+
 RUN docker-php-ext-install \
         soap \
         zip \
@@ -25,7 +25,6 @@ RUN docker-php-ext-install \
         gd \
         iconv \
         intl \
-#        mbstring \
         opcache \
         pdo_mysql \
         sockets

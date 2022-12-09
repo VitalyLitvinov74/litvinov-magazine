@@ -15,20 +15,13 @@ class ProductController extends Controller
     {
         $cards = new ProductCards();
         return $cards
-            ->add(new ProductCardForm());
-    }
-
-    public function actionShowAll()
-    {
-        $cads = new ProductCards();
-        return $cads
-            ->findBy()
-            ->orderBy(['id' => SORT_DESC])
-            ->all();
+            ->add(new ProductCardForm())
+            ->asArray();
     }
 
     public function actionById(int $id)
     {
-        return ProductCard::byId(new Field($id))->asArray();
+        return ProductCard::byId(new Field($id))
+            ->asArray();
     }
 }

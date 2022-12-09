@@ -11,13 +11,7 @@ use yii\db\Query;
 
 interface WeProductCards
 {
-    /**
-     * @param IForm $productCardForm
-     * @return IProductCard
-     */
     public function add(IForm $productCardForm): IProductCard;
 
     public function remove(IField $id): void;
-
-    public function findBy(): Query;
 }

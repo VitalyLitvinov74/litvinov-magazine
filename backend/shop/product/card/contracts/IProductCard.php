@@ -3,8 +3,10 @@
 
 namespace app\shop\product\card\contracts;
 
+use app\models\forms\ProductForm;
 use app\tables\TableProductImages;
 use app\tables\TableProducts;
+use vloop\entities\contracts\IForm;
 
 /**
  * Все свойства доступны через магический метод __get
@@ -19,4 +21,11 @@ use app\tables\TableProducts;
 interface IProductCard
 {
     public function asArray(): array;
+
+    /**
+     * Меняет мета данные продукта
+     * @param IForm $form
+     * @return $this
+     */
+    public function change(IForm $form): self;
 }

@@ -21,9 +21,10 @@ class CategoriesController extends Controller
         $categories = new WithBuildingTree(
             new Categories()
         );
-        return $categories->add(
+        $test = $categories->add(
             new CategoryForm()
         );
+        return $test;
     }
 
     public function actionRebuildTree(){
