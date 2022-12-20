@@ -20,8 +20,6 @@ use vloop\entities\contracts\IForm;
  */
 interface IProductCard
 {
-    public function asArray(): array;
-
     /**
      * Меняет мета данные продукта
      * @param IForm $form

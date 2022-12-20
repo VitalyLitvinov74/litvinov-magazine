@@ -2,10 +2,10 @@
 
 namespace app\shop\product\card;
 
-use app\models\fields\IField;
 use app\models\forms\ProductForm;
 use app\shop\product\card\contracts\IProductCard;
 use app\tables\TableProductCard;
+use vloop\entities\contracts\IField;
 use vloop\entities\contracts\IForm;
 use vloop\entities\exceptions\NotFoundEntity;
 use vloop\entities\exceptions\NotSavedData;
@@ -25,11 +25,7 @@ class ProductCard implements IProductCard
 
     public function __construct(private TableProductCard $record)
     {
-    }
 
-    public function asArray(): array
-    {
-        return $this->record->toArray();
     }
 
     /**

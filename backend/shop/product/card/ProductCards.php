@@ -10,12 +10,14 @@ use app\shop\product\card\contracts\WeProductCards;
 use app\tables\TableProductCard;
 use vloop\entities\contracts\IField;
 use vloop\entities\contracts\IForm;
+use vloop\entities\exceptions\NotFoundEntity;
 use vloop\entities\exceptions\NotSavedData;
 use vloop\entities\exceptions\NotValidatedFields;
 use yii\db\Query;
 use yii\helpers\VarDumper;
 
-class ProductCards
+class ProductCards implements WeProductCards
+
 {
     public function __construct()
     {
@@ -27,12 +29,12 @@ class ProductCards
      * @throws NotSavedData
      * @throws NotValidatedFields
      */
-    public function add(IForm $productCardForm): IProductCard
+    public function add(IForm $productCardForm): TableProductCard
     {
         $record = new TableProductCard();
         $record->load($productCardForm->validatedFields(), '');
         if($record->save()){
-            return new ProductCard($record);
+            return $record;
         }
         throw new NotSavedData($record->getErrors(),400);
     }
@@ -42,16 +44,20 @@ class ProductCards
         TableProductCard::deleteAll(['id'=>$id->value()]);
     }
 
-    /**
-     * @param Query $query
-     * @return array
-     */
-    public function findBy(Query $query): array
+    public function findOne(Query $query): TableProductCard
     {
-        $cards = [];
-        foreach ($query->all() as $record){
-            $cards[] = new ProductCard($record);
+        $one = $query->one();
+        if($one){
+            return $one;
         }
-        return $cards;
+        throw new NotFoundEntity('Не удалось найти карточку продукта');
+    }
+
+    /**
+     * @return TableProductCard[]
+     */
+    public function findAll(Query $query): array
+    {
+        return $query->all();
     }
 }

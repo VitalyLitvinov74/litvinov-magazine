@@ -23,7 +23,7 @@
     "yiisoft/yii2-bootstrap4": "~2.0.0",
     "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
     "vloop/print-your-self": "dev-main",
-    "vloop/entities": "dev-master",
+    "vloop/entities": "~1.0.5",
     "la-haute-societe/yii2-save-relations-behavior": "*",
     "vloop/yii2-custom-validators": ">=1.0.0",
     "ext-json": "*",
