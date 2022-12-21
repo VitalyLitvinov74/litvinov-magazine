@@ -31,6 +31,10 @@ class CategoriesController extends Controller
         $category = new CategorySql(
             new Field('id', Yii::$app->request->post('id'))
         );
-        $category->buildTree(new FieldValue(Yii::$app->request->post('parentId')));
+        $category->buildTree(
+            new Field(
+                Yii::$app->request->post('parentId')
+            )
+        );
     }
 }

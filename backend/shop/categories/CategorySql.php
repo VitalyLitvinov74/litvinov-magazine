@@ -5,15 +5,10 @@ namespace app\shop\categories;
 
 
 use app\algorithms\trees\ClosureTree;
-use app\algorithms\trees\MaxTreeLevel;
 use app\algorithms\trees\MinTreeLevel;
 use app\algorithms\trees\structs\NodeOfTree;
-use app\models\fields\Field;
-use app\models\fields\IField;
 use app\shop\categories\contracts\ICategory;
-use app\tables\TableCategoriesTree;
-use vloop\entities\exceptions\NotSavedData;
-use vloop\entities\exceptions\NotValidatedFields;
+use vloop\entities\contracts\IField;
 use Yii;
 use yii\db\Exception;
 use yii\helpers\VarDumper;
