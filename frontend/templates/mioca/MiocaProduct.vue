@@ -5,11 +5,11 @@
       <div class="container">
         <div class="row align-items-center justify-content-center">
           <div class="col-12 text-center">
-            <h2 class="breadcrumb-title">Single Product {{ip}}</h2>
+            <h2 class="breadcrumb-title">{{ productCard.title }}</h2>
             <!-- breadcrumb-list start -->
             <ul class="breadcrumb-list">
               <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-              <li class="breadcrumb-item active">Product</li>
+              <li class="breadcrumb-item active">{{ productCard.title }}</li>
             </ul>
             <!-- breadcrumb-list end -->
           </div>
@@ -70,7 +70,7 @@
           </div>
           <div class="col-lg-6 col-sm-12 col-xs-12" data-aos="fade-up" data-aos-delay="200">
             <div class="product-details-content quickview-content ml-25px">
-              <h2>Hand-Made Garlic Mortar</h2>
+              <h2>{{ productCard.title }}</h2>
               <div class="pricing-meta">
                 <ul class="d-flex">
                   <li class="new-price">$20.90</li>
@@ -90,12 +90,10 @@
                 <span class="read-review"><a class="reviews" href="#">( 2 Review )</a></span>
               </div>
               <div class="stock mt-30px">
-                <span class="avallabillty">Availability: <span class="in-stock"><i
+                <span class="avallabillty">Доступность: <span class="in-stock"><i
                   class="fa fa-check"></i>In Stock</span></span>
               </div>
-              <p class="mt-30px mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmodol tempor
-                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veni nostrud exercitation ullamco
-                laboris </p>
+              <p class="mt-30px mb-0"> {{ productCard.shortDescription }} </p>
               <div class="pro-details-quality">
                 <div class="cart-plus-minus">
                   <input class="cart-plus-minus-box" type="text" name="qtybutton" value="1"/>
@@ -115,7 +113,7 @@
                 </div>
               </div>
               <div class="pro-details-categories-info pro-details-same-style d-flex">
-                <span>Categories: </span>
+                <span>Категории: </span>
                 <ul class="d-flex">
                   <li>
                     <a href="#">Handmade, </a>
@@ -163,9 +161,9 @@
       <div class="container">
         <div class="description-review-wrapper">
           <div class="description-review-topbar nav">
-            <a data-bs-toggle="tab" href="#des-details2">Information</a>
-            <a class="active" data-bs-toggle="tab" href="#des-details1">Description</a>
-            <a data-bs-toggle="tab" href="#des-details3">Reviews (02)</a>
+            <a data-bs-toggle="tab" href="#des-details2">Информация</a>
+            <a class="active" data-bs-toggle="tab" href="#des-details1">Описание</a>
+            <a data-bs-toggle="tab" href="#des-details3">Отзывы (02)</a>
           </div>
           <div class="tab-content description-review-bottom">
             <div id="des-details2" class="tab-pane">
@@ -181,17 +179,7 @@
             <div id="des-details1" class="tab-pane active">
               <div class="product-description-wrapper">
                 <p>
-
-                  Lorem ipsum dolor sit amet, consectetur adipisici elit, sed do eiusmod tempor incididunt ut labore et
-                  dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip
-                  ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
-                  eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-                  deserunt mollit anim id est laborum. Sed utlo perspiciatis unde omnis iste natus error sit voluptatem
-                  accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et
-                  quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit
-                  aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi
-                  nesciunt.
-
+                  {{ productCard.description }}
                 </p>
               </div>
             </div>
@@ -352,8 +340,10 @@
                                     </span>
                                     <span class="rating-num">( 5 Review )</span>
                                 </span>
-                  <h5 class="title"><a href="single-product.html">Hand-Made Garlic Mortar
-                  </a>
+                  <h5 class="title">
+                    <a href="single-product.html">
+                      {{ productCard.title }}
+                    </a>
                   </h5>
                   <span class="price">
                                     <span class="new">$38.50</span>
@@ -650,7 +640,7 @@
               </div>
               <div class="col-lg-6 col-sm-12 col-xs-12" data-aos="fade-up" data-aos-delay="200">
                 <div class="product-details-content quickview-content">
-                  <h2>Hand-Made Garlic Mortar</h2>
+                  <h2>{{ productCard.title }}</h2>
                   <div class="pricing-meta">
                     <ul class="d-flex">
                       <li class="new-price">$20.90</li>
@@ -736,23 +726,30 @@
   </div>
 </template>
 <script>
-import AddToCard from "../../components/product/buttons/AddToCard";
+  import AddToCard from "../../components/product/buttons/AddToCard";
 
-export default {
-  components: {
-    "add-to-card": AddToCard
-  },
-  props: {
-    ip: null
-  },
-  async asyncData(){
-    // await
-    await this.$store.dispatch('product/loadFromApi', this.$route.params.id)
-    await this.$store.dispatch('product/getIP')
-    this.ip = this.$store.state.product.ip;
+  export default {
+    components: {
+      "add-to-card": AddToCard
+    },
+    data() {
+      return {
+        productCard: null,
+      }
+    },
 
-  },
+    async fetch() {
+      const productCard = await this.$axios.$get('/product/by-id', {
+        params: {
+          id: this.$route.params.id
+        }
+      });
+      this.productCard = productCard;
+    },
 
+    mounted() {
+      console.log(this.productCard);
+    }
 
-}
+  }
 </script>
