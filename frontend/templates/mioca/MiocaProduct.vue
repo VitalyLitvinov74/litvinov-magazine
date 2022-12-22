@@ -5,7 +5,7 @@
       <div class="container">
         <div class="row align-items-center justify-content-center">
           <div class="col-12 text-center">
-            <h2 class="breadcrumb-title">Single Product</h2>
+            <h2 class="breadcrumb-title">Single Product {{ip}}</h2>
             <!-- breadcrumb-list start -->
             <ul class="breadcrumb-list">
               <li class="breadcrumb-item"><a href="index.html">Home</a></li>
@@ -654,7 +654,9 @@
                   <div class="pricing-meta">
                     <ul class="d-flex">
                       <li class="new-price">$20.90</li>
-                      <li class="old-price"><del>$30.90</del></li>
+                      <li class="old-price">
+                        <del>$30.90</del>
+                      </li>
                     </ul>
                   </div>
                   <div class="pro-details-rating-wrap">
@@ -676,11 +678,12 @@
                     nostrud exercitation ullamco laboris </p>
                   <div class="pro-details-quality">
                     <div class="cart-plus-minus">
-                      <input class="cart-plus-minus-box" type="text" name="qtybutton" value="1" />
+                      <input class="cart-plus-minus-box" type="text" name="qtybutton" value="1"/>
                     </div>
                     <div class="pro-details-cart">
                       <button class="add-cart"> Add To
-                        Cart</button>
+                        Cart
+                      </button>
                     </div>
                     <div class="pro-details-compare-wishlist pro-details-wishlist ">
                       <a href="wishlist.html"><i class="pe-7s-like"></i></a>
@@ -733,10 +736,23 @@
   </div>
 </template>
 <script>
- import AddToCard from "../../components/product/buttons/AddToCard";
-  export default {
-    components: {
-      "add-to-card": AddToCard
-    }
-  }
+import AddToCard from "../../components/product/buttons/AddToCard";
+
+export default {
+  components: {
+    "add-to-card": AddToCard
+  },
+  props: {
+    ip: null
+  },
+  async asyncData(){
+    // await
+    await this.$store.dispatch('product/loadFromApi', this.$route.params.id)
+    await this.$store.dispatch('product/getIP')
+    this.ip = this.$store.state.product.ip;
+
+  },
+
+
+}
 </script>

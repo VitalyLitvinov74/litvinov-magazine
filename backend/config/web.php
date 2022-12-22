@@ -54,6 +54,7 @@ $config = [
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
+//            'identityCookie' => ['name' => '_identity', 'httpOnly' => true, 'domain' => '.my'],
         ],
 
         'mailer' => [
@@ -80,6 +81,12 @@ $config = [
             'rules' => [
             ],
         ],
+//        'session' => [
+//            'cookieParams' => [
+//                'domain' => '.my',
+//                'httpOnly' => true,
+//            ],
+//        ],
 
     ],
     'params' => $params,
