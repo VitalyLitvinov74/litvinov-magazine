@@ -6,7 +6,7 @@
   </div>
 </template>
 <script>
-  import MiocaProduct from "../../../templates/mioca/MiocaProduct";
+  import MiocaProduct from "../../templates/mioca/MiocaProduct";
 
   export default {
     components: {
