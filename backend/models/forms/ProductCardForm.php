@@ -17,6 +17,7 @@ class ProductCardForm extends AbstractForm
     public $shortDescription;
     public $title;
     public $products;
+    public $characteristics;
 
     public function rules()
     {
@@ -43,6 +44,17 @@ class ProductCardForm extends AbstractForm
                         ]
                     )
                 ]
+            ],
+            ['characteristics', 'default', 'value' => []],
+            [
+                'characteristics',
+                CustomEachValidator::class,
+                'rule'=>[
+                    ArrayValidator::class,
+                    'subRules' => [
+                        [['value', 'name'], 'required']
+                    ]
+                ],
             ]
         ];
     }
