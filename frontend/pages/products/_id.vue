@@ -1,6 +1,6 @@
 <template>
   <div>
-    <component v-bind:is="product">
+    <component v-bind:is="productPage">
 
     </component>
   </div>
@@ -16,15 +16,35 @@
       switch (this.$store.getters['layout/name']) {
         default:
         case "mioca":
-          this.product = MiocaProduct;
+          this.productPage = MiocaProduct;
           break;
-          //сюда и дальше добавлять новые страницы шаблонов.
+        //сюда и дальше добавлять новые страницы шаблонов.
       }
     },
     data: function () {
       return {
-        product: null
+        productPage: null
       };
+    },
+
+    async asyncData({$axios, route, error, store}) {
+      await $axios.$get('/product/by-id', {
+        params: {
+          id: route.params.id
+        }
+      })
+        .then(function (result) {
+          store.commit('product/load', result);
+        })
+        .catch(function (err) {
+          if (err.response) {
+            let data = err.response.data;
+            error({
+              statusCode: data.status,
+              message: data.detail[0]
+            })
+          }
+        });
     }
   }
 </script>
