@@ -6,7 +6,7 @@
         <div class="row align-items-center justify-content-center">
           <div class="col-12 text-center">
             <h2 class="breadcrumb-title">{{ productCard.title }}</h2>
-<!--             breadcrumb-list start -->
+            <!--             breadcrumb-list start -->
             <ul class="breadcrumb-list">
               <li class="breadcrumb-item"><a href="index.html">Home</a></li>
               <li class="breadcrumb-item active">{{ productCard.title }}</li>
@@ -169,10 +169,12 @@
             <div id="des-details2" class="tab-pane">
               <div class="product-anotherinfo-wrapper text-start">
                 <ul>
-                  <li><span>Weight</span> 400 g</li>
-                  <li><span>Dimensions</span>10 x 10 x 15 cm</li>
-                  <li><span>Materials</span> 60% cotton, 40% polyester</li>
-                  <li><span>Other Info</span> American heirloom jean shorts pug seitan letterpress</li>
+                  <li v-for="characteristic in productCard.characteristics">
+                    <span class="firstLetterToUpperCase">
+                      {{characteristic.name}}
+                    </span>
+                    {{characteristic.value}}
+                  </li>
                 </ul>
               </div>
             </div>
@@ -738,5 +740,11 @@
         productCard: this.$store.state.product.product,
       }
     },
+
   }
 </script>
+<style>
+  .firstLetterToUpperCase{
+    text-transform: capitalize;
+  }
+</style>
