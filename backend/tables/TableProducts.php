@@ -20,7 +20,7 @@ use yii\helpers\VarDumper;
  * @property string $description       Полное описание товара
  * @property string $short_description Краткое описание товара
  * @property TableEquipmentImages[] $images
- * @property TableEquipments[] $products
+ * @property TableEquipments[] $equipments
  * @property TableCharacteristics[] $characteristics
  */
 class TableProducts extends BaseTable
@@ -32,7 +32,7 @@ class TableProducts extends BaseTable
             [
                 'saveRelations' => [
                     'relations' => [
-                        'products',
+                        'equipments',
                         'characteristics'
                     ],
                 ]
@@ -40,42 +40,31 @@ class TableProducts extends BaseTable
         );
     }
 
-    public static function tableName()
+    public static function tableName(): string
     {
-        return 'product_cards';
+        return 'products';
     }
 
-    public function extraFields()
+    public function extraFields(): array
     {
-        return ['products', 'characteristics'];
-    }
-
-    /**
-     * @return ActiveQuery|TableEquipmentImages[]
-     * @throws InvalidConfigException
-     */
-    public function getImages()
-    {
-        return $this
-            ->hasMany(TableEquipmentImages::class, ['id' => 'image_id'])
-            ->viaTable('product_images', ['product_id' => 'id']);
+        return ['equipments', 'characteristics'];
     }
 
     /**
      * @return ActiveQuery
      * @throws InvalidConfigException
      */
-    public function getProducts()
+    public function getEquipments(): ActiveQuery
     {
         return $this
-            ->hasMany(TableEquipments::class, ['id' => 'product_id'])
-            ->viaTable('products_via_cards', ['card_id' => 'id']);
+            ->hasMany(TableEquipments::class, ['id' => 'equipment_id'])
+            ->viaTable('product_via_equipments', ['product_id' => 'id']);
     }
 
     public function getCharacteristics(): ActiveQuery
     {
         return $this
             ->hasMany(TableCharacteristics::class, ['id'=>'characteristic_id'])
-            ->viaTable('product_cards_characteristics', ['card_id'=>'id']);
+            ->viaTable('product_via_characteristics', ['product_id'=>'id']);
     }
 }

@@ -3,7 +3,7 @@
 
 namespace app\controllers\v1;
 
-use app\models\forms\ProductCardForm;
+use app\models\forms\ProductForm;
 use app\shop\product\Products;
 use app\tables\TableProducts;
 use yii\rest\Controller;
@@ -14,7 +14,7 @@ class ProductController extends Controller
     {
         $cards = new Products();
         return $cards->add(
-            new ProductCardForm()
+            new ProductForm()
         );
     }
 

@@ -17,6 +17,6 @@ class TableEquipmentImages extends ActiveRecord
 {
     public static function tableName()
     {
-        return 'product_images';
+        return 'equipment';
     }
 }

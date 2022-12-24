@@ -4,7 +4,7 @@
 namespace app\shop\product;
 
 
-use app\models\forms\ProductCardForm;
+use app\models\forms\ProductForm;
 use app\shop\product\contracts\IProduct;
 use app\shop\product\contracts\WeProducts;
 use app\tables\TableProducts;
@@ -23,7 +23,7 @@ class Products implements WeProducts
     }
 
     /**
-     * @param IForm|ProductCardForm $productCardForm
+     * @param IForm|ProductForm $productCardForm
      * @return IProduct
      * @throws NotSavedData
      * @throws NotValidatedFields

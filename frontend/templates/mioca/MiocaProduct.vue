@@ -89,11 +89,29 @@
                 </div>
                 <span class="read-review"><a class="reviews" href="#">( 2 Review )</a></span>
               </div>
-              <div class="stock mt-30px">
-                <span class="avallabillty">Доступность: <span class="in-stock"><i
-                  class="fa fa-check"></i>In Stock</span></span>
-              </div>
+
               <p class="mt-30px mb-0"> {{ product.shortDescription }} </p>
+              <div class="pro-details-color-size d-flex">
+                <!-- Right Side Start -->
+                <div class="pro-details-color-size d-flex">
+                  <!-- Right Side Start -->
+                  <div class="select-shoing-wrap d-flex align-items-center">
+                    <div class="shot-product">
+                      <p>Комплектация:</p>
+                    </div>
+                    <div class="shop-select">
+                      <select class="shop-sort">
+                        <option data-display="Balck">Balck</option>
+                        <option value="1"> Gold</option>
+                        <option value="2"> Golden</option>
+                        <option value="3"> White</option>
+                      </select>
+
+                    </div>
+                  </div>
+                </div>
+                <!-- Right Side End -->
+              </div>
               <div class="pro-details-quality">
                 <div class="cart-plus-minus">
                   <input class="cart-plus-minus-box" type="text" name="qtybutton" value="1"/>

@@ -56,14 +56,14 @@ class TableEquipments extends BaseTable
     public function getProductCard()
     {
         return $this
-            ->hasOne(TableProducts::class, ['id' => 'card_id'])
-            ->viaTable('products_via_cards', ['product_id' => 'id']);
+            ->hasOne(TableProducts::class, ['id' => 'product_id'])
+            ->viaTable('product_via_equipments', ['equipment_id' => 'id']);
     }
 
     public function getCharacteristics(): ActiveQuery
     {
         return $this
             ->hasMany(TableCharacteristics::class, ['id' => 'characteristic_id'])
-            ->viaTable('products_characteristics', ['product_id' => 'id']);
+            ->viaTable('equipment_via_characteristics', ['equipment_id' => 'id']);
     }
 }

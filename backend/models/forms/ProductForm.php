@@ -11,12 +11,12 @@ use vloop\Yii2\Validators\ValidationModelTrait;
 use yii\base\Model;
 use yii\helpers\VarDumper;
 
-class ProductCardForm extends AbstractForm
+class ProductForm extends AbstractForm
 {
     public $description;
     public $shortDescription;
     public $title;
-    public $products;
+    public $equipments;
     public $characteristics;
 
     public function rules()
@@ -25,7 +25,7 @@ class ProductCardForm extends AbstractForm
             [['description', 'shortDescription', 'title'], 'required'],
             [['description', 'shortDescription', 'title'], 'string'],
             [
-                'products',
+                'equipments',
                 CustomEachValidator::class,
                 "rule" => [
                     ArrayValidator::class,
