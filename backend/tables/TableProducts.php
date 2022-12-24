@@ -5,27 +5,26 @@ namespace app\tables;
 
 
 use lhs\Yii2SaveRelationsBehavior\SaveRelationsBehavior;
+use lhs\Yii2SaveRelationsBehavior\SaveRelationsTrait;
+use yii\base\InvalidConfigException;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 use yii\helpers\VarDumper;
 
 /**
- * Class TableProducts
+ * Class TableProductCards
  * @package app\tables
- * @property int $id    [int(11)]
- * @property int $count [int(11)]  Кол-во товара готового к продаже
- * @property int $price [int(11)]  Стоимость продукта умноженная на 100
- * @property TableProductCard $productCard
+ * @property int $id                [int(11)]
+ * @property string $title             [varchar(255)]  Наименование товара
+ * @property string $description       Полное описание товара
+ * @property string $short_description Краткое описание товара
+ * @property TableEquipmentImages[] $images
+ * @property TableEquipments[] $products
  * @property TableCharacteristics[] $characteristics
  */
 class TableProducts extends BaseTable
 {
-    public static function tableName()
-    {
-        return 'products';
-    }
-
     public function behaviors()
     {
         return ArrayHelper::merge(
@@ -33,36 +32,50 @@ class TableProducts extends BaseTable
             [
                 'saveRelations' => [
                     'relations' => [
+                        'products',
                         'characteristics'
-                    ]
+                    ],
                 ]
             ]
         );
     }
 
-    public function rules()
+    public static function tableName()
     {
-        return [
-            ['id', 'exist', 'message' => 'Не удалось найти товар с указанным ID']
-        ];
+        return 'product_cards';
     }
 
     public function extraFields()
     {
-        return ['characteristics'];
+        return ['products', 'characteristics'];
     }
 
-    public function getProductCard()
+    /**
+     * @return ActiveQuery|TableEquipmentImages[]
+     * @throws InvalidConfigException
+     */
+    public function getImages()
     {
         return $this
-            ->hasOne(TableProductCard::class, ['id' => 'card_id'])
-            ->viaTable('products_via_cards', ['product_id' => 'id']);
+            ->hasMany(TableEquipmentImages::class, ['id' => 'image_id'])
+            ->viaTable('product_images', ['product_id' => 'id']);
+    }
+
+    /**
+     * @return ActiveQuery
+     * @throws InvalidConfigException
+     */
+    public function getProducts()
+    {
+        return $this
+            ->hasMany(TableEquipments::class, ['id' => 'product_id'])
+            ->viaTable('products_via_cards', ['card_id' => 'id']);
     }
 
     public function getCharacteristics(): ActiveQuery
     {
         return $this
-            ->hasMany(TableCharacteristics::class, ['id' => 'characteristic_id'])
-            ->viaTable('products_characteristics', ['product_id' => 'id']);
+            ->hasMany(TableCharacteristics::class, ['id'=>'characteristic_id'])
+            ->viaTable('product_cards_characteristics', ['card_id'=>'id']);
     }
 }

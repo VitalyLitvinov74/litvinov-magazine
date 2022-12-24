@@ -4,26 +4,20 @@
 namespace app\shop\categories;
 
 
-use app\models\FieldValue;
 use app\models\forms\CategoryForm;
-use app\shop\categories\contracts\ICategory;
 use app\shop\categories\contracts\WeCategories;
-use app\shop\product\card\contracts\WeProductCards;
-use app\tables\BaseQuery;
 use app\tables\TableCategories;
-use app\tables\TableProductCard;
+use app\tables\TableProducts;
 use vloop\entities\contracts\IField;
 use vloop\entities\contracts\IForm;
 use vloop\entities\exceptions\NotSavedData;
 use vloop\entities\exceptions\NotValidatedFields;
-use vloop\entities\fields\Field;
-use yii\db\Query;
 
 class Categories implements WeCategories
 {
     /**
      * @param IForm|CategoryForm $productCardForm
-     * @return TableProductCard
+     * @return TableProducts
      * @throws NotSavedData
      * @throws NotValidatedFields
      */

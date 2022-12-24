@@ -1,22 +1,21 @@
 <?php
 
 
-namespace app\shop\product\card;
+namespace app\shop\product;
 
 
 use app\models\forms\ProductCardForm;
-use app\shop\product\card\contracts\IProductCard;
-use app\shop\product\card\contracts\WeProductCards;
-use app\tables\TableProductCard;
+use app\shop\product\contracts\IProduct;
+use app\shop\product\contracts\WeProducts;
+use app\tables\TableProducts;
 use vloop\entities\contracts\IField;
 use vloop\entities\contracts\IForm;
 use vloop\entities\exceptions\NotFoundEntity;
 use vloop\entities\exceptions\NotSavedData;
 use vloop\entities\exceptions\NotValidatedFields;
 use yii\db\Query;
-use yii\helpers\VarDumper;
 
-class ProductCards implements WeProductCards
+class Products implements WeProducts
 
 {
     public function __construct()
@@ -25,13 +24,13 @@ class ProductCards implements WeProductCards
 
     /**
      * @param IForm|ProductCardForm $productCardForm
-     * @return IProductCard
+     * @return IProduct
      * @throws NotSavedData
      * @throws NotValidatedFields
      */
-    public function add(IForm $productCardForm): TableProductCard
+    public function add(IForm $productCardForm): TableProducts
     {
-        $record = new TableProductCard();
+        $record = new TableProducts();
         $record->load($productCardForm->validatedFields(), '');
         if($record->save()){
             return $record;
@@ -41,10 +40,10 @@ class ProductCards implements WeProductCards
 
     public function remove(IField $id): void
     {
-        TableProductCard::deleteAll(['id'=>$id->value()]);
+        TableProducts::deleteAll(['id'=>$id->value()]);
     }
 
-    public function findOne(Query $query): TableProductCard
+    public function findOne(Query $query): TableProducts
     {
         $one = $query->one();
         if($one){
@@ -54,7 +53,7 @@ class ProductCards implements WeProductCards
     }
 
     /**
-     * @return TableProductCard[]
+     * @return TableProducts[]
      */
     public function findAll(Query $query): array
     {

@@ -9,15 +9,16 @@ use vloop\entities\exceptions\NotValidatedFields;
 use vloop\entities\yii2\AbstractForm;
 use yii\base\Model;
 
-class ProductForm extends AbstractForm
+class EquipmentForm extends AbstractForm
 {
     public $price;
     public $count;
+    public $name;
 
     public function rules()
     {
         return [
-            [['price', 'count'], 'required'],
+            [['price', 'count', 'name'], 'required'],
             ['price','number', 'min'=>0],
             ['count', 'integer', 'min'=>0]
         ];

@@ -4,17 +4,15 @@
 namespace app\controllers\v1;
 
 use app\models\forms\ProductCardForm;
-use app\shop\product\card\ProductCard;
-use app\shop\product\card\ProductCards;
-use app\tables\TableProductCard;
-use vloop\entities\fields\Field;
+use app\shop\product\Products;
+use app\tables\TableProducts;
 use yii\rest\Controller;
 
 class ProductController extends Controller
 {
     public function actionCreate()
     {
-        $cards = new ProductCards();
+        $cards = new Products();
         return $cards->add(
             new ProductCardForm()
         );
@@ -22,7 +20,7 @@ class ProductController extends Controller
 
     public function actionById(int $id)
     {
-        $cards = new ProductCards();
-        return $cards->findOne(TableProductCard::find()->where(['id' => $id]));
+        $cards = new Products();
+        return $cards->findOne(TableProducts::find()->where(['id' => $id]));
     }
 }

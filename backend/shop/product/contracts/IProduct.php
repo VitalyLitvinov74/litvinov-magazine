@@ -1,11 +1,10 @@
 <?php
 
 
-namespace app\shop\product\card\contracts;
+namespace app\shop\product\contracts;
 
-use app\models\forms\ProductForm;
-use app\tables\TableProductImages;
-use app\tables\TableProducts;
+use app\tables\TableEquipmentImages;
+use app\tables\TableEquipments;
 use vloop\entities\contracts\IForm;
 
 /**
@@ -15,10 +14,10 @@ use vloop\entities\contracts\IForm;
  * @property int $id                [int(11)]
  * @property string $title             [varchar(255)]  Наименование товара
  * @property string $short_description Краткое описание товара
- * @property TableProductImages[] $images
- * @property TableProducts[] $products
+ * @property TableEquipmentImages[] $images
+ * @property TableEquipments[] $products
  */
-interface IProductCard
+interface IProduct
 {
     /**
      * Меняет мета данные продукта

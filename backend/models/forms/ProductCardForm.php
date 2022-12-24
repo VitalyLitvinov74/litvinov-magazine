@@ -30,7 +30,7 @@ class ProductCardForm extends AbstractForm
                 "rule" => [
                     ArrayValidator::class,
                     'subRules' => $this->mergeWithFormRules(
-                        new ProductForm(),
+                        new EquipmentForm(),
                         ['characteristics', 'default', 'value' => []],
                         [
                             'characteristics',

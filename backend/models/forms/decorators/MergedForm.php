@@ -4,7 +4,7 @@
 namespace app\models\forms\decorators;
 
 
-use app\models\forms\ProductForm;
+use app\models\forms\EquipmentForm;
 use vloop\entities\contracts\IForm;
 use vloop\entities\exceptions\NotValidatedFields;
 use vloop\entities\yii2\AbstractForm;

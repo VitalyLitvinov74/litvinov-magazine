@@ -5,11 +5,11 @@
       <div class="container">
         <div class="row align-items-center justify-content-center">
           <div class="col-12 text-center">
-            <h2 class="breadcrumb-title">{{ productCard.title }}</h2>
+            <h2 class="breadcrumb-title">{{ product.title }}</h2>
             <!--             breadcrumb-list start -->
             <ul class="breadcrumb-list">
               <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-              <li class="breadcrumb-item active">{{ productCard.title }}</li>
+              <li class="breadcrumb-item active">{{ product.title }}</li>
             </ul>
             <!-- breadcrumb-list end -->
           </div>
@@ -70,7 +70,7 @@
           </div>
           <div class="col-lg-6 col-sm-12 col-xs-12" data-aos="fade-up" data-aos-delay="200">
             <div class="product-details-content quickview-content ml-25px">
-              <h2>{{ productCard.title }}</h2>
+              <h2>{{ product.title }}</h2>
               <div class="pricing-meta">
                 <ul class="d-flex">
                   <li class="new-price">$20.90</li>
@@ -93,7 +93,7 @@
                 <span class="avallabillty">Доступность: <span class="in-stock"><i
                   class="fa fa-check"></i>In Stock</span></span>
               </div>
-              <p class="mt-30px mb-0"> {{ productCard.shortDescription }} </p>
+              <p class="mt-30px mb-0"> {{ product.shortDescription }} </p>
               <div class="pro-details-quality">
                 <div class="cart-plus-minus">
                   <input class="cart-plus-minus-box" type="text" name="qtybutton" value="1"/>
@@ -169,7 +169,7 @@
             <div id="des-details2" class="tab-pane">
               <div class="product-anotherinfo-wrapper text-start">
                 <ul>
-                  <li v-for="characteristic in productCard.characteristics">
+                  <li v-for="characteristic in product.characteristics">
                     <span class="firstLetterToUpperCase">
                       {{characteristic.name}}
                     </span>
@@ -181,7 +181,7 @@
             <div id="des-details1" class="tab-pane active">
               <div class="product-description-wrapper">
                 <p>
-                  {{ productCard.description }}
+                  {{ product.description }}
                 </p>
               </div>
             </div>
@@ -344,7 +344,7 @@
                                 </span>
                   <h5 class="title">
                     <a href="single-product.html">
-                      {{ productCard.title }}
+                      {{ product.title }}
                     </a>
                   </h5>
                   <span class="price">
@@ -642,7 +642,7 @@
               </div>
               <div class="col-lg-6 col-sm-12 col-xs-12" data-aos="fade-up" data-aos-delay="200">
                 <div class="product-details-content quickview-content">
-                  <h2>{{ productCard.title }}</h2>
+                  <h2>{{ product.title }}</h2>
                   <div class="pricing-meta">
                     <ul class="d-flex">
                       <li class="new-price">$20.90</li>
@@ -737,7 +737,7 @@
 
     data() {
       return {
-        productCard: this.$store.state.product.product,
+        product: this.$store.state.product.product,
       }
     },
 
