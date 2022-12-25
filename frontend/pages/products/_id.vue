@@ -35,6 +35,7 @@
       })
         .then(function (result) {
           store.commit('product/load', result);
+          store.commit('product/selectEquipment', result.equipments[0])
         })
         .catch(function (err) {
           if (err.response) {

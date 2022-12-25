@@ -7713,9 +7713,9 @@ Pages - My Account
 }
 
 .blog-single-tags-share {
-  padding-bottom: 60px;
+  /*padding-bottom: 60px;*/
   line-height: 24px;
-  border-bottom: 2px solid #f3f3f3;
+  /*border-bottom: 2px solid #f3f3f3;*/
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
@@ -7796,6 +7796,12 @@ Pages - My Account
   }
 }
 .blog-single-tags-share .tag-list li a:hover {
+  background-color: #eaaa85;
+  color: #fff;
+  border-color: #eaaa85;
+  cursor: pointer;
+}
+.blog-single-tags-share .tag-list li a.active {
   background-color: #eaaa85;
   color: #fff;
   border-color: #eaaa85;
@@ -8472,7 +8478,7 @@ Pages - My Account
 }
 
 /*===================================
-    - Breadvrumb  
+    - Breadvrumb
 =================================*/
 .breadcrumb-area {
   background-image: url(../images/about-image/intro-bg.jpg);

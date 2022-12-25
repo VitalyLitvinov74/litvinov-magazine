@@ -73,7 +73,7 @@
               <h2>{{ product.title }}</h2>
               <div class="pricing-meta">
                 <ul class="d-flex">
-                  <li class="new-price">$20.90</li>
+                  <li class="new-price">{{selectedEquipment.price}}</li>
                   <li class="old-price">
                     <del>$30.90</del>
                   </li>
@@ -91,27 +91,22 @@
               </div>
 
               <p class="mt-30px mb-0"> {{ product.shortDescription }} </p>
-              <div class="pro-details-color-size d-flex">
-                <!-- Right Side Start -->
-                <div class="pro-details-color-size d-flex">
-                  <!-- Right Side Start -->
-                  <div class="select-shoing-wrap d-flex align-items-center">
-                    <div class="shot-product">
-                      <p>Комплектация:</p>
-                    </div>
-                    <div class="shop-select">
-                      <select class="shop-sort">
-                        <option data-display="Balck">Balck</option>
-                        <option value="1"> Gold</option>
-                        <option value="2"> Golden</option>
-                        <option value="3"> White</option>
-                      </select>
-
-                    </div>
-                  </div>
+              <div
+                class="blog-single-tags-share d-md-flex justify-content-between">
+                <div class="blog-single-tags d-flex" data-aos="fade-up" data-aos-delay="200">
+                  <ul class="tag-list">
+                    <li v-for="equipment in product.equipments">
+                      <a
+                        @click="selectEquipment(equipment)"
+                        :class="activeEquipmentClass(equipment)"
+                      >
+                        {{ equipment.name }}
+                      </a>
+                    </li>
+                  </ul>
                 </div>
-                <!-- Right Side End -->
               </div>
+
               <div class="pro-details-quality">
                 <div class="cart-plus-minus">
                   <input class="cart-plus-minus-box" type="text" name="qtybutton" value="1"/>
@@ -189,9 +184,15 @@
                 <ul>
                   <li v-for="characteristic in product.characteristics">
                     <span class="firstLetterToUpperCase">
-                      {{characteristic.name}}
+                      {{ characteristic.name }}
                     </span>
-                    {{characteristic.value}}
+                    {{ characteristic.value }}
+                  </li>
+                  <li v-for="characteristic in selectedEquipment.characteristics">
+                    <span class="firstLetterToUpperCase">
+                      {{ characteristic.name }}
+                    </span>
+                    {{ characteristic.value }}
                   </li>
                 </ul>
               </div>
@@ -746,23 +747,50 @@
   </div>
 </template>
 <script>
-  import AddToCard from "../../components/product/buttons/AddToCard";
+import AddToCard from "../../components/product/buttons/AddToCard";
 
-  export default {
-    components: {
-      "add-to-card": AddToCard
-    },
+export default {
+  components: {
+    "add-to-card": AddToCard
+  },
 
-    data() {
-      return {
-        product: this.$store.state.product.product,
+  data() {
+    return {
+      // product: this.$store.state.product.product,
+    }
+  },
+
+  methods: {
+    selectEquipment(equipment) {
+      if (this.selectedEquipment.id === equipment.id) {
+        return;
       }
+      // // console.log(equipment);
+      // // change photo and informationCharacteristic logic
+      this.$store.commit('product/selectEquipment', equipment)
     },
 
+    activeEquipmentClass(equipment){
+      if(this.selectedEquipment.id === equipment.id){
+        return 'active'
+      }
+      return ''
+    }
+  },
+
+  computed: {
+    selectedEquipment(){
+      return this.$store.state.product.selectedEquipment;
+    },
+    product(){
+      return this.$store.state.product.product;
+    }
   }
+
+}
 </script>
 <style>
-  .firstLetterToUpperCase{
-    text-transform: capitalize;
-  }
+.firstLetterToUpperCase {
+  text-transform: capitalize;
+}
 </style>
