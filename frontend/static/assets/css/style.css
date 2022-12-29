@@ -3093,6 +3093,11 @@ body.offcanvas-open {
   color: #fff;
   background-color: #eaaa85;
 }
+
+.description-review-topbar.nav a:hover {
+  cursor:pointer;
+}
+
 @media only screen and (max-width: 767px) {
   .description-review-topbar.nav a {
     margin: 0 15px;

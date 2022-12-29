@@ -175,17 +175,14 @@
         <div class="description-review-wrapper">
           <div class="description-review-topbar nav nav-tabs">
             <a @click="numberOfActiveTab=1" :class="numberOfActiveTab===1 ? 'active' : ''"
-               data-bs-toggle="tab"
-               href="#des-details2">Информация</a>
+               >Информация</a>
             <a @click="numberOfActiveTab=2" :class="numberOfActiveTab===2 ? 'active' : ''"
-               data-bs-toggle="tab"
-               href="#des-details1">Описание</a>
+               >Описание</a>
             <a @click="numberOfActiveTab=3" :class="numberOfActiveTab===3 ? 'active' : ''"
-               data-bs-toggle="tab"
-               href="#des-details3">Отзывы (02)</a>
+              >Отзывы (02)</a>
           </div>
           <div class="tab-content description-review-bottom">
-            <div id="des-details2" :class="numberOfActiveTab===1 ? 'active' : ''" class="tab-pane">
+            <div :class="numberOfActiveTab===1 ? 'active' : ''" class="tab-pane">
               <div class="product-anotherinfo-wrapper text-start">
                 <ul>
                   <li v-for="characteristic in product.characteristics">
@@ -203,14 +200,14 @@
                 </ul>
               </div>
             </div>
-            <div id="des-details1" :class="numberOfActiveTab===2 ? 'active' : ''" class="tab-pane">
+            <div :class="numberOfActiveTab===2 ? 'active' : ''" class="tab-pane">
               <div class="product-description-wrapper">
                 <p>
                   {{ product.description }}
                 </p>
               </div>
             </div>
-            <div id="des-details3" :class="numberOfActiveTab===3 ? 'active' : ''" class="tab-pane">
+            <div :class="numberOfActiveTab===3 ? 'active' : ''" class="tab-pane">
               <div class="row">
                 <div class="col-lg-7">
                   <div class="review-wrapper">
