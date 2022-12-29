@@ -73,7 +73,7 @@
               <h2>{{ product.title }}</h2>
               <div class="pricing-meta">
                 <ul class="d-flex">
-                  <li class="new-price">{{selectedEquipment.price}}</li>
+                  <li class="new-price">{{ selectedEquipment.price }}</li>
                   <li class="old-price">
                     <del>$30.90</del>
                   </li>
@@ -173,13 +173,19 @@
     <div class="description-review-area pb-100px" data-aos="fade-up" data-aos-delay="200">
       <div class="container">
         <div class="description-review-wrapper">
-          <div class="description-review-topbar nav">
-            <a data-bs-toggle="tab" href="#des-details2">Информация</a>
-            <a class="active" data-bs-toggle="tab" href="#des-details1">Описание</a>
-            <a data-bs-toggle="tab" href="#des-details3">Отзывы (02)</a>
+          <div class="description-review-topbar nav nav-tabs">
+            <a @click="numberOfActiveTab=1" :class="numberOfActiveTab===1 ? 'active' : ''"
+               data-bs-toggle="tab"
+               href="#des-details2">Информация</a>
+            <a @click="numberOfActiveTab=2" :class="numberOfActiveTab===2 ? 'active' : ''"
+               data-bs-toggle="tab"
+               href="#des-details1">Описание</a>
+            <a @click="numberOfActiveTab=3" :class="numberOfActiveTab===3 ? 'active' : ''"
+               data-bs-toggle="tab"
+               href="#des-details3">Отзывы (02)</a>
           </div>
           <div class="tab-content description-review-bottom">
-            <div id="des-details2" class="tab-pane">
+            <div id="des-details2" :class="numberOfActiveTab===1 ? 'active' : ''" class="tab-pane">
               <div class="product-anotherinfo-wrapper text-start">
                 <ul>
                   <li v-for="characteristic in product.characteristics">
@@ -197,14 +203,14 @@
                 </ul>
               </div>
             </div>
-            <div id="des-details1" class="tab-pane active">
+            <div id="des-details1" :class="numberOfActiveTab===2 ? 'active' : ''" class="tab-pane">
               <div class="product-description-wrapper">
                 <p>
                   {{ product.description }}
                 </p>
               </div>
             </div>
-            <div id="des-details3" class="tab-pane">
+            <div id="des-details3" :class="numberOfActiveTab===3 ? 'active' : ''" class="tab-pane">
               <div class="row">
                 <div class="col-lg-7">
                   <div class="review-wrapper">
@@ -756,7 +762,7 @@ export default {
 
   data() {
     return {
-      // product: this.$store.state.product.product,
+      numberOfActiveTab: 2
     }
   },
 
@@ -765,13 +771,11 @@ export default {
       if (this.selectedEquipment.id === equipment.id) {
         return;
       }
-      // // console.log(equipment);
-      // // change photo and informationCharacteristic logic
       this.$store.commit('product/selectEquipment', equipment)
     },
 
-    activeEquipmentClass(equipment){
-      if(this.selectedEquipment.id === equipment.id){
+    activeEquipmentClass(equipment) {
+      if (this.selectedEquipment.id === equipment.id) {
         return 'active'
       }
       return ''
@@ -779,12 +783,12 @@ export default {
   },
 
   computed: {
-    selectedEquipment(){
+    selectedEquipment() {
       return this.$store.state.product.selectedEquipment;
     },
-    product(){
+    product() {
       return this.$store.state.product.product;
-    }
+    },
   }
 
 }
