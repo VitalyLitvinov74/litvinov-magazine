@@ -45,6 +45,7 @@ class ProductForm extends AbstractForm
                     )
                 ]
             ],
+            ['equipments', 'required', 'message' => 'Должна существовать хотябы одна комплектация продукта'],
             ['characteristics', 'default', 'value' => []],
             [
                 'characteristics',
