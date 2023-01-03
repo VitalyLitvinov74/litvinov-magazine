@@ -16,6 +16,15 @@ class ProductController extends Controller
         return $cards->add(
             new ProductForm()
         );
+
+        $productList->add($form, function($argumentsFromForm){
+            return new Product();
+            //or
+            return new ValidatedProduct(
+                new Product()
+            );
+        });
+
     }
 
     public function actionById(int $id)
