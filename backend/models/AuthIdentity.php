@@ -3,7 +3,6 @@
 namespace app\models;
 
 use app\tables\TableAuthIdentity;
-use yii\base\BaseObject;
 use yii\web\IdentityInterface;
 
 class AuthIdentity implements IdentityInterface
@@ -53,7 +52,7 @@ class AuthIdentity implements IdentityInterface
      */
     public function getAuthKey()
     {
-        //?
+        return null;
     }
 
     /**
@@ -61,6 +60,6 @@ class AuthIdentity implements IdentityInterface
      */
     public function validateAuthKey($authKey)
     {
-        //?
+        return $this->getAuthKey() === $authKey;
     }
 }

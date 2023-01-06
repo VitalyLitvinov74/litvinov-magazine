@@ -6,6 +6,7 @@ namespace app\controllers\v1;
 use app\models\forms\ProductForm;
 use app\shop\product\Products;
 use app\tables\TableProducts;
+use vloop\entities\fields\Field;
 use yii\rest\Controller;
 
 class ProductController extends Controller
@@ -16,20 +17,19 @@ class ProductController extends Controller
         return $cards->add(
             new ProductForm()
         );
-
-        $productList->add($form, function($argumentsFromForm){
-            return new Product();
-            //or
-            return new ValidatedProduct(
-                new Product()
-            );
-        });
-
     }
 
     public function actionById(int $id)
     {
         $cards = new Products();
         return $cards->findOne(TableProducts::find()->where(['id' => $id]));
+    }
+
+    public function actionDelete(int $id)
+    {
+        $products = new Products();
+        $products->remove(
+            new Field($id)
+        );
     }
 }

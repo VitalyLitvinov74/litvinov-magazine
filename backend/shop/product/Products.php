@@ -40,7 +40,7 @@ class Products implements WeProducts
 
     public function remove(IField $id): void
     {
-        TableProducts::deleteAll(['id'=>$id->value()]);
+        TableProducts::deleteAll(['id'=>$id->asInt()]);
     }
 
     public function findOne(Query $query): TableProducts

@@ -54,6 +54,8 @@ $config = [
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
+            'enableSession' => false,
+
 //            'identityCookie' => ['name' => '_identity', 'httpOnly' => true, 'domain' => '.my'],
         ],
 
