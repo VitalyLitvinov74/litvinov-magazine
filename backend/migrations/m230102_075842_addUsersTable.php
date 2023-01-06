@@ -13,12 +13,27 @@ class m230102_075842_addUsersTable extends Migration
     public function safeUp()
     {
         $this->createTable('users', [
-            'id'=>$this->primaryKey(),
-            'accessToken'=> $this->string(),
-            'passwordHash'=>$this->string(),
-            'login'=>$this->string(),
-            'createdAt'=>$this->dateTime(),
-            'updatedAt'=>$this->dateTime(),
+            'id' => $this->primaryKey(),
+            'created_at' => $this->dateTime(),
+            'updated_at' => $this->dateTime()
+        ]);
+
+        $this->createTable('accounts', [
+            'id' => $this->primaryKey(),
+            'user_id' => $this->integer(),
+            'password_hash' => $this->string(),
+            'login' => $this->string(),
+            'created_at' => $this->dateTime(),
+            'updated_at' => $this->dateTime()
+        ]);
+
+        $this->createTable('auth_identity', [
+            'id' => $this->primaryKey(),
+            'user_id' => $this->integer(),
+            'account_id' => $this->integer(),
+            'access_token' => $this->string(),
+            'created_at' => $this->dateTime(),
+            'updated_at' => $this->dateTime(),
         ]);
     }
 
@@ -27,9 +42,9 @@ class m230102_075842_addUsersTable extends Migration
      */
     public function safeDown()
     {
-        echo "m230102_075842_addUsersTable cannot be reverted.\n";
-
-        return false;
+        $this->dropTable('auth_identity');
+        $this->dropTable('users');
+        $this->dropTable('accounts');
     }
 
     /*

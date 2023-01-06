@@ -13,6 +13,15 @@ $config = [
         '@npm'   => '@vendor/npm-asset',
         '@tests' => '@app/tests',
     ],
+    'controllerMap'=>[
+        'migrate'=>[
+            'class'=>\yii\console\controllers\MigrateController::class,
+            'migrationPath' => [
+                '@app/migrations',
+                '@yii/rbac/migrations',
+            ]
+        ]
+    ],
     'components' => [
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -24,6 +33,9 @@ $config = [
                     'levels' => ['error', 'warning'],
                 ],
             ],
+        ],
+        'authManager'  => [
+            'class'        => \yii\rbac\DbManager::class,
         ],
         'db' => $db,
     ],
