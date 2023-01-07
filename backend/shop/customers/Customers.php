@@ -28,6 +28,7 @@ class Customers implements WeCustomers
         $record = TableCustomers::find()->where(['id' => $id->asInt()])->one();
         if ($record) {
             $record->delete();
+            return;
         }
         throw new NotFoundEntity('Покупатель не был найден', "Удаление не завершено");
     }

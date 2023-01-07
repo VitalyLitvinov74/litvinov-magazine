@@ -8,7 +8,7 @@ use vloop\entities\contracts\IForm;
 
 interface WeCarts
 {
-    public function add(IForm $form, ): TableCarts;
+    public function add(IForm $form): TableCarts;
 
     public function remove(IField $cartId): void;
 }
