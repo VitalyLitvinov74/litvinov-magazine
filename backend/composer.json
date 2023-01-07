@@ -28,7 +28,8 @@
     "vloop/yii2-custom-validators": ">=1.0.0",
     "ext-json": "*",
     "v.chetkov/php-clean-architecture": "*",
-    "sizeg/yii2-jwt": "^2.0"
+    "sizeg/yii2-jwt": "^2.0",
+    "ext-openssl": "*"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.1.0",
