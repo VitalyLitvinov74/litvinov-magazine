@@ -25,7 +25,7 @@ use yii\helpers\VarDumper;
  */
 class TableProducts extends BaseTable
 {
-    public function behaviors()
+    public function behaviors(): array
     {
         return ArrayHelper::merge(
             parent::behaviors(),

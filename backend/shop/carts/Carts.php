@@ -8,6 +8,8 @@ use vloop\entities\contracts\IField;
 use vloop\entities\contracts\IForm;
 use vloop\entities\exceptions\NotFoundEntity;
 use vloop\entities\exceptions\NotSavedData;
+use yii\db\ActiveQuery;
+use yii\db\Query;
 
 class Carts implements WeCarts
 {
@@ -23,11 +25,20 @@ class Carts implements WeCarts
 
     public function remove(IField $cartId): void
     {
-        $cart = TableCarts::find()->where(['id' => $cartId->asInt()])->one();
+        $cart = $this->findOne(TableCarts::find()->where(['id' => $cartId->asInt()]));
         if ($cart) {
             $cart->delete();
             return;
         }
         throw new NotFoundEntity('Корзина не найдена', 'Не удалось удалить корзину');
+    }
+
+    public function findOne(ActiveQuery $query): TableCarts
+    {
+        $cart = $query->one();
+        if($cart){
+            return $cart;
+        }
+        throw new NotFoundEntity("Не удалось найти корзину пользователя");
     }
 }
