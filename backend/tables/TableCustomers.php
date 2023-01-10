@@ -11,7 +11,8 @@ use yii\helpers\ArrayHelper;
  *
  * @property int $id [int(11)]  Покупателем может быть как Гость, так и зарегистрированный пользователь
  * @property string $token [varchar(255)]  Как только пользователь заходит на сайт он становится покупателем, ему присваивается уникальный токен.
- * @property  TableCarts cart
+ * @property TableCarts $cart
+ * @property TableWishlists $wishlist
  */
 class TableCustomers extends BaseTable
 {
@@ -22,7 +23,8 @@ class TableCustomers extends BaseTable
             [
                 'saveRelations' => [
                     'relations' => [
-                        'cart'
+                        'cart',
+                        'wishlist'
                     ]
                 ]
             ]
@@ -31,7 +33,7 @@ class TableCustomers extends BaseTable
 
     public function extraFields(): array
     {
-        return ['cart'];
+        return ['cart', 'wishlist'];
     }
 
     public static function tableName(): string
@@ -42,6 +44,13 @@ class TableCustomers extends BaseTable
     public function getCart(): ActiveQuery
     {
         return $this->hasOne(TableCarts::class, [
+            'customer_id' => 'id'
+        ]);
+    }
+
+    public function getWishlist(): ActiveQuery
+    {
+        return $this->hasOne(TableWishlists::class, [
             'customer_id' => 'id'
         ]);
     }

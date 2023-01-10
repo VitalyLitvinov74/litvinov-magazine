@@ -8,9 +8,8 @@ use vloop\entities\contracts\IForm;
 
 interface WeCustomers
 {
-    public function addByForm(IForm $customerForm = null): TableCustomers;
 
-    public function addDefault(): TableCustomers;
+    public function addToList(): TableCustomers;
 
     public function remove(IField $id): void;
 }
