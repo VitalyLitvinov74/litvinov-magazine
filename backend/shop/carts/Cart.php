@@ -22,7 +22,7 @@ class Cart implements ICart
 
     public function removeEquipment(IField $equipmentId): void
     {
-        // TODO: Implement removeEquipment() method.
+
     }
 
     private function cartRecord(): TableCarts
