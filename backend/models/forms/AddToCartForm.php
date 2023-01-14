@@ -8,11 +8,12 @@ class AddToCartForm extends AbstractForm
 {
     public $equipmentId;
     public $cartToken;
+    public $customerToken;
 
     public function rules(): array
     {
         return [
-            [['equipmentId', 'cartToken'], 'required']
+            [['equipmentId', 'cartToken', 'customerToken'], 'required']
         ];
     }
 }

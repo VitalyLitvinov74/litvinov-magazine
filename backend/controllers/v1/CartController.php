@@ -17,11 +17,6 @@ class CartController extends Controller
                 'cartToken'
             )
         );
-        $cart->addEquipment(
-            new FieldOfForm(
-                $addToCartForm,
-                'equipmentId'
-            )
-        );
+        $cart->addEquipment($addToCartForm);
     }
 }

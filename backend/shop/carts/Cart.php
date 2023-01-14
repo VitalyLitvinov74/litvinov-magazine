@@ -7,6 +7,7 @@ use app\tables\TableCarts;
 use app\tables\TableCustomers;
 use app\tables\TableEquipments;
 use vloop\entities\contracts\IField;
+use vloop\entities\contracts\IForm;
 use vloop\entities\exceptions\NotFoundEntity;
 
 class Cart implements ICart
@@ -17,10 +18,11 @@ class Cart implements ICart
     {
     }
 
-    public function addEquipment(IField $equipmentId): void
+    public function addEquipment(IForm $addToCartForm): void
     {
+        $validatedFields = $addToCartForm->validatedFields();
         $equipmentRecord = TableEquipments::find()
-            ->where(['id' => $equipmentId->asInt()])
+            ->where(['id' => $validatedFields['equipmentId']])
             ->one();
         $exceptionTitle = 'Не удалось добавить продукт в корзину';
         if (!$equipmentRecord) {
@@ -30,7 +32,11 @@ class Cart implements ICart
             );
         }
         $cardRecord = TableCarts::find()
-            ->where(['token'=>$this->cartToken->asString()])
+            ->joinWith('customer customer', false)
+            ->where([
+                'carts.token'=>$this->cartToken->asString(),
+                'customer.token'=> $validatedFields['customerToken']
+            ])
             ->one();
         if(!$cardRecord){
             throw new NotFoundEntity(

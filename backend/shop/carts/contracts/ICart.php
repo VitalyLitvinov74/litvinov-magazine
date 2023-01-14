@@ -7,7 +7,7 @@ use vloop\entities\contracts\IForm;
 
 interface ICart
 {
-    public function addEquipment(IField $equipmentId): void;
+    public function addEquipment(IForm $equipmentId): void;
 
     public function removeEquipment(IField $equipmentId): void;
 }
