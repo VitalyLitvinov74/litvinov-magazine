@@ -18,11 +18,12 @@ use yii\helpers\VarDumper;
  * @property int $price [int(11)]  Стоимость продукта умноженная на 100
  * @property TableProducts $productCard
  * @property TableCharacteristics[] $characteristics
+ * @property TableBooking $booking
  * @property string $name [varchar(255)]  Краткое название комплектации
  */
 class TableEquipments extends BaseTable
 {
-    public static function tableName()
+    public static function tableName(): string
     {
         return 'equipments';
     }
@@ -67,9 +68,15 @@ class TableEquipments extends BaseTable
             ->viaTable('equipment_via_characteristics', ['equipment_id' => 'id']);
     }
 
-    public function getCarts(): ActiveQuery{
+    public function getCarts(): ActiveQuery
+    {
         return $this
-            ->hasMany(TableCarts::class, ['id'=>'cart_id'])
-            ->viaTable('carts_via_equipment', ['equipment_id'=>'id']);
+            ->hasMany(TableCarts::class, ['id' => 'cart_id'])
+            ->viaTable('carts_via_equipment', ['equipment_id' => 'id']);
+    }
+
+    public function getBooking(): ActiveQuery
+    {
+        return $this->hasMany(TableBooking::class, ['equipment_id' => 'id']);
     }
 }
