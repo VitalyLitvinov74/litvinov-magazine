@@ -19,15 +19,12 @@ class WithDbUniqueEquipments implements ICart
     {
     }
 
-    public function addEquipment(IForm $addToCartForm): void
+    public function addEquipment(IForm $equipmentCartForm): void
     {
-        $validatedFields = $addToCartForm->validatedFields();
-        $record = TableCartsViaEquipment::find()->where([
-            'equipment_id' => $validatedFields['equipmentId'],
-            'cart_id' => $this->struct()->id
-        ])->one();
+        $validatedFields = $equipmentCartForm->validatedFields();
+        $record = $this->linkedRecord($validatedFields['equipmentId']);
         if (!$record) {
-            $this->origin->addEquipment($addToCartForm);
+            $this->origin->addEquipment($equipmentCartForm);
             return;
         }
         $record->count++;
@@ -36,13 +33,29 @@ class WithDbUniqueEquipments implements ICart
         }
     }
 
-    public function removeEquipment(IForm $equipmentId): void
+    public function removeEquipment(IForm $equipmentCartForm): void
     {
-        $this->origin->removeEquipment($equipmentId);
+        $fields = $equipmentCartForm->validatedFields();
+        $linkedRecord = $this->linkedRecord($fields['equipmentId']);
+        if(!$linkedRecord or $linkedRecord->count < 2){
+            $this->origin->removeEquipment($equipmentCartForm);
+        }
+        $linkedRecord->count--;
+        if(!$linkedRecord->save()){
+            throw new NotSavedData($record->getErrors(), 422);
+        }
     }
 
     public function struct(): TableCarts
     {
         return $this->origin->struct();
+    }
+
+    private function linkedRecord(int $equipmentId)
+    {
+        return TableCartsViaEquipment::find()->where([
+            'equipment_id' => $equipmentId,
+            'cart_id' => $this->struct()->id
+        ])->one();
     }
 }

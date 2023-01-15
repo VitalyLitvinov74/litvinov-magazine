@@ -2,8 +2,9 @@
 
 namespace app\controllers\v1;
 
-use app\models\forms\AddEquipmentToStorageForm;
+use app\models\forms\EquipmentInCartForm;
 use app\shop\carts\Cart;
+use app\shop\carts\contracts\ICart;
 use app\shop\carts\decorators\WithInStockEquipments;
 use app\shop\carts\decorators\WithDbUniqueEquipments;
 use app\shop\product\equipments\EquipmentList;
@@ -16,22 +17,32 @@ class CartController extends Controller
 {
     public function actionAddEquipment()
     {
-        $cart =
-            new WithInStockEquipments( //с имеющимися остатками комплектацией продуктов
-                new WithDbUniqueEquipments( // с уникальной комплектацией продукта, т.е. на уровне бд не создается дублирующая запись а меняется кол-во
-                    new Cart( // корзина
-                        new FieldOfForm(
-                            $addToCartForm = new AddEquipmentToStorageForm(),
-                            'customerToken'
-                        ),
-                        new FieldOfForm(
-                            $addToCartForm,
-                            'cartToken'
-                        ),
+       $this->cart()
+           ->addEquipment(new EquipmentInCartForm());
+    }
 
-                    )
+    public function actionRemoveEquipment()
+    {
+        $this->cart()
+            ->removeEquipment(new EquipmentInCartForm());
+    }
+
+    private function cart(): ICart
+    {
+        return new WithInStockEquipments( //с имеющимися остатками комплектацией продуктов
+            new WithDbUniqueEquipments( // с уникальной комплектацией продукта, т.е. на уровне бд не создается дублирующая запись а меняется кол-во
+                new Cart( // корзина
+                    new FieldOfForm(
+                        $addToCartForm = new EquipmentInCartForm(),
+                        'customerToken'
+                    ),
+                    new FieldOfForm(
+                        $addToCartForm,
+                        'cartToken'
+                    ),
+
                 )
-            );
-        $cart->addEquipment($addToCartForm);
+            )
+        );
     }
 }
