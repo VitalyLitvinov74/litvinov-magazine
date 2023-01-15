@@ -66,4 +66,10 @@ class TableEquipments extends BaseTable
             ->hasMany(TableCharacteristics::class, ['id' => 'characteristic_id'])
             ->viaTable('equipment_via_characteristics', ['equipment_id' => 'id']);
     }
+
+    public function getCarts(): ActiveQuery{
+        return $this
+            ->hasMany(TableCarts::class, ['id'=>'cart_id'])
+            ->viaTable('carts_via_equipment', ['equipment_id'=>'id']);
+    }
 }
