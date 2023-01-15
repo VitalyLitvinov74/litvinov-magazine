@@ -26,19 +26,12 @@ class WithInStockEquipments implements ICart
         $equipmentTable = TableEquipments::tableName();
         $bookingTable = TableBooking::tableName();
         $availableEquipmentCount = $this->query
-            ->select([
-                'count' => "$equipmentTable.count - COALESCE(sum($bookingTable.count), 0 )"
-            ])
+            ->select(['count' => "$equipmentTable.count - COALESCE(sum($bookingTable.count), 0)"])
             ->from($equipmentTable)
-            ->leftJoin(
-                $bookingTable,
-                "$equipmentTable.id = $bookingTable.equipment_id",
-            )
-            ->where([
-                    $equipmentTable .'.id' => $fields['equipmentId']
-                ])
+            ->leftJoin($bookingTable, "$equipmentTable.id = $bookingTable.equipment_id")
+            ->where(["$equipmentTable.id" => $fields['equipmentId']])
             ->one();
-        if($availableEquipmentCount > 0){
+        if ($availableEquipmentCount > 0) {
             $this->origin->addEquipment($addToCartForm);
         }
     }
