@@ -4,7 +4,7 @@ namespace app\models\forms;
 
 use vloop\entities\yii2\AbstractForm;
 
-class AddToCartForm extends AbstractForm
+class AddEquipmentToStorageForm extends AbstractForm
 {
     public $equipmentId;
     public $cartToken;

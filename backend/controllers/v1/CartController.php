@@ -2,7 +2,7 @@
 
 namespace app\controllers\v1;
 
-use app\models\forms\AddToCartForm;
+use app\models\forms\AddEquipmentToStorageForm;
 use app\shop\carts\Cart;
 use app\shop\carts\decorators\WithInStockEquipments;
 use app\shop\carts\decorators\WithDbUniqueEquipments;
@@ -21,7 +21,7 @@ class CartController extends Controller
                 new WithDbUniqueEquipments( // с уникальной комплектацией продукта, т.е. на уровне бд не создается дублирующая запись а меняется кол-во
                     new Cart( // корзина
                         new FieldOfForm(
-                            $addToCartForm = new AddToCartForm(),
+                            $addToCartForm = new AddEquipmentToStorageForm(),
                             'customerToken'
                         ),
                         new FieldOfForm(
