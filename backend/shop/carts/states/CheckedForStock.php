@@ -1,30 +1,27 @@
 <?php
 declare(strict_types=1);
 
-namespace app\shop\carts\decorators;
+namespace app\shop\carts\states;
 
 use app\models\forms\EquipmentInCartForm;
-use app\shop\carts\contracts\ICart;
+use app\shop\contracts\IAddableEquipment;
 use app\tables\TableBooking;
-use app\tables\TableCarts;
 use app\tables\TableEquipments;
 use vloop\entities\contracts\IForm;
 use vloop\entities\exceptions\NotValidatedFields;
 use yii\db\Query;
-use yii\helpers\VarDumper;
 
-class WithInStockEquipments implements ICart
+class CheckedForStock implements IAddableEquipment
 {
-    private $query;
+    private Query $query;
 
-    public function __construct(private ICart $origin)
+    public function __construct(private IAddableEquipment $nextState)
     {
         $this->query = new Query();
     }
 
     /**
      * @param EquipmentInCartForm $equipmentCartForm
-     * @return void
      * @throws NotValidatedFields
      */
     public function addEquipment(IForm $equipmentCartForm): void
@@ -39,21 +36,9 @@ class WithInStockEquipments implements ICart
             ->where(["$equipmentTable.id" => $fields['equipmentId']])
             ->one();
         if ($availableEquipmentCount > 0) {
-            $this->origin->addEquipment($equipmentCartForm);
+            $this
+                ->nextState
+                ->addEquipment($equipmentCartForm);
         }
-    }
-
-    /**
-     * @param EquipmentInCartForm $equipmentCartForm
-     * @return void
-     */
-    public function removeEquipment(IForm $equipmentCartForm): void
-    {
-        $this->origin->removeEquipment($equipmentCartForm);
-    }
-
-    public function struct(): TableCarts
-    {
-        return $this->origin->struct();
     }
 }

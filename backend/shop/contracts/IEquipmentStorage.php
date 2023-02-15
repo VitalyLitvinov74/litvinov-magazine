@@ -6,10 +6,7 @@ namespace app\shop\contracts;
 use app\models\forms\EquipmentInCartForm;
 use vloop\entities\contracts\IForm;
 
-interface IEquipmentStorage
+interface IEquipmentStorage extends IRemovableEquipment, IAddableEquipment
 {
-    public function addEquipment(IForm $equipmentCartForm): void;
 
-
-    public function removeEquipment(IForm $removeEquipment): void;
 }
