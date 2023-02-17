@@ -46,8 +46,6 @@ class Cart implements IEquipmentStorage
 
     /**
      * @param EquipmentInCartForm $removeEquipmentForm
-     * @throws Exception
-     * @throws StaleObjectException
      */
     public function removeEquipment(IForm $removeEquipmentForm): void
     {

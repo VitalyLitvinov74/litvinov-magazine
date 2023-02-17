@@ -13,7 +13,7 @@ use vloop\entities\contracts\IForm;
 use vloop\entities\exceptions\NotValidatedFields;
 use yii\db\Query;
 
-class CheckedForStock implements IAddableEquipment, IState
+final class CheckedForStock implements IAddableEquipment, IState
 {
     private bool $isFinalState = true;
     private Query $query;
