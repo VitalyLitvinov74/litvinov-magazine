@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace app\shop\carts\states;
 
-use app\models\forms\EquipmentInCartForm;
+use app\models\forms\EquipmentToCartForm;
 use app\models\IState;
 use app\models\StackFSM;
 use app\shop\contracts\IAddableEquipment;
@@ -24,7 +24,7 @@ final class CheckedForStock implements IAddableEquipment, IState
     }
 
     /**
-     * @param EquipmentInCartForm $equipmentCartForm
+     * @param EquipmentToCartForm $equipmentCartForm
      * @throws NotValidatedFields
      */
     public function addEquipment(IForm $equipmentCartForm): void

@@ -2,7 +2,7 @@
 
 namespace app\shop\wishlist\contracts;
 
-use app\models\forms\EquipmentInCartForm;
+use app\models\forms\EquipmentToCartForm;
 use app\models\forms\EquipmentToWishlistForm;
 use app\shop\carts\contracts\ICart;
 use app\shop\contracts\IEquipmentStorage;

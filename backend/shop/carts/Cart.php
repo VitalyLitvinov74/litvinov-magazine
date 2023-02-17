@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace app\shop\carts;
 
-use app\models\forms\EquipmentInCartForm;
+use app\models\forms\EquipmentToCartForm;
 use app\models\StackFSM;
 use app\shop\carts\states\AddedEquipment;
 use app\shop\carts\states\CheckedForStock;
@@ -37,7 +37,7 @@ class Cart implements IEquipmentStorage
     }
 
     /**
-     * @param EquipmentInCartForm $equipmentCartForm
+     * @param EquipmentToCartForm $equipmentCartForm
      */
     public function addEquipment(IForm $equipmentCartForm): void
     {
@@ -45,7 +45,7 @@ class Cart implements IEquipmentStorage
     }
 
     /**
-     * @param EquipmentInCartForm $removeEquipmentForm
+     * @param EquipmentToCartForm $removeEquipmentForm
      */
     public function removeEquipment(IForm $removeEquipmentForm): void
     {
