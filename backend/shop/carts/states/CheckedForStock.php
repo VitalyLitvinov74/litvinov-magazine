@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace app\shop\carts\states;
 
 use app\models\forms\EquipmentInCartForm;
+use app\models\IState;
+use app\models\StackFSM;
 use app\shop\contracts\IAddableEquipment;
 use app\tables\TableBooking;
 use app\tables\TableEquipments;
@@ -11,11 +13,12 @@ use vloop\entities\contracts\IForm;
 use vloop\entities\exceptions\NotValidatedFields;
 use yii\db\Query;
 
-class CheckedForStock implements IAddableEquipment
+class CheckedForStock implements IAddableEquipment, IState
 {
+    private bool $isFinalState = true;
     private Query $query;
 
-    public function __construct(private IAddableEquipment $nextState)
+    public function __construct()
     {
         $this->query = new Query();
     }
@@ -36,9 +39,25 @@ class CheckedForStock implements IAddableEquipment
             ->where(["$equipmentTable.id" => $fields['equipmentId']])
             ->one();
         if ($availableEquipmentCount > 0) {
-            $this
-                ->nextState
-                ->addEquipment($equipmentCartForm);
+            $this->isFinalState = false;
         }
+    }
+
+    /**
+     * @param ...$data
+     * @return mixed|void
+     * @throws NotValidatedFields
+     */
+    public function execute(...$data)
+    {
+        $this->addEquipment($data);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFinalState(): bool
+    {
+        return $this->isFinalState;
     }
 }

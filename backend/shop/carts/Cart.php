@@ -4,45 +4,44 @@ declare(strict_types=1);
 namespace app\shop\carts;
 
 use app\models\forms\EquipmentInCartForm;
-use app\shop\carts\contracts\ICart;
-use app\shop\carts\contracts\ICartRepository;
-use app\shop\carts\states\BaseCart;
+use app\models\StackFSM;
+use app\shop\carts\states\AddedEquipment;
 use app\shop\carts\states\CheckedForStock;
-use app\shop\contracts\IAddableEquipment;
+use app\shop\carts\states\RemovedEquipment;
 use app\shop\contracts\IEquipmentStorage;
 use vloop\entities\contracts\IField;
 use vloop\entities\contracts\IForm;
-use vloop\entities\exceptions\NotValidatedFields;
 use yii\db\Exception;
 use yii\db\StaleObjectException;
 
 class Cart implements IEquipmentStorage
 {
-    private ICartRepository $repository;
+    private $removableStatemachine;
+    private $addableStateMachine;
 
     public function __construct(
-        private IField $cartToken,
-        private IField $customerToken
-    )
-    {
-        $this->repository = new CartRepository(
-            $cartToken,
-            $customerToken
-        );
+        IField $cartToken,
+        IField $customerToken
+    ) {
+        $this->addableStateMachine = new StackFSM([
+            new AddedEquipment(
+                $repository = new CartRepository($cartToken, $customerToken)
+            ),
+            new CheckedForStock()
+        ]);
+        $this->removableStatemachine = new StackFSM([
+           new RemovedEquipment(
+               $repository
+           )
+        ]);
     }
 
     /**
      * @param EquipmentInCartForm $equipmentCartForm
-     * @throws NotValidatedFields
      */
     public function addEquipment(IForm $equipmentCartForm): void
     {
-        $addableState = new CheckedForStock(
-            new BaseCart(
-                $this->repository
-            ),
-        );
-        $addableState->addEquipment($equipmentCartForm);
+        $this->addableStateMachine->goToFinalState($equipmentCartForm);
     }
 
     /**
@@ -52,9 +51,6 @@ class Cart implements IEquipmentStorage
      */
     public function removeEquipment(IForm $removeEquipmentForm): void
     {
-        $removableState = new BaseCart(
-            $this->repository
-        );
-        $removableState->removeEquipment($removeEquipmentForm);
+        $this->removableStatemachine->goToFinalState($removeEquipmentForm);
     }
 }

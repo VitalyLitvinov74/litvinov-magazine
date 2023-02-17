@@ -4,7 +4,10 @@ declare(strict_types=1);
 namespace app\shop\carts\states;
 
 use app\models\forms\EquipmentInCartForm;
+use app\models\IState;
+use app\models\StackFSM;
 use app\shop\carts\contracts\ICartRepository;
+use app\shop\contracts\IAddableEquipment;
 use app\shop\contracts\IEquipmentStorage;
 use app\tables\TableCarts;
 use app\tables\TableEquipments;
@@ -13,7 +16,7 @@ use vloop\entities\fields\FieldOfForm;
 use yii\db\Exception;
 use yii\db\StaleObjectException;
 
-class BaseCart implements IEquipmentStorage
+class ReadyCart implements IAddableEquipment, IState
 {
     public function __construct(private ICartRepository $repository)
     {
@@ -24,26 +27,7 @@ class BaseCart implements IEquipmentStorage
      */
     public function addEquipment(IForm $equipmentCartForm): void
     {
-        $this->cart()
-            ->link(
-                'equipments',
-                $this->equipment($equipmentCartForm)
-            );
-    }
 
-    /**
-     * @param EquipmentInCartForm $removeEquipmentForm
-     * @throws Exception
-     * @throws StaleObjectException
-     */
-    public function removeEquipment(IForm $removeEquipmentForm): void
-    {
-        $this
-            ->cart()
-            ->unlink(
-                'equipments',
-                $this->equipment($removeEquipmentForm)
-            );
     }
 
     private function cart(): TableCarts
@@ -59,5 +43,22 @@ class BaseCart implements IEquipmentStorage
                 'equipmentId'
             )
         );
+    }
+
+    /**
+     * @param ...$data
+     * @return mixed|void
+     */
+    public function execute(...$data)
+    {
+
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFinalState(): bool
+    {
+
     }
 }
