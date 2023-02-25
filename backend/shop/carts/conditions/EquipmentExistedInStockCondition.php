@@ -1,11 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace app\shop\carts\states;
+namespace app\shop\carts\conditions;
 
 use app\models\forms\EquipmentToCartForm;
 use app\models\IState;
-use app\models\StackFSM;
+use app\models\petrinet\AbstractPetriCondition;
+use app\models\petrinet\PetriConditionInterface;
 use app\shop\contracts\IAddableEquipment;
 use app\tables\TableBooking;
 use app\tables\TableEquipments;
@@ -13,23 +14,18 @@ use vloop\entities\contracts\IForm;
 use vloop\entities\exceptions\NotValidatedFields;
 use yii\db\Query;
 
-final class CheckedForStock implements IAddableEquipment, IState
+final class EquipmentExistedInStockCondition extends AbstractPetriCondition
 {
-    private bool $isFinalState = true;
     private Query $query;
 
-    public function __construct()
+    public function __construct(private IForm $equipmentCartForm)
     {
         $this->query = new Query();
     }
 
-    /**
-     * @param EquipmentToCartForm $equipmentCartForm
-     * @throws NotValidatedFields
-     */
-    public function addEquipment(IForm $equipmentCartForm): void
+    public function validate(): void
     {
-        $fields = $equipmentCartForm->validatedFields();
+        $fields = $this->equipmentCartForm->validatedFields();
         $equipmentTable = TableEquipments::tableName();
         $bookingTable = TableBooking::tableName();
         $availableEquipmentCount = $this->query
@@ -39,25 +35,8 @@ final class CheckedForStock implements IAddableEquipment, IState
             ->where(["$equipmentTable.id" => $fields['equipmentId']])
             ->one();
         if ($availableEquipmentCount > 0) {
-            $this->isFinalState = false;
+            $this->pushMark();
         }
-    }
-
-    /**
-     * @param ...$data
-     * @return mixed|void
-     * @throws NotValidatedFields
-     */
-    public function execute(...$data)
-    {
-        $this->addEquipment($data);
-    }
-
-    /**
-     * @return bool
-     */
-    public function isFinalState(): bool
-    {
-        return $this->isFinalState;
+        $this->removeMark();
     }
 }

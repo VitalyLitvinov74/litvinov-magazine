@@ -1,15 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace app\shop\carts\states;
+namespace app\shop\carts\events;
 
 use app\models\IState;
+use app\models\petrinet\PetriEventInterface;
 use app\shop\carts\contracts\ICartRepository;
 use app\shop\contracts\IAddableEquipment;
 use vloop\entities\contracts\IForm;
 use vloop\entities\fields\FieldOfForm;
 
-final class AddedEquipment implements IAddableEquipment, IState
+final class AddEquipmentEvent implements IAddableEquipment, PetriEventInterface
 {
     public function __construct(private ICartRepository $repository)
     {
@@ -22,22 +23,5 @@ final class AddedEquipment implements IAddableEquipment, IState
             new FieldOfForm($equipmentCartForm, 'equipmentId')
         );
         $cart->link('equipments', $equipment);
-    }
-
-    /**
-     * @param ...$data
-     * @return mixed|void
-     */
-    public function execute(...$data)
-    {
-        $this->addEquipment(...$data);
-    }
-
-    /**
-     * @return bool
-     */
-    public function isFinalState(): bool
-    {
-        return true;
     }
 }

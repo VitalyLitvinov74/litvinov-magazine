@@ -1,9 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace app\shop\carts\states;
+namespace app\shop\carts\events;
 
 use app\models\IState;
+use app\models\petrinet\PetriEventInterface;
 use app\shop\carts\contracts\ICartRepository;
 use app\shop\contracts\IRemovableEquipment;
 use vloop\entities\contracts\IForm;
@@ -11,7 +12,7 @@ use vloop\entities\fields\FieldOfForm;
 use yii\db\Exception;
 use yii\db\StaleObjectException;
 
-final class RemovedEquipment implements IRemovableEquipment, IState
+final class RemovedEquipment implements IRemovableEquipment, PetriEventInterface
 {
     public function __construct(private ICartRepository $repository)
     {
@@ -40,24 +41,5 @@ final class RemovedEquipment implements IRemovableEquipment, IState
                 'equipments',
                 $equipmentRecord
             );
-    }
-
-    /**
-     * @param ...$data
-     * @return mixed|void
-     * @throws Exception
-     * @throws StaleObjectException
-     */
-    public function execute(...$data)
-    {
-        $this->removeEquipment(...$data);
-    }
-
-    /**
-     * @return bool
-     */
-    public function isFinalState(): bool
-    {
-        return true;
     }
 }
