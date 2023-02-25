@@ -40,6 +40,8 @@ RUN curl -sS https://getcomposer.org/installer | \
 #ARG PHP_ERR_REPORT
 #ARG UPLOAD_MAX_FILESIZE
 
+ARG EXTERNAL_IP
+
 COPY xdebug.ini $PHP_INI_DIR/conf.d/
 
 #RUN echo "memory_limit=${PHP_MEM_LIMIT}" > $PHP_INI_DIR/conf.d/memory-limit.ini

@@ -56,9 +56,11 @@ services:
   php:
     container_name: "php-magazine"
     build:
-       context: ./php/
+      context: ./php/
     volumes:
       - '../backend:/var/www/html'
+    environment:
+      EXTERNAL_IP: "${EXTERNAL_IP}"
 
   mysql:
     image: mysql:5.7
@@ -75,7 +77,7 @@ services:
       '--collation-server=utf8mb4_unicode_ci'
     ]
 
-### тут происходит подгрузка зависимостей для бека и фронта
+  ### тут происходит подгрузка зависимостей для бека и фронта
   php-cli:
     container_name: "php-cli-magazine"
     build:
