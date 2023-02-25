@@ -31,14 +31,12 @@ final class PetriNet
         TransitionType $transitionType = TransitionType::Default
     ): self {
         if($from instanceof PetriConditionInterface){
-            $this->preConditions[$to->name()] =  [
-                'name'=>$from,
-                'transitionType' => $transitionType
+            $this->events[$to->name()] =  [
+                'preConditions'=>$from,
             ];
         }else{
-            $this->postConditions[$from->name()] = [
-                'name'=>$to,
-                'transitionType' => $transitionType
+            $this->events[$from->name()] = [
+                'postConditions'=> $to
             ];
         }
         return $this;
@@ -46,10 +44,7 @@ final class PetriNet
 
     public function goToFinalState(): void
     {
-        $petriFirstExecutors = array_merge(
-            $this->eventsWithoutPreConditions(),
-            $this->differenceBetweenPreConditionsAndPostConditions()
-        );
+
     }
 
     public function addConditionForTransition(

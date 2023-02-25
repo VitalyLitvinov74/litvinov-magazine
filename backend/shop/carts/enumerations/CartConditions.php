@@ -5,15 +5,15 @@ namespace app\shop\carts\enumerations;
 
 use app\models\petrinet\PetriNodeName;
 
-enum CartConditions implements PetriNodeName
+enum CartConditions: string implements PetriNodeName
 {
-    case CheckEquipmentInStore;
+    case CheckEquipmentInStore = 'CheckEquipmentInStore';
 
     /**
-     * @return $this
+     * @return string
      */
-    public function name(): PetriNodeName
+    public function name(): string
     {
-        return $this;
+        return $this->value;
     }
 }
