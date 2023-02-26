@@ -15,7 +15,7 @@ use vloop\entities\contracts\IField;
 use vloop\entities\contracts\IForm;
 use vloop\entities\exceptions\NotValidatedFields;
 
-class Cart implements EquipmentStorageInterface
+final class Cart implements EquipmentStorageInterface
 {
     private CartRepositoryInterface $repository;
 

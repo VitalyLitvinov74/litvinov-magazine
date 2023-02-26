@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace app\shop\carts\events;
 
-use app\models\petrinet\AbstractPetriCondition;
-use app\models\petrinet\PetriConditionInterface;
 use app\shop\contracts\AddableEquipmentInterface;
 use app\tables\TableBooking;
 use app\tables\TableEquipments;

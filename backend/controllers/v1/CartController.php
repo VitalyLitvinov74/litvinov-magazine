@@ -33,12 +33,12 @@ class CartController extends Controller
         return new Cart( // корзина
             new FieldOfForm(
                 $addToCartForm = new EquipmentToCartForm(),
-                'customerToken'
+                'cartToken'
             ),
             new FieldOfForm(
                 $addToCartForm,
-                'cartToken'
-            ),
+                'customerToken'
+            )
         );
     }
 }

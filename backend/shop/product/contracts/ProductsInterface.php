@@ -9,10 +9,8 @@ use vloop\entities\contracts\IField;
 use vloop\entities\contracts\IForm;
 use yii\db\Query;
 
-interface WeProducts
+interface ProductsInterface extends AddableProductInterface
 {
-    public function add(IForm $productCardForm): TableProducts;
-
     public function remove(IField $id): void;
 
     public function findOne(Query $query): TableProducts;
