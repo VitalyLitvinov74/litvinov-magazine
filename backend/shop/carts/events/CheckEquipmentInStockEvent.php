@@ -1,31 +1,28 @@
 <?php
 declare(strict_types=1);
 
-namespace app\shop\carts\conditions;
+namespace app\shop\carts\events;
 
-use app\models\forms\EquipmentToCartForm;
-use app\models\IState;
 use app\models\petrinet\AbstractPetriCondition;
 use app\models\petrinet\PetriConditionInterface;
-use app\shop\contracts\IAddableEquipment;
+use app\shop\contracts\AddableEquipmentInterface;
 use app\tables\TableBooking;
 use app\tables\TableEquipments;
 use vloop\entities\contracts\IForm;
-use vloop\entities\exceptions\NotValidatedFields;
 use yii\db\Query;
 
-final class EquipmentExistedInStockCondition extends AbstractPetriCondition
+final class CheckEquipmentInStockEvent implements AddableEquipmentInterface
 {
     private Query $query;
 
-    public function __construct(private IForm $equipmentCartForm)
+    public function __construct(private AddableEquipmentInterface $origin)
     {
         $this->query = new Query();
     }
 
-    public function validate(): void
+    public function addEquipment(IForm $equipmentCartForm): void
     {
-        $fields = $this->equipmentCartForm->validatedFields();
+        $fields = $equipmentCartForm->validatedFields();
         $equipmentTable = TableEquipments::tableName();
         $bookingTable = TableBooking::tableName();
         $availableEquipmentCount = $this->query
@@ -35,8 +32,7 @@ final class EquipmentExistedInStockCondition extends AbstractPetriCondition
             ->where(["$equipmentTable.id" => $fields['equipmentId']])
             ->one();
         if ($availableEquipmentCount > 0) {
-            $this->pushMark();
+            $this->origin->addEquipment($equipmentCartForm);
         }
-        $this->removeMark();
     }
 }

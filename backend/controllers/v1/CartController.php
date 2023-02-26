@@ -7,7 +7,7 @@ use app\shop\carts\Cart;
 use app\shop\carts\contracts\ICart;
 use app\shop\carts\decorators\WithInStockEquipments;
 use app\shop\carts\decorators\WithUniqueEquipments;
-use app\shop\contracts\IEquipmentStorage;
+use app\shop\contracts\EquipmentStorageInterface;
 use app\shop\product\equipments\EquipmentList;
 use app\tables\TableEquipments;
 use vloop\entities\fields\Field;
@@ -28,7 +28,7 @@ class CartController extends Controller
             ->removeEquipment(new EquipmentToCartForm());
     }
 
-    private function cart(): IEquipmentStorage
+    private function cart(): EquipmentStorageInterface
     {
         return new Cart( // корзина
             new FieldOfForm(

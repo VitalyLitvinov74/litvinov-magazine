@@ -5,13 +5,13 @@ namespace app\shop\wishlist\contracts;
 use app\models\forms\EquipmentToCartForm;
 use app\models\forms\EquipmentToWishlistForm;
 use app\shop\carts\contracts\ICart;
-use app\shop\contracts\IEquipmentStorage;
+use app\shop\contracts\EquipmentStorageInterface;
 use app\shop\contracts\IStruct;
 use app\tables\TableCarts;
 use app\tables\TableWishlists;
 use vloop\entities\contracts\IForm;
 
-interface IWishList extends IStruct, IEquipmentStorage
+interface WishListInterface extends IStruct, EquipmentStorageInterface
 {
     /**
      * @param EquipmentToWishlistForm $equipmentCartForm

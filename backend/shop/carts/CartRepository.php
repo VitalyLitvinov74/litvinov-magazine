@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace app\shop\carts;
 
-use app\shop\carts\contracts\ICartRepository;
+use app\shop\carts\contracts\CartRepositoryInterface;
 use app\tables\TableCarts;
 use app\tables\TableEquipments;
 use vloop\entities\contracts\IField;
 use vloop\entities\exceptions\NotFoundEntity;
 
-class CartRepository implements ICartRepository
+class CartRepository implements CartRepositoryInterface
 {
     private $_cart;
 

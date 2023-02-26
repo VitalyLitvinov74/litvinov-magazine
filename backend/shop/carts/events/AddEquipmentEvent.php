@@ -3,16 +3,14 @@ declare(strict_types=1);
 
 namespace app\shop\carts\events;
 
-use app\models\IState;
-use app\models\petrinet\PetriEventInterface;
-use app\shop\carts\contracts\ICartRepository;
-use app\shop\contracts\IAddableEquipment;
+use app\shop\carts\contracts\CartRepositoryInterface;
+use app\shop\contracts\AddableEquipmentInterface;
 use vloop\entities\contracts\IForm;
 use vloop\entities\fields\FieldOfForm;
 
-final class AddEquipmentEvent implements IAddableEquipment, PetriEventInterface
+final class AddEquipmentEvent implements AddableEquipmentInterface
 {
-    public function __construct(private ICartRepository $repository)
+    public function __construct(private CartRepositoryInterface $repository)
     {
     }
 

@@ -2,26 +2,23 @@
 declare(strict_types=1);
 
 namespace app\shop\carts\events;
-
-use app\models\IState;
-use app\models\petrinet\PetriEventInterface;
-use app\shop\carts\contracts\ICartRepository;
-use app\shop\contracts\IRemovableEquipment;
+use app\shop\carts\contracts\CartRepositoryInterface;
+use app\shop\contracts\RemovableEquipmentInterface;
+use app\shop\exceptions\RemoveEquipmentException;
 use vloop\entities\contracts\IForm;
 use vloop\entities\fields\FieldOfForm;
 use yii\db\Exception;
 use yii\db\StaleObjectException;
 
-final class RemovedEquipment implements IRemovableEquipment, PetriEventInterface
+final class RemovedEquipmentEvent implements RemovableEquipmentInterface
 {
-    public function __construct(private ICartRepository $repository)
+    public function __construct(private CartRepositoryInterface $repository)
     {
     }
 
     /**
      * @param IForm $removeEquipmentForm
-     * @throws Exception
-     * @throws StaleObjectException
+     * @throws RemoveEquipmentException
      */
     public function removeEquipment(IForm $removeEquipmentForm): void
     {
@@ -36,10 +33,17 @@ final class RemovedEquipment implements IRemovableEquipment, PetriEventInterface
         $cartRecord = $this
             ->repository
             ->cartRecord();
-        $cartRecord
-            ->unlink(
-                'equipments',
-                $equipmentRecord
+        try {
+            $cartRecord
+                ->unlink(
+                    'equipments',
+                    $equipmentRecord
+                );
+        }catch (\Exception $exception){
+            throw new RemoveEquipmentException(
+                $exception->getMessage(),
+                $exception->getCode()
             );
+        }
     }
 }
