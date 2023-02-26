@@ -14,8 +14,6 @@ use app\shop\exceptions\RemoveEquipmentException;
 use vloop\entities\contracts\IField;
 use vloop\entities\contracts\IForm;
 use vloop\entities\exceptions\NotValidatedFields;
-use yii\db\Exception;
-use yii\db\StaleObjectException;
 
 class Cart implements EquipmentStorageInterface
 {
