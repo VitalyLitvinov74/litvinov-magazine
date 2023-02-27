@@ -4,9 +4,10 @@
 namespace app\shop\product;
 
 
-use app\models\forms\ProductForm;
+use app\models\forms\CreateProductForm;
+use app\models\structs\ProductStruct;
 use app\shop\exceptions\ProductException;
-use app\shop\product\contracts\IProduct;
+use app\shop\product\contracts\ProductInterface;
 use app\shop\product\contracts\ProductsInterface;
 use app\shop\product\events\AddProductEvent;
 use app\tables\TableProducts;
@@ -25,12 +26,12 @@ class Products implements ProductsInterface
     }
 
     /**
-     * @param IForm $productCardForm
+     * @param CreateProductForm $productCardForm
      * @return TableProducts
      * @throws NotValidatedFields
      * @throws ProductException
      */
-    public function add(IForm $productCardForm): TableProducts
+    public function add(CreateProductForm $productCardForm): TableProducts
     {
        $addableEvent = new AddProductEvent();
        return $addableEvent->add($productCardForm);

@@ -3,7 +3,7 @@
 
 namespace app\controllers\v1;
 
-use app\models\forms\ProductForm;
+use app\models\forms\CreateProductForm;
 use app\shop\product\Products;
 use app\tables\TableProducts;
 use vloop\entities\fields\Field;
@@ -15,7 +15,7 @@ class ProductController extends Controller
     {
         $cards = new Products();
         return $cards->add(
-            new ProductForm()
+            new CreateProductForm()
         );
     }
 

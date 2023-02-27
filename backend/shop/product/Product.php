@@ -2,7 +2,13 @@
 
 namespace app\shop\product;
 
-use app\shop\product\contracts\IProduct;
+use app\models\forms\ChangeProductForm;
+use app\models\forms\CreateProductForm;
+use app\models\structs\ProductStruct;
+use app\shop\product\contracts\ProductInterface;
+use app\shop\product\events\ChangeProductRecord;
+use app\shop\product\events\ChangeProductStrategy;
+use app\shop\product\events\ChangeOrAddProductToCategoryEvent;
 use app\tables\TableProducts;
 use vloop\entities\contracts\IField;
 use vloop\entities\contracts\IForm;
@@ -10,7 +16,7 @@ use vloop\entities\exceptions\NotFoundEntity;
 use vloop\entities\exceptions\NotSavedData;
 use vloop\entities\exceptions\NotValidatedFields;
 
-class Product implements IProduct
+class Product implements ProductInterface
 {
     public static function byId(IField $id): self
     {
@@ -29,14 +35,15 @@ class Product implements IProduct
     /**
      * @param IForm $form
      * @return $this
-     * @throws NotValidatedFields|NotSavedData
      */
-    public function change(IForm $form): IProduct
+    public function change(ChangeProductForm $productForm): ProductInterface
     {
-        $this->record->load($form->validatedFields(), '');
-        if($this->record->save()){
-            return $this;
-        }
-        throw new NotSavedData($this->record->getErrors(), 422);
+        $productChangeEvent = new ChangeOrAddProductToCategoryEvent(
+            new ChangeProductRecord(
+                $this->record
+            ),
+            $this->record
+        );
+        return $productChangeEvent->change($productForm);
     }
 }

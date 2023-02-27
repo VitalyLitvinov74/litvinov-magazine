@@ -34,7 +34,7 @@ class Categories implements WeCategories
 
     public function remove(IField $id): void
     {
-        TableCategories::deleteAll(['id' => $id->value()]);
+        TableCategories::deleteAll(['id' => $id->asInt()]);
     }
 
     public function find()

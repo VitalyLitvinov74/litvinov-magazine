@@ -11,7 +11,7 @@ use vloop\Yii2\Validators\ValidationModelTrait;
 use yii\base\Model;
 use yii\helpers\VarDumper;
 
-class ProductForm extends AbstractForm
+class CreateProductForm extends AbstractForm
 {
     public $description;
     public $shortDescription;
@@ -19,7 +19,7 @@ class ProductForm extends AbstractForm
     public $equipments;
     public $characteristics;
 
-    public function rules()
+    public function rules(): array
     {
         return [
             [['description', 'shortDescription', 'title'], 'required'],
@@ -68,5 +68,9 @@ class ProductForm extends AbstractForm
             $totalRules = array_merge($totalRules, [$rule]);
         }
         return $totalRules;
+    }
+
+    public function validatedStruct(){
+        $this->validatedFields();
     }
 }
