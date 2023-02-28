@@ -3,15 +3,13 @@
 namespace app\shop\product;
 
 use app\shop\product\contracts\ProductInterface;
-use app\shop\product\events\DefaultProductBehavior;
-use app\shop\product\events\ChangeOrAddProductToCategoryBehavior;
+use app\shop\product\behaviors\product\ChangeOrAddProductToCategoryBehavior;
+use app\shop\product\behaviors\product\DefaultProductBehavior;
 use app\shop\product\struct\ProductStruct;
 use app\tables\TableProducts;
 use vloop\entities\contracts\IField;
 use vloop\entities\contracts\IForm;
 use vloop\entities\exceptions\NotFoundEntity;
-use vloop\entities\exceptions\NotSavedData;
-use vloop\entities\exceptions\NotValidatedFields;
 
 class Product implements ProductInterface
 {

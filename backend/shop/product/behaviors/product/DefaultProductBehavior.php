@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace app\shop\product\events;
+namespace app\shop\product\behaviors\product;
 
 use app\shop\product\contracts\ProductInterface;
 use app\shop\product\struct\ProductStruct;

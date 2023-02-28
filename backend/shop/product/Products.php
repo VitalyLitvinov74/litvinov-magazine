@@ -7,14 +7,11 @@ namespace app\shop\product;
 use app\models\forms\CreateProductForm;
 use app\shop\exceptions\ProductException;
 use app\shop\product\contracts\ProductsInterface;
-use app\shop\product\events\AddProductEvent;
+use app\shop\product\behaviors\products\DefaultAddableProductBehavior;
 use app\shop\product\struct\ProductStruct;
 use app\tables\TableProducts;
-use ReflectionMethod;
 use vloop\entities\contracts\IField;
-use vloop\entities\contracts\IForm;
 use vloop\entities\exceptions\NotFoundEntity;
-use vloop\entities\exceptions\NotSavedData;
 use vloop\entities\exceptions\NotValidatedFields;
 use yii\db\Query;
 
@@ -33,7 +30,7 @@ class Products implements ProductsInterface
      */
     public function add(ProductStruct $productStruct): TableProducts
     {
-        $addableEvent = new AddProductEvent();
+        $addableEvent = new DefaultAddableProductBehavior();
         return $addableEvent->add($productStruct);
     }
 

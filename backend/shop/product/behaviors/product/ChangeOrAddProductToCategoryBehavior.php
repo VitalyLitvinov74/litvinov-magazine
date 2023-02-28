@@ -1,15 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace app\shop\product\events;
+namespace app\shop\product\behaviors\product;
 
-use app\models\forms\ChangeProductForm;
 use app\shop\exceptions\ProductException;
 use app\shop\product\contracts\ProductInterface;
 use app\shop\product\struct\ProductStruct;
 use app\tables\TableCategories;
 use app\tables\TableProducts;
-use vloop\entities\contracts\IForm;
 
 final class ChangeOrAddProductToCategoryBehavior implements ProductInterface
 {
