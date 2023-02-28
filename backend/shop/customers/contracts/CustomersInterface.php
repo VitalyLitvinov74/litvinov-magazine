@@ -7,8 +7,5 @@ use vloop\entities\contracts\IField;
 
 interface CustomersInterface extends AddableCustomersInterface
 {
-
-    public function addToList(): TableCustomers;
-
     public function remove(IField $id): void;
 }

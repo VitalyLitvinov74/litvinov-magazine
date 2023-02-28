@@ -9,7 +9,7 @@ use app\tables\TableEquipments;
 use vloop\entities\contracts\IForm;
 use yii\db\Query;
 
-final class CheckEquipmentInStockEvent implements AddableEquipmentInterface
+final class CheckEquipmentInStockBehavior implements AddableEquipmentInterface
 {
     private Query $query;
 

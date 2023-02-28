@@ -14,7 +14,7 @@ final class CartStruct extends AbstractStruct
     }
 
     public function __construct(
-
+        public readonly string $token
     )
     {
     }

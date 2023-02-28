@@ -8,7 +8,7 @@ use app\shop\contracts\AddableEquipmentInterface;
 use vloop\entities\contracts\IForm;
 use vloop\entities\fields\FieldOfForm;
 
-final class AddEquipmentEvent implements AddableEquipmentInterface
+final class AddEquipmentToCartDefaultBehavior implements AddableEquipmentInterface
 {
     public function __construct(private CartRepositoryInterface $repository)
     {

@@ -5,8 +5,8 @@ namespace app\shop\carts;
 
 use app\models\forms\EquipmentToCartForm;
 use app\shop\carts\contracts\CartRepositoryInterface;
-use app\shop\carts\events\AddEquipmentEvent;
-use app\shop\carts\events\CheckEquipmentInStockEvent;
+use app\shop\carts\events\AddEquipmentToCartDefaultBehavior;
+use app\shop\carts\events\CheckEquipmentInStockBehavior;
 use app\shop\carts\events\RemovedEquipmentEvent;
 use app\shop\contracts\EquipmentStorageInterface;
 use app\shop\exceptions\AddEquipmentException;
@@ -35,8 +35,8 @@ final class Cart implements EquipmentStorageInterface
     public function addEquipment(IForm $equipmentCartForm): void
     {
         $addableEvent =
-            new CheckEquipmentInStockEvent(
-                new AddEquipmentEvent(
+            new CheckEquipmentInStockBehavior(
+                new AddEquipmentToCartDefaultBehavior(
                     $this->repository
                 )
             );

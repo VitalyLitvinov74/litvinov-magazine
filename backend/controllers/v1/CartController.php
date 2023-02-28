@@ -28,7 +28,7 @@ class CartController extends Controller
             ->removeEquipment(new EquipmentToCartForm());
     }
 
-    private function cart(): EquipmentStorageInterface
+    private function cart(): Cart
     {
         return new Cart( // корзина
             new FieldOfForm(
