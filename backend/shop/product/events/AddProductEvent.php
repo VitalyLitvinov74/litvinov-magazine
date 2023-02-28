@@ -6,17 +6,18 @@ namespace app\shop\product\events;
 use app\models\forms\CreateProductForm;
 use app\shop\product\contracts\AddableProductInterface;
 use app\shop\product\Product;
+use app\shop\product\struct\ProductStruct;
 use app\tables\TableProducts;
 
 final class AddProductEvent implements AddableProductInterface
 {
 
-    public function add(CreateProductForm $productCardForm): TableProducts
+    public function add(ProductStruct $productStruct): TableProducts
     {
         $product = new Product(
            $record = new TableProducts()
         );
-        $product->change($productCardForm);
+        $product->changeInformation($productStruct);
         $record->refresh();
         return $record;
     }

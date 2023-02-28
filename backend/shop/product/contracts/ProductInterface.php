@@ -3,9 +3,7 @@
 
 namespace app\shop\product\contracts;
 
-use app\models\forms\ChangeProductForm;
-use app\models\forms\CreateProductForm;
-use app\models\structs\ProductStruct;
+use app\shop\product\struct\ProductStruct;
 use app\tables\TableEquipmentImages;
 use app\tables\TableEquipments;
 use vloop\entities\contracts\IForm;
@@ -24,8 +22,8 @@ interface ProductInterface
 {
     /**
      * Меняет мета данные продукта
-     * @param IForm $form
+     * @param ProductStruct $productStruct
      * @return $this
      */
-    public function change(ChangeProductForm $productForm): self;
+    public function changeInformation(ProductStruct $productStruct): self;
 }

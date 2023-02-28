@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace app\shop\product\events;
 
 use app\shop\product\contracts\ProductInterface;
+use app\shop\product\struct\ProductStruct;
 use app\tables\TableProducts;
-use vloop\entities\contracts\IForm;
 use vloop\entities\exceptions\NotSavedData;
 
 final class DefaultProductBehavior implements ProductInterface
@@ -14,9 +14,9 @@ final class DefaultProductBehavior implements ProductInterface
     {
     }
 
-    public function change(IForm $form): ProductInterface
+    public function changeInformation(ProductStruct $productStruct): ProductInterface
     {
-        $this->originRecord->load($form->validatedFields(), '');
+        $this->originRecord->load((array) $productStruct, '');
         if($this->originRecord->save()){
             return $this;
         }

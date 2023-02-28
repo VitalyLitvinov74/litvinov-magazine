@@ -2,13 +2,10 @@
 
 namespace app\shop\product;
 
-use app\models\forms\ChangeProductForm;
-use app\models\forms\CreateProductForm;
-use app\models\structs\ProductStruct;
 use app\shop\product\contracts\ProductInterface;
 use app\shop\product\events\DefaultProductBehavior;
-use app\shop\product\events\ChangeProductStrategy;
 use app\shop\product\events\ChangeOrAddProductToCategoryBehavior;
+use app\shop\product\struct\ProductStruct;
 use app\tables\TableProducts;
 use vloop\entities\contracts\IField;
 use vloop\entities\contracts\IForm;
@@ -36,7 +33,7 @@ class Product implements ProductInterface
      * @param IForm $form
      * @return $this
      */
-    public function change(ChangeProductForm $productForm): ProductInterface
+    public function changeInformation(ProductStruct $productStruct): ProductInterface
     {
         $productChangeEvent =
             new ChangeOrAddProductToCategoryBehavior(
@@ -45,6 +42,6 @@ class Product implements ProductInterface
                 ),
                 $this->record
             );
-        return $productChangeEvent->change($productForm);
+        return $productChangeEvent->changeInformation($productStruct);
     }
 }

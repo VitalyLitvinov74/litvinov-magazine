@@ -5,6 +5,7 @@ namespace app\controllers\v1;
 
 use app\models\forms\CreateProductForm;
 use app\shop\product\Products;
+use app\shop\product\struct\ProductStruct;
 use app\tables\TableProducts;
 use vloop\entities\fields\Field;
 use yii\rest\Controller;
@@ -15,7 +16,9 @@ class ProductController extends Controller
     {
         $cards = new Products();
         return $cards->add(
-            new CreateProductForm()
+            ProductStruct::byForm(
+                new CreateProductForm()
+            )
         );
     }
 

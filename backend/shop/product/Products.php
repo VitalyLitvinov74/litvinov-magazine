@@ -5,12 +5,12 @@ namespace app\shop\product;
 
 
 use app\models\forms\CreateProductForm;
-use app\models\structs\ProductStruct;
 use app\shop\exceptions\ProductException;
-use app\shop\product\contracts\ProductInterface;
 use app\shop\product\contracts\ProductsInterface;
 use app\shop\product\events\AddProductEvent;
+use app\shop\product\struct\ProductStruct;
 use app\tables\TableProducts;
+use ReflectionMethod;
 use vloop\entities\contracts\IField;
 use vloop\entities\contracts\IForm;
 use vloop\entities\exceptions\NotFoundEntity;
@@ -31,21 +31,21 @@ class Products implements ProductsInterface
      * @throws NotValidatedFields
      * @throws ProductException
      */
-    public function add(CreateProductForm $productCardForm): TableProducts
+    public function add(ProductStruct $productStruct): TableProducts
     {
-       $addableEvent = new AddProductEvent();
-       return $addableEvent->add($productCardForm);
+        $addableEvent = new AddProductEvent();
+        return $addableEvent->add($productStruct);
     }
 
     public function remove(IField $id): void
     {
-        TableProducts::deleteAll(['id'=>$id->asInt()]);
+        TableProducts::deleteAll(['id' => $id->asInt()]);
     }
 
     public function findOne(Query $query): TableProducts
     {
         $one = $query->one();
-        if($one){
+        if ($one) {
             return $one;
         }
         throw new NotFoundEntity('Не удалось найти карточку продукта');

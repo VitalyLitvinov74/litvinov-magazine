@@ -6,6 +6,7 @@ namespace app\shop\product\events;
 use app\models\forms\ChangeProductForm;
 use app\shop\exceptions\ProductException;
 use app\shop\product\contracts\ProductInterface;
+use app\shop\product\struct\ProductStruct;
 use app\tables\TableCategories;
 use app\tables\TableProducts;
 use vloop\entities\contracts\IForm;
@@ -18,20 +19,20 @@ final class ChangeOrAddProductToCategoryBehavior implements ProductInterface
 
     /**
      * Меняет мета данные продукта
-     * @param IForm $form
+     * @param ProductStruct $productStruct
      * @return $this
+     * @throws ProductException
      */
-    public function change(ChangeProductForm $productForm): ProductInterface
+    public function changeInformation(ProductStruct $productStruct): ProductInterface
     {
-        $validatedFields = $productForm->validatedFields();
-        if(!isset($validatedFields['categoryId'])){
-            return $this->origin->change($productForm);
+        if($productStruct->categoryId === 0){
+            return $this->origin->changeInformation($productStruct);
         }
         $this->record->link(
             'category',
-            $this->categoryRecord($validatedFields['categoryId'])
+            $this->categoryRecord($productStruct->categoryId)
         );
-        return $this->origin->change($productForm);
+        return $this->origin->changeInformation($productStruct);
     }
 
     private function categoryRecord(int $categoryId): TableCategories

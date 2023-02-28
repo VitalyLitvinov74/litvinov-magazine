@@ -3,19 +3,18 @@ declare(strict_types=1);
 
 namespace app\shop\product\contracts;
 
-use app\models\forms\CreateProductForm;
-use app\models\structs\ProductStruct;
 use app\shop\exceptions\ProductException;
+use app\shop\product\struct\ProductStruct;
 use app\tables\TableProducts;
-use vloop\entities\contracts\IForm;
 use vloop\entities\exceptions\NotValidatedFields;
 
 interface AddableProductInterface
 {
     /**
-     * @param CreateProductForm $productCardForm
+     * @param ProductStruct $productStruct
      * @return TableProducts
-     * @throws NotValidatedFields|ProductException
+     * @throws NotValidatedFields
+     * @throws ProductException
      */
-    public function add(CreateProductForm $productCardForm): TableProducts;
+    public function add(ProductStruct $productStruct): TableProducts;
 }
