@@ -9,7 +9,7 @@ use app\shop\product\struct\ProductStruct;
 use app\tables\TableCategories;
 use app\tables\TableProducts;
 
-final class ChangeOrAddProductToCategoryBehavior implements ProductInterface
+final class RelateWithCategoryBehavior implements ProductInterface
 {
     public function __construct(private ProductInterface $origin, private TableProducts $record)
     {

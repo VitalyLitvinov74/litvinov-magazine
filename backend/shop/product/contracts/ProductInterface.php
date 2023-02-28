@@ -3,6 +3,7 @@
 
 namespace app\shop\product\contracts;
 
+use app\shop\exceptions\ProductException;
 use app\shop\product\struct\ProductStruct;
 use app\tables\TableEquipmentImages;
 use app\tables\TableEquipments;
@@ -24,6 +25,7 @@ interface ProductInterface
      * Меняет мета данные продукта
      * @param ProductStruct $productStruct
      * @return $this
+     * @throws ProductException
      */
     public function changeInformation(ProductStruct $productStruct): self;
 }

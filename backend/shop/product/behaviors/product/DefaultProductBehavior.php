@@ -16,7 +16,7 @@ final class DefaultProductBehavior implements ProductInterface
 
     public function changeInformation(ProductStruct $productStruct): ProductInterface
     {
-        $this->originRecord->load((array) $productStruct, '');
+        $this->originRecord->load((array) $productStruct);
         if($this->originRecord->save()){
             return $this;
         }

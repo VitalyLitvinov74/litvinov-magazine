@@ -2,8 +2,9 @@
 
 namespace app\shop\product;
 
+use app\shop\exceptions\ProductException;
 use app\shop\product\contracts\ProductInterface;
-use app\shop\product\behaviors\product\ChangeOrAddProductToCategoryBehavior;
+use app\shop\product\behaviors\product\RelateWithCategoryBehavior;
 use app\shop\product\behaviors\product\DefaultProductBehavior;
 use app\shop\product\struct\ProductStruct;
 use app\tables\TableProducts;
@@ -28,13 +29,14 @@ class Product implements ProductInterface
     }
 
     /**
-     * @param IForm $form
+     * @param ProductStruct $productStruct
      * @return $this
+     * @throws ProductException
      */
     public function changeInformation(ProductStruct $productStruct): ProductInterface
     {
         $productChangeEvent =
-            new ChangeOrAddProductToCategoryBehavior(
+            new RelateWithCategoryBehavior(
                 new DefaultProductBehavior(
                     $this->record
                 ),

@@ -23,7 +23,7 @@ class Products implements ProductsInterface
     }
 
     /**
-     * @param CreateProductForm $productCardForm
+     * @param ProductStruct $productStruct
      * @return TableProducts
      * @throws NotValidatedFields
      * @throws ProductException
