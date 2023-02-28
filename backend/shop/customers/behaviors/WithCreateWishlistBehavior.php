@@ -1,20 +1,18 @@
 <?php
 
-namespace app\shop\customers\decorators;
+namespace app\shop\customers\behaviors;
 
 use app\models\GuidToken;
-use app\shop\carts\contracts\WeCarts;
-use app\shop\customers\contracts\WeCustomers;
+use app\shop\customers\contracts\AddableCustomersInterface;
 use app\tables\TableCustomers;
 use app\tables\TableWishlists;
-use vloop\entities\contracts\IField;
 
-class WithRelatedWishlists implements WeCustomers
+class WithCreateWishlistBehavior implements AddableCustomersInterface
 {
 
     private $wishlistToken;
 
-    public function __construct(private WeCustomers $origin)
+    public function __construct(private AddableCustomersInterface $origin)
     {
         $this->wishlistToken = new GuidToken();
     }
@@ -27,10 +25,5 @@ class WithRelatedWishlists implements WeCustomers
         ]);
         $wishlistStruct->link('customer', $customerStruct);
         return $customerStruct;
-    }
-
-    public function remove(IField $id): void
-    {
-        $this->origin->remove($id);
     }
 }

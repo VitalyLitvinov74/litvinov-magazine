@@ -1,18 +1,19 @@
 <?php
 
-namespace app\shop\customers\decorators;
+namespace app\shop\customers\behaviors;
 
 use app\models\GuidToken;
-use app\shop\customers\contracts\WeCustomers;
+use app\shop\customers\contracts\AddableCustomersInterface;
+use app\shop\customers\contracts\CustomersInterface;
 use app\tables\TableCarts;
 use app\tables\TableCustomers;
 use vloop\entities\contracts\IField;
 
-class WithRelatedCarts implements WeCustomers
+class WithCreateCartBehavior implements AddableCustomersInterface
 {
     private $guidToken;
 
-    public function __construct(private WeCustomers $origin)
+    public function __construct(private AddableCustomersInterface $origin)
     {
         $this->guidToken = new GuidToken();
     }
@@ -25,10 +26,5 @@ class WithRelatedCarts implements WeCustomers
         ]);
         $cartStruct->link('customer', $struct);
         return $struct;
-    }
-
-    public function remove(IField $id): void
-    {
-        $this->origin->remove($id);
     }
 }

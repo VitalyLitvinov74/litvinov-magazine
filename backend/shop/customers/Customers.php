@@ -3,14 +3,17 @@
 namespace app\shop\customers;
 
 use app\models\GuidToken;
-use app\shop\customers\contracts\WeCustomers;
+use app\shop\customers\behaviors\DefaultAddableCustomersBehavior;
+use app\shop\customers\behaviors\WithCreateCartBehavior;
+use app\shop\customers\behaviors\WithCreateWishlistBehavior;
+use app\shop\customers\contracts\CustomersInterface;
 use app\tables\TableCustomers;
 use vloop\entities\contracts\IField;
 use vloop\entities\contracts\IForm;
 use vloop\entities\exceptions\NotFoundEntity;
 use vloop\entities\exceptions\NotSavedData;
 
-class Customers implements WeCustomers
+class Customers implements CustomersInterface
 {
     public function __construct(private IField $token = new GuidToken())
     {
@@ -28,16 +31,14 @@ class Customers implements WeCustomers
 
     public function addToList(): TableCustomers
     {
-        $record = new TableCustomers([
-            'token' => $this->token->asString()
-        ]);
-        return $this->saveRecord($record);
-    }
-
-    private function saveRecord(TableCustomers $record): TableCustomers{
-        if ($record->save()) {
-            return $record;
-        }
-        throw new NotSavedData($record->getErrors(), 403);
+        $behavior =
+            new WithCreateWishlistBehavior(
+                new WithCreateCartBehavior(
+                    new DefaultAddableCustomersBehavior(
+                        $this->token
+                    )
+                )
+            );
+        return $behavior->addToList();
     }
 }

@@ -4,9 +4,8 @@ namespace app\shop\customers\contracts;
 
 use app\tables\TableCustomers;
 use vloop\entities\contracts\IField;
-use vloop\entities\contracts\IForm;
 
-interface WeCustomers
+interface CustomersInterface extends AddableCustomersInterface
 {
 
     public function addToList(): TableCustomers;
