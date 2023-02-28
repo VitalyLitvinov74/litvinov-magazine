@@ -5,20 +5,19 @@ namespace app\shop\product\events;
 
 use app\models\forms\CreateProductForm;
 use app\shop\product\contracts\AddableProductInterface;
+use app\shop\product\Product;
 use app\tables\TableProducts;
-use vloop\entities\contracts\IForm;
-use vloop\entities\exceptions\NotSavedData;
 
 final class AddProductEvent implements AddableProductInterface
 {
 
     public function add(CreateProductForm $productCardForm): TableProducts
     {
-        $record = new TableProducts();
-        $record->load($productCardForm->validatedFields(), '');
-        if($record->save()){
-            return $record;
-        }
-        throw new NotSavedData($record->getErrors(),400);
+        $product = new Product(
+           $record = new TableProducts()
+        );
+        $product->change($productCardForm);
+        $record->refresh();
+        return $record;
     }
 }

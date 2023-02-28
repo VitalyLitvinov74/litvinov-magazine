@@ -8,7 +8,7 @@ use app\tables\TableProducts;
 use vloop\entities\contracts\IForm;
 use vloop\entities\exceptions\NotSavedData;
 
-final class ChangeProductRecord implements ProductInterface
+final class DefaultProductBehavior implements ProductInterface
 {
     public function __construct(private TableProducts $originRecord)
     {

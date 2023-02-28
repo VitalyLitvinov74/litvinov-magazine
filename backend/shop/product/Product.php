@@ -6,9 +6,9 @@ use app\models\forms\ChangeProductForm;
 use app\models\forms\CreateProductForm;
 use app\models\structs\ProductStruct;
 use app\shop\product\contracts\ProductInterface;
-use app\shop\product\events\ChangeProductRecord;
+use app\shop\product\events\DefaultProductBehavior;
 use app\shop\product\events\ChangeProductStrategy;
-use app\shop\product\events\ChangeOrAddProductToCategoryEvent;
+use app\shop\product\events\ChangeOrAddProductToCategoryBehavior;
 use app\tables\TableProducts;
 use vloop\entities\contracts\IField;
 use vloop\entities\contracts\IForm;
@@ -38,12 +38,13 @@ class Product implements ProductInterface
      */
     public function change(ChangeProductForm $productForm): ProductInterface
     {
-        $productChangeEvent = new ChangeOrAddProductToCategoryEvent(
-            new ChangeProductRecord(
+        $productChangeEvent =
+            new ChangeOrAddProductToCategoryBehavior(
+                new DefaultProductBehavior(
+                    $this->record
+                ),
                 $this->record
-            ),
-            $this->record
-        );
+            );
         return $productChangeEvent->change($productForm);
     }
 }

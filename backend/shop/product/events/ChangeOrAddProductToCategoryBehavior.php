@@ -10,7 +10,7 @@ use app\tables\TableCategories;
 use app\tables\TableProducts;
 use vloop\entities\contracts\IForm;
 
-final class ChangeOrAddProductToCategoryEvent implements ProductInterface
+final class ChangeOrAddProductToCategoryBehavior implements ProductInterface
 {
     public function __construct(private ProductInterface $origin, private TableProducts $record)
     {
