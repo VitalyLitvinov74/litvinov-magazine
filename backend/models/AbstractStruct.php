@@ -8,7 +8,7 @@ use vloop\entities\contracts\IForm;
 
 abstract class AbstractStruct
 {
-    public static function byForm(IForm $form): self
+    public static function byForm(IForm $form): static
     {
         $r = new \ReflectionMethod(static::class, '__construct');
         $params = array_column($r->getParameters(), 'name');

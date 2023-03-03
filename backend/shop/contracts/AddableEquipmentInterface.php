@@ -4,15 +4,17 @@ declare(strict_types=1);
 namespace app\shop\contracts;
 
 use app\shop\exceptions\AddEquipmentException;
+use app\shop\product\equipments\struct\EquipmentStruct;
 use vloop\entities\contracts\IForm;
 use vloop\entities\exceptions\NotValidatedFields;
 
 interface AddableEquipmentInterface
 {
     /**
-     * @param IForm $equipmentCartForm
+     * @param EquipmentStruct $equipmentStruct
      * @return void
-     * @throws AddEquipmentException|NotValidatedFields
+     * @throws AddEquipmentException
+     * @throws NotValidatedFields
      */
-    public function addEquipment(IForm $equipmentCartForm): void;
+    public function addEquipment(EquipmentStruct $equipmentStruct): void;
 }

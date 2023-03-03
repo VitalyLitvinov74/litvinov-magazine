@@ -5,30 +5,29 @@ namespace app\shop\carts\events;
 use app\shop\carts\contracts\CartRepositoryInterface;
 use app\shop\contracts\RemovableEquipmentInterface;
 use app\shop\exceptions\RemoveEquipmentException;
+use app\shop\product\equipments\struct\EquipmentStruct;
 use vloop\entities\contracts\IForm;
+use vloop\entities\fields\Field;
 use vloop\entities\fields\FieldOfForm;
 use yii\db\Exception;
 use yii\db\StaleObjectException;
 
 final class RemovedEquipmentEvent implements RemovableEquipmentInterface
 {
-    public function __construct(private CartRepositoryInterface $repository)
+    public function __construct(private readonly CartRepositoryInterface $repository)
     {
     }
 
     /**
-     * @param IForm $removeEquipmentForm
+     * @param EquipmentStruct $equipmentStruct
      * @throws RemoveEquipmentException
      */
-    public function removeEquipment(IForm $removeEquipmentForm): void
+    public function removeEquipment(EquipmentStruct $equipmentStruct): void
     {
         $equipmentRecord = $this
             ->repository
             ->equipmentRecord(
-                new FieldOfForm(
-                    $removeEquipmentForm,
-                    'equipmentId'
-                )
+                new Field($equipmentStruct->id)
             );
         $cartRecord = $this
             ->repository

@@ -11,6 +11,7 @@ use app\shop\carts\events\RemovedEquipmentEvent;
 use app\shop\contracts\EquipmentStorageInterface;
 use app\shop\exceptions\AddEquipmentException;
 use app\shop\exceptions\RemoveEquipmentException;
+use app\shop\product\equipments\struct\EquipmentStruct;
 use vloop\entities\contracts\IField;
 use vloop\entities\contracts\IForm;
 use vloop\entities\exceptions\NotValidatedFields;
@@ -27,12 +28,12 @@ final class Cart implements EquipmentStorageInterface
     }
 
     /**
-     * @param IForm $equipmentCartForm
+     * @param EquipmentStruct $equipmentStruct
      * @return void
      * @throws AddEquipmentException
      * @throws NotValidatedFields
      */
-    public function addEquipment(IForm $equipmentCartForm): void
+    public function addEquipment(EquipmentStruct $equipmentStruct): void
     {
         $addableEvent =
             new CheckEquipmentInStockBehavior(
@@ -40,20 +41,20 @@ final class Cart implements EquipmentStorageInterface
                     $this->repository
                 )
             );
-        $addableEvent->addEquipment($equipmentCartForm);
+        $addableEvent->addEquipment($equipmentStruct);
     }
 
     /**
-     * @param IForm $removeEquipmentForm
+     * @param EquipmentStruct $equipmentStruct
      * @return void
      * @throws RemoveEquipmentException
      */
-    public function removeEquipment(IForm $removeEquipmentForm): void
+    public function removeEquipment(EquipmentStruct $equipmentStruct): void
     {
         $removableEvent =
             new RemovedEquipmentEvent(
                 $this->repository
             );
-        $removableEvent->removeEquipment($removeEquipmentForm);
+        $removableEvent->removeEquipment($equipmentStruct);
     }
 }

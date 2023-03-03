@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace app\shop\contracts;
 
 use app\shop\exceptions\RemoveEquipmentException;
+use app\shop\product\equipments\struct\EquipmentStruct;
 use vloop\entities\contracts\IForm;
 use vloop\entities\exceptions\NotValidatedFields;
 
@@ -12,8 +13,9 @@ use vloop\entities\exceptions\NotValidatedFields;
 interface RemovableEquipmentInterface
 {
     /**
-     * @param IForm $removeEquipmentForm
-     * @throws RemoveEquipmentException|NotValidatedFields
+     * @param EquipmentStruct $removeEquipment
+     * @throws RemoveEquipmentException
+     * @throws NotValidatedFields
      */
-    public function removeEquipment(IForm $removeEquipmentForm): void;
+    public function removeEquipment(EquipmentStruct $removeEquipment): void;
 }

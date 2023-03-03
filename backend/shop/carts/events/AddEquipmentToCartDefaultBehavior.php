@@ -5,7 +5,9 @@ namespace app\shop\carts\events;
 
 use app\shop\carts\contracts\CartRepositoryInterface;
 use app\shop\contracts\AddableEquipmentInterface;
+use app\shop\product\equipments\struct\EquipmentStruct;
 use vloop\entities\contracts\IForm;
+use vloop\entities\fields\Field;
 use vloop\entities\fields\FieldOfForm;
 
 final class AddEquipmentToCartDefaultBehavior implements AddableEquipmentInterface
@@ -14,11 +16,11 @@ final class AddEquipmentToCartDefaultBehavior implements AddableEquipmentInterfa
     {
     }
 
-    public function addEquipment(IForm $equipmentCartForm): void
+    public function addEquipment(EquipmentStruct $equipmentStruct): void
     {
         $cart = $this->repository->cartRecord();
         $equipment = $this->repository->equipmentRecord(
-            new FieldOfForm($equipmentCartForm, 'equipmentId')
+            new Field($equipmentStruct->id)
         );
         $cart->link('equipments', $equipment);
     }

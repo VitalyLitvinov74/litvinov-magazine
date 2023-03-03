@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace app\shop\carts\events;
 
 use app\shop\contracts\AddableEquipmentInterface;
+use app\shop\product\equipments\struct\EquipmentStruct;
 use app\tables\TableBooking;
 use app\tables\TableEquipments;
 use vloop\entities\contracts\IForm;
@@ -18,19 +19,18 @@ final class CheckEquipmentInStockBehavior implements AddableEquipmentInterface
         $this->query = new Query();
     }
 
-    public function addEquipment(IForm $equipmentCartForm): void
+    public function addEquipment(EquipmentStruct $equipmentStruct): void
     {
-        $fields = $equipmentCartForm->validatedFields();
         $equipmentTable = TableEquipments::tableName();
         $bookingTable = TableBooking::tableName();
         $availableEquipmentCount = $this->query
             ->select(['count' => "$equipmentTable.count - COALESCE(sum($bookingTable.count), 0)"])
             ->from($equipmentTable)
             ->leftJoin($bookingTable, "$equipmentTable.id = $bookingTable.equipment_id")
-            ->where(["$equipmentTable.id" => $fields['equipmentId']])
+            ->where(["$equipmentTable.id" => $equipmentStruct->id])
             ->one();
         if ($availableEquipmentCount > 0) {
-            $this->origin->addEquipment($equipmentCartForm);
+            $this->origin->addEquipment($equipmentStruct);
         }
     }
 }

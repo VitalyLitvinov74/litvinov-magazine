@@ -4,28 +4,40 @@ namespace app\controllers\v1;
 
 use app\models\forms\EquipmentToCartForm;
 use app\shop\carts\Cart;
-use app\shop\carts\contracts\ICart;
-use app\shop\carts\decorators\WithInStockEquipments;
-use app\shop\carts\decorators\WithUniqueEquipments;
-use app\shop\contracts\EquipmentStorageInterface;
-use app\shop\product\equipments\EquipmentList;
-use app\tables\TableEquipments;
-use vloop\entities\fields\Field;
+use app\shop\exceptions\AddEquipmentException;
+use app\shop\exceptions\RemoveEquipmentException;
+use app\shop\product\equipments\struct\EquipmentStruct;
+use vloop\entities\exceptions\NotValidatedFields;
 use vloop\entities\fields\FieldOfForm;
 use yii\rest\Controller;
 
 class CartController extends Controller
 {
+    /**
+     * @throws AddEquipmentException
+     * @throws NotValidatedFields
+     */
     public function actionAddEquipment()
     {
         $this->cart()
-            ->addEquipment(new EquipmentToCartForm());
+            ->addEquipment(
+                EquipmentStruct::byForm(
+                    new EquipmentToCartForm()
+                )
+            );
     }
 
+    /**
+     * @throws RemoveEquipmentException
+     */
     public function actionRemoveEquipment()
     {
         $this->cart()
-            ->removeEquipment(new EquipmentToCartForm());
+            ->removeEquipment(
+                EquipmentStruct::byForm(
+                    new EquipmentToCartForm()
+                )
+            );
     }
 
     private function cart(): Cart
