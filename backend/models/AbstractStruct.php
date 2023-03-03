@@ -5,10 +5,14 @@ namespace app\models;
 
 use app\shop\product\struct\ProductStruct;
 use vloop\entities\contracts\IForm;
+use vloop\entities\exceptions\NotValidatedFields;
 
 abstract class AbstractStruct
 {
-    public static function byForm(IForm $form): static
+    /**
+     * @throws NotValidatedFields
+     */
+    public static function byForm(IForm $form, array $mappedAttributes = []): static
     {
         $r = new \ReflectionMethod(static::class, '__construct');
         $params = array_column($r->getParameters(), 'name');
@@ -19,5 +23,10 @@ abstract class AbstractStruct
             }
         }
         return new static(...$mapped);
+    }
+
+    private static function reflectedParams()
+    {
+
     }
 }
