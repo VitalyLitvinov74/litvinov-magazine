@@ -4,10 +4,9 @@ declare(strict_types=1);
 namespace app\shop\carts\events;
 
 use app\shop\contracts\AddableEquipmentInterface;
-use app\shop\product\equipments\struct\EquipmentStruct;
+use app\shop\product\struct\EquipmentStruct;
 use app\tables\TableBooking;
 use app\tables\TableEquipments;
-use vloop\entities\contracts\IForm;
 use yii\db\Query;
 
 final class CheckEquipmentInStockBehavior implements AddableEquipmentInterface

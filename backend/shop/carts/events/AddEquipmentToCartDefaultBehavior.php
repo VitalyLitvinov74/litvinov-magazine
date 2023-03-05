@@ -5,10 +5,8 @@ namespace app\shop\carts\events;
 
 use app\shop\carts\contracts\CartRepositoryInterface;
 use app\shop\contracts\AddableEquipmentInterface;
-use app\shop\product\equipments\struct\EquipmentStruct;
-use vloop\entities\contracts\IForm;
+use app\shop\product\struct\EquipmentStruct;
 use vloop\entities\fields\Field;
-use vloop\entities\fields\FieldOfForm;
 
 final class AddEquipmentToCartDefaultBehavior implements AddableEquipmentInterface
 {

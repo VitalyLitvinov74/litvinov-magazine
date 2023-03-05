@@ -36,11 +36,11 @@ class Product implements ProductInterface
     public function changeInformation(ProductStruct $productStruct): ProductInterface
     {
         $productChangeEvent =
-            new RelateWithCategoryBehavior(
+//            new RelateWithCategoryBehavior(
                 new DefaultProductBehavior(
                     $this->record
-                ),
-                $this->record
+//                ),
+//                $this->record
             );
         return $productChangeEvent->changeInformation($productStruct);
     }

@@ -6,7 +6,7 @@ use app\models\forms\EquipmentToCartForm;
 use app\shop\carts\Cart;
 use app\shop\exceptions\AddEquipmentException;
 use app\shop\exceptions\RemoveEquipmentException;
-use app\shop\product\equipments\struct\EquipmentStruct;
+use app\shop\product\struct\EquipmentStruct;
 use vloop\entities\exceptions\NotValidatedFields;
 use vloop\entities\fields\FieldOfForm;
 use yii\rest\Controller;
@@ -28,7 +28,7 @@ class CartController extends Controller
     }
 
     /**
-     * @throws RemoveEquipmentException
+     * @throws RemoveEquipmentException|NotValidatedFields
      */
     public function actionRemoveEquipment()
     {

@@ -29,7 +29,10 @@
     "ext-json": "*",
     "v.chetkov/php-clean-architecture": "*",
     "sizeg/yii2-jwt": "^2.0",
-    "ext-openssl": "*"
+    "ext-openssl": "*",
+    "symfony/form": "^5.4",
+    "symfony/serializer": "^5.4",
+    "phpdocumentor/reflection-docblock": "^5.3"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.1.0",
