@@ -6,7 +6,6 @@ use app\shop\exceptions\ProductException;
 use app\shop\product\contracts\ProductInterface;
 use app\shop\product\states\product\changeable\FinalStateOfChangeableProduct;
 use app\shop\product\states\product\changeable\InitialStateOfChangeableProduct;
-use app\shop\product\struct\ProductStruct;
 use app\tables\TableProducts;
 use vloop\entities\contracts\IField;
 use vloop\entities\contracts\IForm;
@@ -41,7 +40,6 @@ class Product implements ProductInterface
                     $this->record
                 )
             );
-
         return $productChangeEvent->changeInformation($productForm);
     }
 }

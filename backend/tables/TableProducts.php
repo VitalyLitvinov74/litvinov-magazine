@@ -50,6 +50,12 @@ class TableProducts extends BaseTable
         return ['equipments', 'characteristics'];
     }
 
+    public function rules(): array{
+        return [
+            [$this->extraFields(), 'safe']
+        ];
+    }
+
     /**
      * @return ActiveQuery
      * @throws InvalidConfigException
@@ -64,7 +70,7 @@ class TableProducts extends BaseTable
     public function getCharacteristics(): ActiveQuery
     {
         return $this
-            ->hasMany(TableCharacteristics::class, ['id'=>'characteristic_id'])
-            ->viaTable('product_via_characteristics', ['product_id'=>'id']);
+            ->hasMany(TableCharacteristics::class, ['id' => 'characteristic_id'])
+            ->viaTable('product_via_characteristics', ['product_id' => 'id']);
     }
 }
