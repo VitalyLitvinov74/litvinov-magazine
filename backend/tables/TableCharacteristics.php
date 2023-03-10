@@ -13,7 +13,7 @@ use yii\db\ActiveRecord;
  */
 class TableCharacteristics extends BaseTable
 {
-    public static function tableName()
+    public static function tableName(): string
     {
         return 'characteristics';
     }

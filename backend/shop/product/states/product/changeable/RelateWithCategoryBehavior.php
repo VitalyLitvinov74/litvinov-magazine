@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace app\shop\product\behaviors\product;
+namespace app\shop\product\states\product\changeable;
 
 use app\shop\exceptions\ProductException;
 use app\shop\product\contracts\ProductInterface;
-use app\shop\product\struct\ProductStruct;
 use app\tables\TableCategories;
 use app\tables\TableProducts;
+use vloop\entities\contracts\IForm;
 
 final class RelateWithCategoryBehavior implements ProductInterface
 {
@@ -17,11 +17,11 @@ final class RelateWithCategoryBehavior implements ProductInterface
 
     /**
      * Меняет мета данные продукта
-     * @param ProductStruct $productStruct
+     * @param IForm $productForm
      * @return $this
      * @throws ProductException
      */
-    public function changeInformation(ProductStruct $productStruct): ProductInterface
+    public function changeInformation(IForm $productForm): ProductInterface
     {
         if($productStruct->categoryId === 0){
             return $this->origin->changeInformation($productStruct);

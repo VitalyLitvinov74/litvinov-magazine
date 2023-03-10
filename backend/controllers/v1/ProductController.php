@@ -16,9 +16,7 @@ class ProductController extends Controller
     {
         $cards = new Products();
         return $cards->add(
-            ProductStruct::byForm(
-                new CreateProductForm()
-            )
+            new CreateProductForm()
         );
     }
 

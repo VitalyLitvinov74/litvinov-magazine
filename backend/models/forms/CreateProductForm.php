@@ -69,8 +69,4 @@ class CreateProductForm extends AbstractForm
         }
         return $totalRules;
     }
-
-    public function validatedStruct(){
-        $this->validatedFields();
-    }
 }

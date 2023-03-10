@@ -6,15 +6,16 @@ namespace app\shop\product\contracts;
 use app\shop\exceptions\ProductException;
 use app\shop\product\struct\ProductStruct;
 use app\tables\TableProducts;
+use vloop\entities\contracts\IForm;
 use vloop\entities\exceptions\NotValidatedFields;
 
 interface AddableProductInterface
 {
     /**
-     * @param ProductStruct $productStruct
+     * @param IForm $productForm
      * @return TableProducts
      * @throws NotValidatedFields
      * @throws ProductException
      */
-    public function add(ProductStruct $productStruct): TableProducts;
+    public function add(IForm $productForm): TableProducts;
 }

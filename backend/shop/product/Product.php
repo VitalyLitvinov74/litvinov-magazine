@@ -4,8 +4,8 @@ namespace app\shop\product;
 
 use app\shop\exceptions\ProductException;
 use app\shop\product\contracts\ProductInterface;
-use app\shop\product\behaviors\product\RelateWithCategoryBehavior;
-use app\shop\product\behaviors\product\DefaultProductBehavior;
+use app\shop\product\states\product\changeable\FinalStateOfChangeableProduct;
+use app\shop\product\states\product\changeable\InitialStateOfChangeableProduct;
 use app\shop\product\struct\ProductStruct;
 use app\tables\TableProducts;
 use vloop\entities\contracts\IField;
@@ -29,19 +29,19 @@ class Product implements ProductInterface
     }
 
     /**
-     * @param ProductStruct $productStruct
+     * @param IForm $productForm
      * @return $this
      * @throws ProductException
      */
-    public function changeInformation(ProductStruct $productStruct): ProductInterface
+    public function changeInformation(IForm $productForm): ProductInterface
     {
         $productChangeEvent =
-//            new RelateWithCategoryBehavior(
-                new DefaultProductBehavior(
+            new InitialStateOfChangeableProduct(
+                new FinalStateOfChangeableProduct(
                     $this->record
-//                ),
-//                $this->record
+                )
             );
-        return $productChangeEvent->changeInformation($productStruct);
+
+        return $productChangeEvent->changeInformation($productForm);
     }
 }

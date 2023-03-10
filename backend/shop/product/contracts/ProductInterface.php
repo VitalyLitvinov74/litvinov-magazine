@@ -23,9 +23,9 @@ interface ProductInterface
 {
     /**
      * Меняет мета данные продукта
-     * @param ProductStruct $productStruct
+     * @param IForm $productForm
      * @return $this
      * @throws ProductException
      */
-    public function changeInformation(ProductStruct $productStruct): self;
+    public function changeInformation(IForm $productForm): self;
 }

@@ -28,7 +28,7 @@ class TableEquipments extends BaseTable
         return 'equipments';
     }
 
-    public function behaviors()
+    public function behaviors(): array
     {
         return ArrayHelper::merge(
             parent::behaviors(),
@@ -42,7 +42,7 @@ class TableEquipments extends BaseTable
         );
     }
 
-    public function rules()
+    public function rules(): array
     {
         return [
             ['id', 'exist', 'message' => 'Не удалось найти товар с указанным ID']
