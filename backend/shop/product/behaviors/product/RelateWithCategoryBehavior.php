@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace app\shop\product\behaviors\product;
 
+use app\shop\contracts\ProductFormInterface;
 use app\shop\exceptions\ProductException;
 use app\shop\product\contracts\ProductInterface;
 use app\shop\product\struct\ProductStruct;
@@ -21,7 +22,7 @@ final class RelateWithCategoryBehavior implements ProductInterface
      * @return $this
      * @throws ProductException
      */
-    public function changeInformation(ProductStruct $productStruct): ProductInterface
+    public function changeInformation(ProductFormInterface $productForm): ProductInterface
     {
         if($productStruct->categoryId === 0){
             return $this->origin->changeInformation($productStruct);

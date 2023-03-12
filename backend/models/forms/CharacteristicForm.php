@@ -4,11 +4,15 @@
 namespace app\models\forms;
 
 
-use vloop\entities\yii2\AbstractForm;
+use app\shop\contracts\CharacteristicFormInterface;
+use yii\base\Model;
 
-class CharacteristicForm extends AbstractForm
+class CharacteristicForm extends Model implements CharacteristicFormInterface
 {
-    public function rules()
+    public string $name;
+    public string $value;
+
+    public function rules(): array
     {
         return [
             [['value', 'name'], 'required']

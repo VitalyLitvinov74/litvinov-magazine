@@ -4,14 +4,12 @@
 namespace app\models\forms;
 
 
-use vloop\entities\yii2\AbstractForm;
-use vloop\Yii2\Validators\ArrayValidator;
+use app\models\forms\validators\NestedValidatorAndConvertor;
+use app\shop\contracts\ProductFormInterface;
 use vloop\Yii2\Validators\CustomEachValidator;
-use vloop\Yii2\Validators\ValidationModelTrait;
 use yii\base\Model;
-use yii\helpers\VarDumper;
 
-class CreateProductForm extends AbstractForm
+class CreateProductForm extends Model implements ProductFormInterface
 {
     public $description;
     public $shortDescription;
@@ -24,53 +22,14 @@ class CreateProductForm extends AbstractForm
         return [
             [['description', 'shortDescription', 'title'], 'required'],
             [['description', 'shortDescription', 'title'], 'string'],
-            [
-                'equipments',
-                CustomEachValidator::class,
-                "rule" => [
-                    ArrayValidator::class,
-                    'subRules' => $this->mergeWithFormRules(
-                        new EquipmentForm(),
-                        ['characteristics', 'default', 'value' => []],
-                        [
-                            'characteristics',
-                            CustomEachValidator::class,
-                            'rule' => [
-                                ArrayValidator::class,
-                                "subRules" => [
-                                    [['name', 'value'], 'required']
-                                ],
-                            ],
-                        ]
-                    )
-                ]
-            ],
-            ['equipments', 'required', 'message' => 'Должна существовать хотябы одна комплектация продукта'],
-            ['characteristics', 'default', 'value' => []],
-            [
-                'characteristics',
-                CustomEachValidator::class,
-                'rule' => [
-                    ArrayValidator::class,
-                    'subRules' => $this->mergeWithFormRules(
-                        new CharacteristicForm()
-                    )
-                ],
-            ]
+            ['equipments', CustomEachValidator::class, 'rule'=>[
+                NestedValidatorAndConvertor::class,
+                'nestedForm'=>EquipmentForm::class
+            ]],
+            ['characteristics', CustomEachValidator::class, 'rule'=>[
+                NestedValidatorAndConvertor::class,
+                'nestedForm'=>CharacteristicForm::class
+            ]]
         ];
-    }
-
-    private function mergeWithFormRules(Model $model, array ...$rulesList): array
-    {
-        $totalRules = [];
-        $totalRules = array_merge($totalRules, $model->rules());
-        foreach ($rulesList as $rule) {
-            $totalRules = array_merge($totalRules, [$rule]);
-        }
-        return $totalRules;
-    }
-
-    public function validatedStruct(){
-        $this->validatedFields();
     }
 }
