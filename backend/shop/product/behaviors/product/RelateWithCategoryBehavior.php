@@ -18,7 +18,7 @@ final class RelateWithCategoryBehavior implements ProductInterface
 
     /**
      * Меняет мета данные продукта
-     * @param ProductStruct $productStruct
+     * @param ProductFormInterface $productForm
      * @return $this
      * @throws ProductException
      */

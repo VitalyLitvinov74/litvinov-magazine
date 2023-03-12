@@ -43,6 +43,6 @@ class Product implements ProductInterface
 //                ),
 //                $this->record
             );
-        return $productChangeEvent->changeInformation($productStruct);
+        return $productChangeEvent->changeInformation($productForm);
     }
 }

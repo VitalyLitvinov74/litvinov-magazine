@@ -25,21 +25,6 @@ use yii\helpers\VarDumper;
  */
 class TableProducts extends BaseTable
 {
-    public function behaviors(): array
-    {
-        return ArrayHelper::merge(
-            parent::behaviors(),
-            [
-                'saveRelations' => [
-                    'relations' => [
-                        'equipments',
-                        'characteristics'
-                    ],
-                ]
-            ]
-        );
-    }
-
     public static function tableName(): string
     {
         return 'products';

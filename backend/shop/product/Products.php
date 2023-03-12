@@ -5,6 +5,7 @@ namespace app\shop\product;
 
 
 use app\models\forms\CreateProductForm;
+use app\shop\contracts\ProductFormInterface;
 use app\shop\exceptions\ProductException;
 use app\shop\product\contracts\ProductsInterface;
 use app\shop\product\behaviors\products\DefaultAddableProductBehavior;
@@ -23,15 +24,15 @@ class Products implements ProductsInterface
     }
 
     /**
-     * @param ProductStruct $productStruct
+     * @param ProductFormInterface $productForm
      * @return TableProducts
      * @throws NotValidatedFields
      * @throws ProductException
      */
-    public function add(ProductStruct $productStruct): TableProducts
+    public function addBy(ProductFormInterface $productForm): TableProducts
     {
         $addableEvent = new DefaultAddableProductBehavior();
-        return $addableEvent->add($productStruct);
+        return $addableEvent->addBy($productForm);
     }
 
     public function remove(IField $id): void

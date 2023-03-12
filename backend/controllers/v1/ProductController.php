@@ -14,12 +14,10 @@ class ProductController extends Controller
 {
     public function actionCreate()
     {
-        $cards = new Products();
-        return $cards->add(
-            ProductStruct::byForm(
-                new CreateProductForm()
-            )
-        );
+        $form = new CreateProductForm();
+        $form->load($this->request->post(), '') && $form->validate();
+        $products = new Products();
+        return $products->addBy($form)->toArray([], ['equipments', 'equipments.characteristics', 'characteristics']);
     }
 
     public function actionById(int $id)
