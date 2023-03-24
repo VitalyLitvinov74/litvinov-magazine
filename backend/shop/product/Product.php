@@ -5,12 +5,10 @@ namespace app\shop\product;
 use app\shop\contracts\ProductFormInterface;
 use app\shop\exceptions\ProductException;
 use app\shop\product\contracts\ProductInterface;
-use app\shop\product\behaviors\product\RelateWithCategoryBehavior;
-use app\shop\product\behaviors\product\DefaultProductBehavior;
-use app\shop\product\struct\ProductStruct;
+use app\shop\product\states\product\changeable\FinalStateOfChangeableProduct;
+use app\shop\product\states\product\changeable\InitialStateOfChangeableProduct;
 use app\tables\TableProducts;
 use vloop\entities\contracts\IField;
-use vloop\entities\contracts\IForm;
 use vloop\entities\exceptions\NotFoundEntity;
 
 class Product implements ProductInterface
@@ -37,12 +35,12 @@ class Product implements ProductInterface
     public function changeInformation(ProductFormInterface $productForm): ProductInterface
     {
         $productChangeEvent =
-//            new RelateWithCategoryBehavior(
-                new DefaultProductBehavior(
-                    $this->record
-//                ),
-//                $this->record
-            );
+                new InitialStateOfChangeableProduct(
+                    new FinalStateOfChangeableProduct(
+                        $this->record
+                    )
+                )
+            ;
         return $productChangeEvent->changeInformation($productForm);
     }
 }

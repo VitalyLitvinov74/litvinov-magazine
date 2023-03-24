@@ -1,14 +1,13 @@
 <?php
 
 
-namespace app\shop\product;
+namespace app\shop\stock;
 
 
-use app\models\forms\CreateProductForm;
 use app\shop\contracts\ProductFormInterface;
 use app\shop\exceptions\ProductException;
-use app\shop\product\contracts\ProductsInterface;
 use app\shop\product\behaviors\products\DefaultAddableProductBehavior;
+use app\shop\product\contracts\ProductsInterface;
 use app\shop\product\struct\ProductStruct;
 use app\tables\TableProducts;
 use vloop\entities\contracts\IField;
@@ -16,7 +15,7 @@ use vloop\entities\exceptions\NotFoundEntity;
 use vloop\entities\exceptions\NotValidatedFields;
 use yii\db\Query;
 
-class Products implements ProductsInterface
+class Warehouse implements WarehouseInterface
 
 {
     public function __construct()
@@ -31,7 +30,7 @@ class Products implements ProductsInterface
      */
     public function addBy(ProductFormInterface $productForm): TableProducts
     {
-        $addableEvent = new DefaultAddableProductBehavior();
+        $addableEvent = ();
         return $addableEvent->addBy($productForm);
     }
 
